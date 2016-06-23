@@ -20,12 +20,28 @@ package com.git.ifly6.rexisquexis;
  */
 public class RQbb {
 
+	public static final String LEFT = "left";
+	public static final String CENTRE = "center";
+	public static final String RIGHT = "right";
+
 	private RQbb() {
 		// No instantiation!
 	}
 
+	// ======== Generalised tag forms ========
+
+	public static String bbTag(String input, String tag) {
+		return "[" + tag + "]" + input + "[/" + tag + "]";
+	}
+
+	public static String bbTag(String input, String tag, String var) {
+		return "[" + tag + "=" + var + "]" + input + "[/" + tag + "]";
+	}
+
+	// ======== Hardcoded tags ========
+
 	public static String bold(String input) {
-		return "[b]" + input + "[/b]";
+		return bbTag(input, "b");
 	}
 
 	public static String formatBoldTerm(String input) {
@@ -39,26 +55,50 @@ public class RQbb {
 	}
 
 	public static String italicise(String input) {
-		return "[i]" + input + "[/i]";
+		return bbTag(input, "i");
 	}
 
 	public static String strike(String input) {
-		return "[strike]" + input + "[/strike]";
+		return bbTag(input, "strike");
 	}
 
 	public static String url(String input, String url) {
-		return "[url=" + url + "]" + input + "[/url]";
+		return bbTag(input, "url", url);
+		// return "[url=" + url + "]" + input + "[/url]";
 	}
 
 	public static String post(String input, int post) {
-		return "[post=" + Integer.toString(post) + "]" + input + "[/post]";
+		return bbTag(input, "post", Integer.toString(post));
+		// return "[post=" + Integer.toString(post) + "]" + input + "[/post]";
 	}
 
 	public static String color(String input, String color) {
-		return "[color=" + color + "]" + input + "[/color]";
+		return bbTag(input, "color", color);
+		// return "[color=" + color + "]" + input + "[/color]";
 	}
 
 	public static String size(String input, int sizeVar) {
-		return "[size=" + sizeVar + "]" + input + "[/size]";
+		return bbTag(input, "size", Integer.toString(sizeVar));
+		// return "[size=" + sizeVar + "]" + input + "[/size]";
+	}
+
+	public static String header(String input, int size) {
+		return size(input, size) + "\n[hr][/hr]";
+	}
+
+	public static String header(String input) {
+		return header(input, 115);
+	}
+
+	public static String box(String input) {
+		return bbTag(input, "box");
+	}
+
+	public static String tab(int i) {
+		return bbTag("", "tab", Integer.toString(i));
+	}
+
+	public static String align(String input, String direction) {
+		return bbTag(input, "align", direction);
 	}
 }

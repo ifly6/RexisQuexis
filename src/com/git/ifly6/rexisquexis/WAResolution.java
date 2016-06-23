@@ -17,6 +17,8 @@ package com.git.ifly6.rexisquexis;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+// This class, with public vars, is totally valid. Look:
+// http://www.oracle.com/technetwork/java/javase/documentation/codeconventions-137265.html#177
 public class WAResolution {
 
 	public enum ResolutionType {
