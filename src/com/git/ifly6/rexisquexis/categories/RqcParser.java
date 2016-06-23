@@ -19,7 +19,6 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -28,12 +27,14 @@ import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
@@ -58,6 +59,9 @@ public class RqcParser {
 		frame.setContentPane(panel);
 		panel.setLayout(new BorderLayout());
 
+		JLabel label = new JLabel("Just hit Parse and wait around four minutes");
+		panel.add(label, BorderLayout.NORTH);
+
 		JTextArea ta = new JTextArea();
 		ta.setFont(new Font(Font.MONOSPACED, 0, 11));
 		ta.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -74,7 +78,7 @@ public class RqcParser {
 
 				try {
 
-					List<RqcResolutionData> resolutionList = parseSource();
+					List<RqcResolutionData> resolutionList = parseSource(ta.getText());
 					HashMap<RqcResolutionData, String> categoryMap = new HashMap<>();
 
 					for (RqcResolutionData it : resolutionList) {
@@ -106,14 +110,15 @@ public class RqcParser {
 	 * @return
 	 * @throws IOException
 	 */
-	private List<RqcResolutionData> parseSource() throws IOException {
+	private List<RqcResolutionData> parseSource(String input) throws IOException {
 		// TODO parse the source code for the entire list. then, using the 'li' code, assign the resolution number
 		// after that, then query the API for the resolution category and strength and return the list.
 
 		List<RqcResolutionData> resList = new ArrayList<>();
 
-		Elements doc = Jsoup.parse(new URL("http://forum.nationstates.net/viewtopic.php?f=9&t=30"), 2000)
-				.select("div#p310 div.content");
+		// Elements doc = Jsoup.parse(new URL("http://forum.nationstates.net/viewtopic.php?f=9&t=30"), 2000)
+		// .select("div#p310 div.content");
+		Document doc = Jsoup.parse(input);
 		Elements elements = doc.select("a");
 		int matches = elements.size();
 
