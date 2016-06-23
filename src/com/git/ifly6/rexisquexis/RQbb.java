@@ -82,12 +82,13 @@ public class RQbb {
 		// return "[size=" + sizeVar + "]" + input + "[/size]";
 	}
 
-	public static String header(String input, int size) {
-		return size(input, size) + "\n[hr][/hr]";
+	public static String header(String input, int size, boolean anchor) {
+		return ((anchor) ? RQbb.bbTag("", "anchor", input.toLowerCase().replace(" ", "_")) : "") + size(input, size)
+				+ "\n[hr][/hr]";
 	}
 
 	public static String header(String input) {
-		return header(input, 115);
+		return header(input, 115, true);
 	}
 
 	public static String box(String input) {
