@@ -14,6 +14,8 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package com.git.ifly6.rexisquexis;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * @author ifly6
  *
@@ -82,13 +84,17 @@ public class RQbb {
 		// return "[size=" + sizeVar + "]" + input + "[/size]";
 	}
 
-	public static String header(String input, int size, boolean anchor) {
-		return ((anchor) ? RQbb.bbTag("", "anchor", input.toLowerCase().replace(" ", "_")) : "") + size(input, size)
-				+ "\n[hr][/hr]";
+	public static String header(String input, String subtitle, int size, boolean anchor) {
+		return ((anchor) ? RQbb.bbTag("", "anchor", input.toLowerCase().replace(" ", "_")) : "") + size(input, size) + " "
+				+ ((StringUtils.isEmpty(subtitle)) ? "" : RQbb.size(subtitle, 85)) + "\n[hr][/hr]";
 	}
 
 	public static String header(String input) {
-		return header(input, 115, true);
+		return header(input, "", 115, true);
+	}
+
+	public static String header(String input, String subtitle) {
+		return header(input, subtitle, 115, true);
 	}
 
 	public static String box(String input) {

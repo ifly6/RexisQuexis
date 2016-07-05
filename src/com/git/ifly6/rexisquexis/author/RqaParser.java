@@ -12,7 +12,7 @@
  * WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
  * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-package com.git.ifly6.rexisquexis.categories;
+package com.git.ifly6.rexisquexis.author;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
@@ -33,6 +33,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 
+import org.apache.commons.lang3.text.WordUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -46,9 +47,9 @@ import com.jcabi.xml.XMLDocument;
  * @author ifly6
  *
  */
-public class RqcParser {
+public class RqaParser {
 
-	public RqcParser() {
+	public RqaParser() {
 
 		JFrame frame = new JFrame();
 		frame.setTitle("RexisQuexis Categories Parser");
@@ -80,14 +81,14 @@ public class RqcParser {
 
 				try {
 
-					List<RqcResolutionData> resolutionList = parseSource(ta.getText());
-					HashMap<RqcResolutionData, String> categoryMap = new HashMap<>();
+					List<RqaResolutionData> resolutionList = parseSource(ta.getText());
+					HashMap<RqaResolutionData, String> categoryMap = new HashMap<>();
 
-					for (RqcResolutionData it : resolutionList) {
-						categoryMap.put(it, it.category());
+					for (RqaResolutionData it : resolutionList) {
+						categoryMap.put(it, it.author());
 					}
 
-					RqcPrinter printer = new RqcPrinter(resolutionList, categoryMap);
+					RqaPrinter printer = new RqaPrinter(resolutionList, categoryMap);
 					ta.setText(printer.print());
 
 				} catch (IOException e1) {
@@ -103,7 +104,7 @@ public class RqcParser {
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override public void run() {
-				new RqcParser();
+				new RqaParser();
 			}
 		});
 	}
@@ -112,11 +113,11 @@ public class RqcParser {
 	 * @return
 	 * @throws IOException
 	 */
-	private List<RqcResolutionData> parseSource(String input) throws IOException {
+	private List<RqaResolutionData> parseSource(String input) throws IOException {
 		// TODO parse the source code for the entire list. then, using the 'li' code, assign the resolution number
 		// after that, then query the API for the resolution category and strength and return the list.
 
-		List<RqcResolutionData> resList = new ArrayList<>();
+		List<RqaResolutionData> resList = new ArrayList<>();
 
 		// Elements doc = Jsoup.parse(new URL("http://forum.nationstates.net/viewtopic.php?f=9&t=30"), 2000)
 		// .select("div#p310 div.content");
@@ -164,13 +165,15 @@ public class RqcParser {
 
 			boolean repealed = true;
 			try {
-				String repealCheck = xml.xpath("/WA/RESOLUTION/REPEALED/text()").get(0);
+				xml.xpath("/WA/RESOLUTION/REPEALED/text()").get(0);
 			} catch (RuntimeException e) {
 				repealed = false;
 			}
 
+			String author = WordUtils.capitalize(xml.xpath("/WA/RESOLUTION/PROPOSED_BY/text()").get(0).replace("_", " "));
+
 			// Make the resolution, add, and increment
-			resList.add(new RqcResolutionData(title, counter, category, strength, postNum, repealed));
+			resList.add(new RqaResolutionData(title, counter, category, strength, postNum, repealed, author));
 			counter++;
 		}
 

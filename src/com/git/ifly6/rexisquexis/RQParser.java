@@ -57,7 +57,7 @@ public class RQParser {
 		parseButton.addActionListener(new ActionListener() {
 
 			@Override public void actionPerformed(ActionEvent e) {
-				String topicUrl = JOptionPane.showInputDialog("Please enter the relevant topic url");
+				String topicUrl = JOptionPane.showInputDialog("Enter the URL for the debate topic.");
 
 				String input = textArea.getText();
 
@@ -77,13 +77,30 @@ public class RQParser {
 
 				List<String> outputLines = new ArrayList<String>();
 
+				// Get resolution number and is it a repeal?
+				String resolutionNumber = lines.get(0).replace("GENERAL ASSEMBLY RESOLUTION #", "").trim();
+				boolean isRepeal = lines.get(1).contains("Repeal");
+
+				// Titles and category description
 				outputLines.add(RQbb.bold(lines.get(1)));
 				outputLines.add(RQbb.italicise(lines.get(2)));
 
 				outputLines.add("");
 
+				// Category
 				outputLines.add(formatTerm(lines.get(3)));
-				outputLines.add(formatTerm(lines.get(4)));
+
+				// Format Strength line for Repeals
+				if (lines.get(1).contains("Repeal")) {
+
+					String formatted = lines.get(4);
+					formatted.replace("GA", "");
+					outputLines.add(formatTerm(formatted));
+
+				} else {
+					outputLines.add(formatTerm(lines.get(4)));
+				}
+
 				outputLines.add(formatTerm(lines.get(5)));
 
 				outputLines.add("");
@@ -93,7 +110,8 @@ public class RQParser {
 
 				if (lines.get(1).contains("Repeal")) {
 
-					String repealUrl = JOptionPane.showInputDialog("Enter the url of the repeal resolution's topic.");
+					String repealUrl = JOptionPane
+							.showInputDialog("Enter the url of the repeal resolution's post in RexisQuexis.");
 
 					// Generate relevant description line
 					String descriptionLine = lines.get(findLineStartsWith("Description:", lines));
@@ -103,8 +121,10 @@ public class RQParser {
 
 					String referenceData = descriptionLine.substring(descriptionLine.indexOf('('), descriptionLine.length());
 
-					outputLines.add(RQbb.bold("Description:") + " " + RQbb.post(nameLine, parsePostFromUrl(repealUrl)) + " "
-							+ referenceData);
+					outputLines.add(RQbb.bold("Description:") + " "
+							+ RQbb.post(" WA General Assembly Resolution #" + resolutionNumber + ": " + nameLine,
+									parsePostFromUrl(repealUrl))
+							+ " " + referenceData);
 					outputLines.add("");
 
 					// Get argument lines -- use rawLines to preserve spacing
@@ -144,11 +164,11 @@ public class RQParser {
 				outputLines.add("");
 
 				// Add resolution number
-				String resolutionNumber = lines.get(0).replace("GENERAL ASSEMBLY RESOLUTION #", "").trim();
 				String nsLink = "[url=http://www.nationstates.net/page=WA_past_resolutions/council=1/start="
 						+ (Integer.parseInt(resolutionNumber) - 1) + "]" + resolutionNumber + " GA on NS[/url]";
 
-				String string = RQbb.size(RQbb.bold("[" + nsLink + "] " + RQbb.url("Official Debate Topic", topicUrl)), 85);
+				String string = RQbb.size(RQbb.bold("[" + nsLink + "] [" + RQbb.url("Official Debate Topic", topicUrl)), 85)
+						+ "]";
 				outputLines.add(string);
 
 				return formatList(outputLines);
@@ -163,7 +183,7 @@ public class RQParser {
 		});
 		buttonPanel.add(parseButton);
 
-		JButton repealButton = new JButton("Repeal Format");
+		JButton repealButton = new JButton("Repeal Format (use bbCode form)");
 		repealButton.addActionListener(new ActionListener() {
 
 			@Override public void actionPerformed(ActionEvent e) {
