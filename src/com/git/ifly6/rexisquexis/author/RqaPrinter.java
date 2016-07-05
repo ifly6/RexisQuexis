@@ -12,7 +12,7 @@
  * WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
  * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-package com.git.ifly6.rexisquexis.categories;
+package com.git.ifly6.rexisquexis.author;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -33,13 +33,13 @@ import com.git.ifly6.rexisquexis.RQbb;
  * @author Kevin
  *
  */
-public class RqcPrinter {
+public class RqaPrinter {
 
 	List<String> lines;
 
-	private HashMap<RqcResolutionData, String> categoryMap;
+	private HashMap<RqaResolutionData, String> categoryMap;
 
-	public RqcPrinter() {
+	public RqaPrinter() {
 		lines = new ArrayList<String>();
 	}
 
@@ -47,45 +47,45 @@ public class RqcPrinter {
 	 * @param resolutionList
 	 * @param categoryMap
 	 */
-	public RqcPrinter(List<RqcResolutionData> resolutionList, HashMap<RqcResolutionData, String> categoryMap) {
+	public RqaPrinter(List<RqaResolutionData> resolutionList, HashMap<RqaResolutionData, String> categoryMap) {
 		this();
 		this.categoryMap = categoryMap;
 	}
 
 	public String print() {
 
-		Map<String, List<RqcResolutionData>> byCategory = mapByCategory();
+		Map<String, List<RqaResolutionData>> byCategory = mapByCategory();
 
 		// Write each section
 		SortedSet<String> keys = new TreeSet<String>(byCategory.keySet());
 		for (String key : keys) {
 
-			if (!key.equalsIgnoreCase("repeal")) {
-				List<RqcResolutionData> resList = byCategory.get(key);
+			List<RqaResolutionData> resList = byCategory.get(key);
 
-				Comparator<RqcResolutionData> comparator = Comparator.comparing(r -> r.strength());
-				comparator = comparator.thenComparing(Comparator.comparing(r -> r.num()));
+			if (resList.size() > 1) {
+
+				Comparator<RqaResolutionData> comparator = Comparator.comparing(r -> r.num());
 				resList.sort(comparator);
 
 				append(RQbb.header(key, resList.size() + " " + ((resList.size() > 1) ? "resolutions" : "resolution")));
 
 				append("[floatleft]");
-				for (RqcResolutionData resolution : resList) {
+				for (RqaResolutionData resolution : resList) {
 					append(RQbb.align(WordUtils.capitalize(resolution.strength()) + ": ", RQbb.RIGHT));
 				}
 				append("[/floatleft]");
 
-				for (RqcResolutionData resolution : resList) {
+				for (RqaResolutionData resolution : resList) {
+
+					String resolutionLink = RQbb.post(resolution.num() + " GA '" + resolution.name() + "'",
+							resolution.postNum());
 
 					// Strike through if repealed
 					if (resolution.isRepealed()) {
-						append(RQbb.strike(RQbb.tab(10)
-								+ RQbb.post(RQbb.color(resolution.num() + " GA '" + resolution.name() + "'", "gray"),
-										resolution.postNum())));
+						append(RQbb.strike(RQbb.tab(10) + resolutionLink));
 
 					} else {
-						append(RQbb.post(RQbb.tab(10) + resolution.num() + " GA '" + resolution.name() + "'",
-								resolution.postNum()));
+						append(RQbb.tab(10) + resolutionLink);
 					}
 
 				}
@@ -97,24 +97,24 @@ public class RqcPrinter {
 
 	}
 
-	private Map<String, List<RqcResolutionData>> mapByCategory() {
+	private Map<String, List<RqaResolutionData>> mapByCategory() {
 
 		Collection<String> categoryList = categoryMap.values();
-		Map<String, List<RqcResolutionData>> byCategory = new TreeMap<String, List<RqcResolutionData>>();
+		Map<String, List<RqaResolutionData>> byCategory = new TreeMap<String, List<RqaResolutionData>>();
 
 		// Create empty lists
 		for (String catName : categoryList) {
-			byCategory.put(catName, new ArrayList<RqcResolutionData>());
+			byCategory.put(catName, new ArrayList<RqaResolutionData>());
 		}
 
 		// Populate empty lists
-		for (Map.Entry<RqcResolutionData, String> entry : categoryMap.entrySet()) {
+		for (Map.Entry<RqaResolutionData, String> entry : categoryMap.entrySet()) {
 
-			List<RqcResolutionData> mapList = byCategory.get(entry.getValue());
+			List<RqaResolutionData> mapList = byCategory.get(entry.getValue());
 			mapList.add(entry.getKey());
 
-			mapList.sort(new Comparator<RqcResolutionData>() {
-				@Override public int compare(RqcResolutionData o1, RqcResolutionData o2) {
+			mapList.sort(new Comparator<RqaResolutionData>() {
+				@Override public int compare(RqaResolutionData o1, RqaResolutionData o2) {
 					return Integer.compare(o1.num(), o2.num());
 				}
 			});
@@ -123,12 +123,12 @@ public class RqcPrinter {
 		return byCategory;
 	}
 
-	private RqcPrinter append(String input) {
+	private RqaPrinter append(String input) {
 		lines.add(input);
 		return this;
 	}
 
-	private RqcPrinter appendln() {
+	private RqaPrinter appendln() {
 		this.append("\n");
 		return this;
 	}
