@@ -29,12 +29,8 @@ import org.apache.commons.lang3.text.WordUtils;
 
 import com.git.ifly6.rexisquexis.RQbb;
 
-/**
- * @author ifly6
- *
- */
 public class RqcPrinter {
-
+	
 	List<String> lines;
 
 	private HashMap<RqcResolutionData, String> categoryMap;
@@ -53,13 +49,13 @@ public class RqcPrinter {
 	}
 
 	public String print() {
-
+		
 		Map<String, List<RqcResolutionData>> byCategory = mapByCategory();
 
 		// Write each section
 		SortedSet<String> keys = new TreeSet<String>(byCategory.keySet());
 		for (String key : keys) {
-
+			
 			if (!key.equalsIgnoreCase("repeal")) {
 				List<RqcResolutionData> resList = byCategory.get(key);
 
@@ -67,7 +63,7 @@ public class RqcPrinter {
 				comparator = comparator.thenComparing(Comparator.comparing(r -> r.num()));
 				resList.sort(comparator);
 
-				append(RQbb.header(key, resList.size() + " " + ((resList.size() > 1) ? "resolutions" : "resolution")));
+				append(RQbb.header(key, resList.size() + " " + (resList.size() > 1 ? "resolutions" : "resolution")));
 
 				append("[floatleft]");
 				for (RqcResolutionData resolution : resList) {
@@ -76,8 +72,10 @@ public class RqcPrinter {
 				append("[/floatleft]");
 
 				for (RqcResolutionData resolution : resList) {
-
+					
 					// Strike through if repealed
+					// NOTE: If you're looking for the way I get rid of repealed resolutions, look at mapByCategory().
+					// It's a quick and dirty way of doing it. I'm lazy. Sue me.
 					if (resolution.isRepealed()) {
 						append(RQbb.strike(RQbb.tab(10)
 								+ RQbb.post(RQbb.color(resolution.num() + " GA '" + resolution.name() + "'", "gray"),
@@ -93,12 +91,12 @@ public class RqcPrinter {
 			}
 
 		}
-		return makeString();
 
+		return makeString();
 	}
 
 	private Map<String, List<RqcResolutionData>> mapByCategory() {
-
+		
 		Collection<String> categoryList = categoryMap.values();
 		Map<String, List<RqcResolutionData>> byCategory = new TreeMap<String, List<RqcResolutionData>>();
 
@@ -107,17 +105,13 @@ public class RqcPrinter {
 			byCategory.put(catName, new ArrayList<RqcResolutionData>());
 		}
 
-		// Populate empty lists
+		// Populate empty lists, do not include repealed resolutions.
 		for (Map.Entry<RqcResolutionData, String> entry : categoryMap.entrySet()) {
-
-			List<RqcResolutionData> mapList = byCategory.get(entry.getValue());
-			mapList.add(entry.getKey());
-
-			mapList.sort(new Comparator<RqcResolutionData>() {
-				@Override public int compare(RqcResolutionData o1, RqcResolutionData o2) {
-					return Integer.compare(o1.num(), o2.num());
-				}
-			});
+			if (!entry.getKey().isRepealed()) {
+				List<RqcResolutionData> mapList = byCategory.get(entry.getValue());
+				mapList.add(entry.getKey());
+				mapList.sort((o1, o2) -> Integer.compare(o1.num(), o2.num()));
+			}
 		}
 
 		return byCategory;
@@ -134,7 +128,7 @@ public class RqcPrinter {
 	}
 
 	private String makeString() {
-
+		
 		StringBuilder builder = new StringBuilder();
 		Iterator<String> iterator = lines.iterator();
 

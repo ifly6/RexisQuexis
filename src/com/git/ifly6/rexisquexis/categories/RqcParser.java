@@ -16,6 +16,7 @@ package com.git.ifly6.rexisquexis.categories;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -29,6 +30,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
@@ -38,7 +40,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import com.git.ifly6.nsapi.NSApiConnection;
+import com.git.ifly6.nsapi.NSConnection;
 import com.jcabi.xml.XML;
 import com.jcabi.xml.XMLDocument;
 
@@ -47,9 +49,11 @@ import com.jcabi.xml.XMLDocument;
  *
  */
 public class RqcParser {
+	
+	private JProgressBar progressBar;
 
 	public RqcParser() {
-
+		
 		JFrame frame = new JFrame();
 		frame.setTitle("RexisQuexis Categories Parser");
 		frame.setSize(400, 400);
@@ -59,7 +63,9 @@ public class RqcParser {
 		frame.setContentPane(panel);
 		panel.setLayout(new BorderLayout());
 
-		JLabel label = new JLabel("Paste in data, hit Parse, and wait around four minutes");
+		JLabel label = new JLabel(
+				"<html>Paste in data, hit Parse, and wait around four minutes. It should be the raw HTML code for the entire "
+						+ "first page of RexisQuexis.</html>");
 		label.setHorizontalAlignment(JLabel.CENTER);
 		label.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 		panel.add(label, BorderLayout.NORTH);
@@ -73,14 +79,22 @@ public class RqcParser {
 
 		panel.add(new JScrollPane(ta), BorderLayout.CENTER);
 
+		JPanel controlPanel = new JPanel();
+		controlPanel.setLayout(new GridLayout(2, 1));
+		panel.add(controlPanel, BorderLayout.SOUTH);
+
+		progressBar = new JProgressBar();
+		progressBar.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
+		controlPanel.add(progressBar);
+
 		JButton button = new JButton("Parse");
 		button.addActionListener(new ActionListener() {
-
+			
 			@Override public void actionPerformed(ActionEvent e) {
-
+				
 				try {
-
-					List<RqcResolutionData> resolutionList = parseSource(ta.getText());
+					
+					List<RqcResolutionData> resolutionList = parseSource(ta.getText(), this);
 					HashMap<RqcResolutionData, String> categoryMap = new HashMap<>();
 
 					for (RqcResolutionData it : resolutionList) {
@@ -94,25 +108,23 @@ public class RqcParser {
 					ta.setText(e1.toString());
 				}
 			}
+
 		});
-		panel.add(button, BorderLayout.SOUTH);
+		controlPanel.add(button);
 
 		frame.setVisible(true);
 	}
 
 	public static void main(String[] args) {
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override public void run() {
-				new RqcParser();
-			}
-		});
+		SwingUtilities.invokeLater(() -> new RqcParser());
 	}
 
 	/**
 	 * @return
 	 * @throws IOException
 	 */
-	private List<RqcResolutionData> parseSource(String input) throws IOException {
+	private List<RqcResolutionData> parseSource(String input, ActionListener ac) throws IOException {
+		
 		// TODO parse the source code for the entire list. then, using the 'li' code, assign the resolution number
 		// after that, then query the API for the resolution category and strength and return the list.
 
@@ -121,16 +133,19 @@ public class RqcParser {
 		// Elements doc = Jsoup.parse(new URL("http://forum.nationstates.net/viewtopic.php?f=9&t=30"), 2000)
 		// .select("div#p310 div.content");
 		Document doc = Jsoup.parse(input);
-		Elements elements = doc.select("a");
+		Elements elements = doc.select("div#p310 div.content a");
 		int matches = elements.size();
 
-		System.out.println("For " + matches + " elements, this will take "
-				+ time(Math.round(NSApiConnection.waitTime * matches / 1000)));
+		System.out.println(
+				"For " + matches + " elements, this will take " + time(Math.round(NSConnection.WAIT_TIME * matches / 1000)));
 
 		int counter = 1;
+		progressBar.setValue(0);
+		progressBar.setMaximum(matches);
+
 		Iterator<Element> iterator = elements.iterator();
 		while (iterator.hasNext()) {
-
+			
 			Element element = iterator.next();
 
 			// Get some basic information
@@ -139,16 +154,23 @@ public class RqcParser {
 			int postNum = Integer.parseInt(postLink.substring(postLink.indexOf("#p") + 2, postLink.length()));
 
 			// Query the API
-			NSApiConnection connection = new NSApiConnection(
+			NSConnection connection = new NSConnection(
 					"http://www.nationstates.net/cgi-bin/api.cgi?wa=1&id=" + counter + "&q=resolution");
 			System.out.println("Queried for resolution " + counter + " of " + matches);
 
+			// Iterate progressBar
+			new Runnable() {
+				@Override public void run() {
+					progressBar.setValue(progressBar.getValue() + 1);
+				}
+			}.run();
+			
 			// Parse the API response
-			XML xml = new XMLDocument(connection.getRaw());
+			XML xml = new XMLDocument(connection.getResponse());
 			String category = xml.xpath("/WA/RESOLUTION/CATEGORY/text()").get(0);
 			String strength = xml.xpath("/WA/RESOLUTION/OPTION/text()").get(0);
 			if (strength.equals("0")) {
-
+				
 				if (category.equalsIgnoreCase("Environmental")) {
 					strength = "automotive";
 				} else if (category.equalsIgnoreCase("Health")) {
@@ -164,7 +186,7 @@ public class RqcParser {
 
 			boolean repealed = true;
 			try {
-				String repealCheck = xml.xpath("/WA/RESOLUTION/REPEALED/text()").get(0);
+				xml.xpath("/WA/RESOLUTION/REPEALED/text()").get(0);
 			} catch (RuntimeException e) {
 				repealed = false;
 			}

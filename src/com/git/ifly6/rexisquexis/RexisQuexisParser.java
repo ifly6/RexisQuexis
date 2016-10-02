@@ -35,9 +35,9 @@ import javax.swing.JTextArea;
  * @author ifly6
  *
  */
-public class RQParser {
+public class RexisQuexisParser {
 
-	public RQParser() {
+	public RexisQuexisParser() {
 
 		JFrame frame = new JFrame("WA Resolutions Reformatter");
 		frame.setSize(700, 800);
@@ -88,7 +88,11 @@ public class RQParser {
 				outputLines.add("");
 
 				// Category
-				outputLines.add(formatTerm(lines.get(3)));
+				if (isRepeal) {
+					outputLines.add(formatTerm(lines.get(3).replace("GA", "")));
+				} else {
+					outputLines.add(formatTerm(lines.get(3)));
+				}
 
 				// Format Strength line for Repeals
 				if (lines.get(1).contains("Repeal")) {
@@ -117,6 +121,7 @@ public class RQParser {
 					String descriptionLine = lines.get(findLineStartsWith("Description:", lines));
 					String nameLine = descriptionLine.replaceFirst("Description:", "");
 					nameLine = nameLine.trim();
+					System.out.println("nameLine\t" + nameLine);
 					nameLine = nameLine.substring(nameLine.indexOf(":") + 2, nameLine.indexOf('(') - 1);
 
 					String referenceData = descriptionLine.substring(descriptionLine.indexOf('('), descriptionLine.length());
@@ -197,7 +202,7 @@ public class RQParser {
 
 				int whichRepeal = Integer.parseInt(
 						JOptionPane.showInputDialog("Enter the number of the resolution that repealed this resolution."));
-				String urlRepeal = JOptionPane.showInputDialog("Enter the url of the repealing resolution.");
+				String urlRepeal = JOptionPane.showInputDialog("Enter the RexisQuexis url of the repealing resolution.");
 
 				String strikePhrase = "[Struck out by " + RQbb.post(whichRepeal + " GA", parsePostFromUrl(urlRepeal)) + "]";
 				String newStartLine = RQbb.color(RQbb.strike(textLines.get(0)), "gray") + " " + RQbb.bold(strikePhrase);
@@ -241,6 +246,6 @@ public class RQParser {
 	}
 
 	public static void main(String[] args) {
-		new RQParser();
+		new RexisQuexisParser();
 	}
 }
