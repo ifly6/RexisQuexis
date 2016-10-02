@@ -39,7 +39,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import com.git.ifly6.nsapi.NSApiConnection;
+import com.git.ifly6.nsapi.NSConnection;
 import com.jcabi.xml.XML;
 import com.jcabi.xml.XMLDocument;
 
@@ -125,8 +125,8 @@ public class RqaParser {
 		Elements elements = doc.select("a");
 		int matches = elements.size();
 
-		System.out.println("For " + matches + " elements, this will take "
-				+ time(Math.round(NSApiConnection.waitTime * matches / 1000)));
+		System.out.println(
+				"For " + matches + " elements, this will take " + time(Math.round(NSConnection.WAIT_TIME * matches / 1000)));
 
 		int counter = 1;
 		Iterator<Element> iterator = elements.iterator();
@@ -140,12 +140,12 @@ public class RqaParser {
 			int postNum = Integer.parseInt(postLink.substring(postLink.indexOf("#p") + 2, postLink.length()));
 
 			// Query the API
-			NSApiConnection connection = new NSApiConnection(
+			NSConnection connection = new NSConnection(
 					"http://www.nationstates.net/cgi-bin/api.cgi?wa=1&id=" + counter + "&q=resolution");
 			System.out.println("Queried for resolution " + counter + " of " + matches);
 
 			// Parse the API response
-			XML xml = new XMLDocument(connection.getRaw());
+			XML xml = new XMLDocument(connection.getResponse());
 			String category = xml.xpath("/WA/RESOLUTION/CATEGORY/text()").get(0);
 			String strength = xml.xpath("/WA/RESOLUTION/OPTION/text()").get(0);
 			if (strength.equals("0")) {
