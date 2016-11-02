@@ -17,9 +17,8 @@ package com.git.ifly6.rexisquexis.categories;
 import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -36,7 +35,6 @@ import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 
 import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
@@ -44,127 +42,119 @@ import com.git.ifly6.nsapi.NSConnection;
 import com.jcabi.xml.XML;
 import com.jcabi.xml.XMLDocument;
 
-/**
- * @author ifly6
- *
- */
+/** @author ifly6 */
 public class RqcParser {
 	
 	private JProgressBar progressBar;
-
+	
 	public RqcParser() {
 		
 		JFrame frame = new JFrame();
 		frame.setTitle("RexisQuexis Categories Parser");
 		frame.setSize(400, 400);
 		frame.setLocation(100, 100);
-
+		
 		JPanel panel = new JPanel();
 		frame.setContentPane(panel);
 		panel.setLayout(new BorderLayout());
-
+		
 		JLabel label = new JLabel(
 				"<html>Paste in data, hit Parse, and wait around four minutes. It should be the raw HTML code for the entire "
 						+ "first page of RexisQuexis.</html>");
 		label.setHorizontalAlignment(JLabel.CENTER);
 		label.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 		panel.add(label, BorderLayout.NORTH);
-
+		
 		JTextArea ta = new JTextArea();
 		ta.setFont(new Font(Font.MONOSPACED, 0, 11));
 		ta.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-
+		
 		ta.setWrapStyleWord(true);
 		ta.setLineWrap(true);
-
+		
 		panel.add(new JScrollPane(ta), BorderLayout.CENTER);
-
+		
 		JPanel controlPanel = new JPanel();
 		controlPanel.setLayout(new GridLayout(2, 1));
 		panel.add(controlPanel, BorderLayout.SOUTH);
-
+		
 		progressBar = new JProgressBar();
 		progressBar.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
 		controlPanel.add(progressBar);
-
+		
 		JButton button = new JButton("Parse");
-		button.addActionListener(new ActionListener() {
+		button.addActionListener(e -> {
 			
-			@Override public void actionPerformed(ActionEvent e) {
+			try {
 				
-				try {
-					
-					List<RqcResolutionData> resolutionList = parseSource(ta.getText(), this);
-					HashMap<RqcResolutionData, String> categoryMap = new HashMap<>();
-
-					for (RqcResolutionData it : resolutionList) {
-						categoryMap.put(it, it.category());
-					}
-
-					RqcPrinter printer = new RqcPrinter(resolutionList, categoryMap);
-					ta.setText(printer.print());
-
-				} catch (IOException e1) {
-					ta.setText(e1.toString());
+				List<RqcResolutionData> resolutionList = parseSource();
+				HashMap<RqcResolutionData, String> categoryMap = new HashMap<>();
+				
+				for (RqcResolutionData it : resolutionList) {
+					categoryMap.put(it, it.category());
 				}
+				
+				RqcPrinter printer = new RqcPrinter(resolutionList, categoryMap);
+				ta.setText(printer.print());
+				
+			} catch (IOException e1) {
+				ta.setText(e1.toString());
 			}
-
 		});
 		controlPanel.add(button);
-
+		
 		frame.setVisible(true);
 	}
-
+	
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(() -> new RqcParser());
 	}
-
-	/**
-	 * @return
-	 * @throws IOException
-	 */
-	private List<RqcResolutionData> parseSource(String input, ActionListener ac) throws IOException {
+	
+	/** Scrapes and parses the data from the RexisQuexis main page.
+	 * @return <code>List&lt;RqcResolutionData&gt;</code> containing all relevant resolutions.
+	 * @throws IOException */
+	private List<RqcResolutionData> parseSource() throws IOException {
 		
 		// TODO parse the source code for the entire list. then, using the 'li' code, assign the resolution number
 		// after that, then query the API for the resolution category and strength and return the list.
-
+		
 		List<RqcResolutionData> resList = new ArrayList<>();
-
-		// Elements doc = Jsoup.parse(new URL("http://forum.nationstates.net/viewtopic.php?f=9&t=30"), 2000)
-		// .select("div#p310 div.content");
-		Document doc = Jsoup.parse(input);
+		
+		Elements doc = Jsoup.parse(new URL("http://forum.nationstates.net/viewtopic.php?f=9&t=30"), 2000)
+				.select("div#p310 div.content");
+		// Document doc = Jsoup.parse(input);
 		Elements elements = doc.select("div#p310 div.content a");
 		int matches = elements.size();
-
+		
 		System.out.println(
 				"For " + matches + " elements, this will take " + time(Math.round(NSConnection.WAIT_TIME * matches / 1000)));
-
+		
 		int counter = 1;
 		progressBar.setValue(0);
 		progressBar.setMaximum(matches);
-
+		
 		Iterator<Element> iterator = elements.iterator();
 		while (iterator.hasNext()) {
 			
 			Element element = iterator.next();
-
+			
 			// Get some basic information
 			String title = element.text();
 			String postLink = element.attr("href");
 			int postNum = Integer.parseInt(postLink.substring(postLink.indexOf("#p") + 2, postLink.length()));
-
+			
 			// Query the API
 			NSConnection connection = new NSConnection(
 					"http://www.nationstates.net/cgi-bin/api.cgi?wa=1&id=" + counter + "&q=resolution");
 			System.out.println("Queried for resolution " + counter + " of " + matches);
-
+			
 			// Iterate progressBar
 			new Runnable() {
 				@Override public void run() {
 					progressBar.setValue(progressBar.getValue() + 1);
 				}
 			}.run();
-			
+
 			// Parse the API response
 			XML xml = new XMLDocument(connection.getResponse());
 			String category = xml.xpath("/WA/RESOLUTION/CATEGORY/text()").get(0);
@@ -183,22 +173,22 @@ public class RqcParser {
 					strength = "mild";
 				}
 			}
-
+			
 			boolean repealed = true;
 			try {
 				xml.xpath("/WA/RESOLUTION/REPEALED/text()").get(0);
 			} catch (RuntimeException e) {
 				repealed = false;
 			}
-
+			
 			// Make the resolution, add, and increment
 			resList.add(new RqcResolutionData(title, counter, category, strength, postNum, repealed));
 			counter++;
 		}
-
+		
 		return resList;
 	}
-
+	
 	private static String time(int seconds) {
 		int minutes = seconds / 60;
 		seconds -= minutes * 60;
