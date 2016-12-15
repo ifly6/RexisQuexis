@@ -18,126 +18,105 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.text.WordUtils;
 
 import com.git.ifly6.rexisquexis.RQbb;
 
 public class RqcPrinter {
-	
-	List<String> lines;
 
+	private List<String> lines;
 	private HashMap<RqcResolutionData, String> categoryMap;
-
+	
 	public RqcPrinter() {
-		lines = new ArrayList<String>();
+		lines = new ArrayList<>();
 	}
-
-	/**
-	 * @param resolutionList
-	 * @param categoryMap
-	 */
-	public RqcPrinter(List<RqcResolutionData> resolutionList, HashMap<RqcResolutionData, String> categoryMap) {
+	
+	/** @param categoryMap containing each resolution along with a corresponding category */
+	public RqcPrinter(HashMap<RqcResolutionData, String> categoryMap) {
 		this();
 		this.categoryMap = categoryMap;
 	}
-
+	
 	public String print() {
-		
+
 		Map<String, List<RqcResolutionData>> byCategory = mapByCategory();
-
+		
 		// Write each section
-		SortedSet<String> keys = new TreeSet<String>(byCategory.keySet());
+		SortedSet<String> keys = new TreeSet<>(byCategory.keySet());
 		for (String key : keys) {
-			
-			if (!key.equalsIgnoreCase("repeal")) {
-				List<RqcResolutionData> resList = byCategory.get(key);
 
+			// Get the category resolution list
+			List<RqcResolutionData> catResList = byCategory.get(key);
+
+			if (!key.equalsIgnoreCase("repeal") || catResList.isEmpty()) {	// if it is empty, ignore it
+				// note that in mapByCategory(), repealed resolutions are not added to the list
+				// also note that the first term excludes repeals from the category lists
+				
 				Comparator<RqcResolutionData> comparator = Comparator.comparing(r -> r.strength());
 				comparator = comparator.thenComparing(Comparator.comparing(r -> r.num()));
-				resList.sort(comparator);
-
-				append(RQbb.header(key, resList.size() + " " + (resList.size() > 1 ? "resolutions" : "resolution")));
-
-				append("[floatleft]");
-				for (RqcResolutionData resolution : resList) {
-					append(RQbb.align(WordUtils.capitalize(resolution.strength()) + ": ", RQbb.RIGHT));
+				catResList.sort(comparator);
+				
+				append(RQbb.header(key, catResList.size() + " " + (catResList.size() > 1 ? "resolutions" : "resolution")));
+				
+				append("[floatleft][align=right]");
+				for (RqcResolutionData resolution : catResList) {
+					append(WordUtils.capitalize(resolution.strength()) + ": ");
 				}
-				append("[/floatleft]");
-
-				for (RqcResolutionData resolution : resList) {
-					
-					// Strike through if repealed
-					// NOTE: If you're looking for the way I get rid of repealed resolutions, look at mapByCategory().
-					// It's a quick and dirty way of doing it. I'm lazy. Sue me.
+				append("[/align][/floatleft]");
+				
+				for (RqcResolutionData resolution : catResList) {
 					if (resolution.isRepealed()) {
 						append(RQbb.strike(RQbb.tab(10)
 								+ RQbb.post(RQbb.color(resolution.num() + " GA '" + resolution.name() + "'", "gray"),
 										resolution.postNum())));
-
 					} else {
 						append(RQbb.post(RQbb.tab(10) + resolution.num() + " GA '" + resolution.name() + "'",
 								resolution.postNum()));
 					}
-
 				}
-				appendln();
+				append("\n");
 			}
-
+			
 		}
-
+		
 		return makeString();
 	}
-
+	
+	private String makeString() {
+		String string = lines.stream().collect(Collectors.joining("\n"));
+		return string.replace("[/floatleft]\n", "[/floatleft]").replace("[/align]\n", "[/align]");
+		// it gets rid of new lines here because floatleft and align are divs in bbCode, which have their own padding
+	}
+	
 	private Map<String, List<RqcResolutionData>> mapByCategory() {
-		
+
 		Collection<String> categoryList = categoryMap.values();
-		Map<String, List<RqcResolutionData>> byCategory = new TreeMap<String, List<RqcResolutionData>>();
-
+		Map<String, List<RqcResolutionData>> byCategory = new TreeMap<>();
+		
 		// Create empty lists
-		for (String catName : categoryList) {
-			byCategory.put(catName, new ArrayList<RqcResolutionData>());
-		}
-
-		// Populate empty lists, do not include repealed resolutions.
+		categoryList.stream().forEach(x -> byCategory.put(x, new ArrayList<RqcResolutionData>()));
+		
+		// Populate empty lists
 		for (Map.Entry<RqcResolutionData, String> entry : categoryMap.entrySet()) {
-			if (!entry.getKey().isRepealed()) {
-				List<RqcResolutionData> mapList = byCategory.get(entry.getValue());
-				mapList.add(entry.getKey());
-				mapList.sort((o1, o2) -> Integer.compare(o1.num(), o2.num()));
+			if (!entry.getKey().isRepealed()) {	// do not include repealed resolutions
+				List<RqcResolutionData> mapList = byCategory.get(entry.getValue()); 	// get the list in the category
+				mapList.add(entry.getKey());	// add it
+				mapList.sort((o1, o2) -> Integer.compare(o1.num(), o2.num()));	// what does this do?
 			}
 		}
-
+		
 		return byCategory;
 	}
-
+	
 	private RqcPrinter append(String input) {
 		lines.add(input);
 		return this;
-	}
-
-	private RqcPrinter appendln() {
-		this.append("\n");
-		return this;
-	}
-
-	private String makeString() {
-		
-		StringBuilder builder = new StringBuilder();
-		Iterator<String> iterator = lines.iterator();
-
-		builder.append(iterator.next());
-		while (iterator.hasNext()) {
-			builder.append("\n" + iterator.next());
-		}
-
-		String last = builder.toString();
-		return last.replace("[/floatleft]\n", "[/floatleft]").replace("[/align]\n", "[/align]");
 	}
 }
