@@ -20,9 +20,11 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -31,14 +33,14 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-/**
- * @author Kevin
- *
- */
+import org.jsoup.Jsoup;
+import org.jsoup.select.Elements;
+
+/** @author Kevin */
 public class RexisQuexisParser {
-
+	
 	public RexisQuexisParser() {
-
+		
 		JFrame frame = new JFrame("WA Resolutions Reformatter");
 		frame.setSize(700, 800);
 		JPanel panel = new JPanel();
@@ -55,7 +57,7 @@ public class RexisQuexisParser {
 
 		JButton parseButton = new JButton("Parse");
 		parseButton.addActionListener(new ActionListener() {
-
+			
 			@Override public void actionPerformed(ActionEvent e) {
 				String topicUrl = JOptionPane.showInputDialog("Enter the URL for the debate topic.");
 
@@ -66,68 +68,88 @@ public class RexisQuexisParser {
 
 			// Parses the string
 			private String parse(String input, String topicUrl) {
-
+				
 				List<String> rawLines = Arrays.asList(input.split("\n"));
-				List<String> lines = new ArrayList<>();
-				for (int x = 0; x < rawLines.size(); x++) {
-					if (!(rawLines.get(x).trim().length() == 0)) {
-						lines.add(rawLines.get(x));
-					}
-				}
+				List<String> lines = rawLines.stream().filter(x -> !(x.trim().length() == 0)).map(String::trim)
+						.collect(Collectors.toList());
 
-				List<String> outputLines = new ArrayList<String>();
+				List<String> outputLines = new ArrayList<>();
+
+				final int PREFIX = 0;
+				final int TITLE = 1;
+				final int DESCRIPTION = 2;
+				final int CATEGORY = 3;
+				final int STRENGTH = 4;
+				final int PROPOSER = 5;
+				final int REPEAL_DESCRIPTION = 6;
 
 				// Get resolution number and is it a repeal?
-				String resolutionNumber = lines.get(0).replace("GENERAL ASSEMBLY RESOLUTION #", "").trim();
-				boolean isRepeal = lines.get(1).contains("Repeal");
+				String resolutionNumber = lines.get(PREFIX).replace("General Assembly Resolution #", "").trim();
+				boolean isRepeal = lines.get(TITLE).contains("Repeal") || lines.get(TITLE).contains("repeal");
 
 				// Titles and category description
-				outputLines.add(RQbb.bold(lines.get(1)));
-				outputLines.add(RQbb.italicise(lines.get(2)));
+				outputLines.add(RQbb.bold(lines.get(TITLE)));
+				outputLines.add(RQbb.italicise(lines.get(DESCRIPTION)));
 
 				outputLines.add("");
 
 				// Category
 				if (isRepeal) {
-					outputLines.add(formatTerm(lines.get(3).replace("GA", "")));
+					outputLines.add(formatTerm(lines.get(CATEGORY).replace("GA", "")));
 				} else {
-					outputLines.add(formatTerm(lines.get(3)));
+					outputLines.add(formatTerm(lines.get(CATEGORY)));
 				}
 
 				// Format Strength line for Repeals
-				if (lines.get(1).contains("Repeal")) {
-
-					String formatted = lines.get(4);
-					formatted.replace("GA", "");
+				if (isRepeal) {
+					String formatted = lines.get(STRENGTH).replaceAll("GA", "");
 					outputLines.add(formatTerm(formatted));
-
 				} else {
-					outputLines.add(formatTerm(lines.get(4)));
+					outputLines.add(formatTerm(lines.get(STRENGTH)));
 				}
 
-				outputLines.add(formatTerm(lines.get(5)));
+				outputLines.add(formatTerm(lines.get(PROPOSER)));
 
 				outputLines.add("");
 
 				int startResText;
 				int endResText;
 
-				if (lines.get(1).contains("Repeal")) {
+				if (isRepeal) {
+					
+					// Get URL for the repealed resolution's post in RexisQuexis via a web scrape
+					String repealUrl = "";
+					try {
+						
+						Elements elements = Jsoup
+								.parse(new URL("http://forum.nationstates.net/viewtopic.php?f=9&t=30"), 2000)
+								.select("div#p310 div.content a");
+						System.out.println("elements.toString()\t" + elements.toString());
+						String repealDesc = lines.get(REPEAL_DESCRIPTION).replace("Description:", "");
+						String repealedName = repealDesc.substring(repealDesc.indexOf(":") + 2, repealDesc.indexOf('(') - 1)
+								.trim();
 
-					String repealUrl = JOptionPane
-							.showInputDialog("Enter the url of the repeal resolution's post in RexisQuexis.");
+						repealUrl = elements.stream().filter(e -> e.text().trim().equalsIgnoreCase(repealedName)).findFirst()
+								.get().attr("abs:href");
+
+					} catch (Exception e) {
+						e.printStackTrace();
+						repealUrl = JOptionPane.showInputDialog(frame,
+								"Enter the URL of the repeal resolution's post in RexisQuexis", "Parameter Input",
+								JOptionPane.PLAIN_MESSAGE);
+					}
 
 					// Generate relevant description line
 					String descriptionLine = lines.get(findLineStartsWith("Description:", lines));
 					String nameLine = descriptionLine.replaceFirst("Description:", "");
-					nameLine = nameLine.trim();
-					System.out.println("nameLine\t" + nameLine);
-					nameLine = nameLine.substring(nameLine.indexOf(":") + 2, nameLine.indexOf('(') - 1);
+					nameLine = nameLine.substring(nameLine.indexOf(":") + 1, nameLine.indexOf('(') - 1).trim();
 
 					String referenceData = descriptionLine.substring(descriptionLine.indexOf('('), descriptionLine.length());
+					String repealedResNumber = lines.get(STRENGTH).substring(lines.get(STRENGTH).indexOf("#") + 1,
+							lines.get(STRENGTH).length());
 
 					outputLines.add(RQbb.bold("Description:") + " "
-							+ RQbb.post(" WA General Assembly Resolution #" + resolutionNumber + ": " + nameLine,
+							+ RQbb.post("WA General Assembly Resolution #" + repealedResNumber + ": " + nameLine,
 									parsePostFromUrl(repealUrl))
 							+ " " + referenceData);
 					outputLines.add("");
@@ -136,19 +158,20 @@ public class RexisQuexisParser {
 					startResText = findLineStartsWith("Argument:", rawLines);
 					endResText = findLineStartsWith("Votes For:", rawLines) - 1;
 
-					outputLines.add(rawLines.get(startResText).replace("Argument:", "[b]Argument:[/b]"));
+					outputLines.add(rawLines.get(startResText).replace("Argument:", RQbb.bold("Argument:")));
 
 				} else {
-
+					
 					// Use rawLines to preserve spacing
-					startResText = findLineStartsWith("Description:", rawLines);
-					endResText = findLineStartsWith("Votes For:", rawLines) - 1;
+					startResText = findLineStartsWith("Proposed by:", rawLines) + 2;
+					endResText = findLineStartsWith("Passed:", rawLines) - 1;
 
-					outputLines.add(rawLines.get(startResText).replace("Description:", "[b]Description:[/b]"));
+					outputLines.add(rawLines.get(startResText).replace("Description:", RQbb.bold("Description:")));
 
 				}
 
 				// Write in the argument/text lines
+				// Note that the above blocks deal with the first lines, so that is not necessary
 				for (int x = startResText + 1; x < endResText; x++) {
 					outputLines.add(rawLines.get(x));
 				}
@@ -156,15 +179,23 @@ public class RexisQuexisParser {
 				outputLines.add("");
 
 				// Add vote outcome lines
-				outputLines.add(formatTerm(lines.get(findLineStartsWith("Votes For:", lines))));
-				outputLines.add(formatTerm(lines.get(findLineStartsWith("Votes Against:", lines))));
+				List<String> subLines = rawLines.subList(findLineStartsWith("Passed:", rawLines), rawLines.size());
+				
+				int ayes = Integer.parseInt(subLines.get(6).replaceAll(",", ""));
+				int nays = Integer.parseInt(subLines.get(12).replaceAll(",", ""));
+				int totalVotes = ayes + nays;
+				double proAye = (double) ayes / totalVotes;
+				double proNay = (double) nays / totalVotes;
+				String pcAye = String.valueOf(Math.round(proAye * 100));
+				String pcNay = String.valueOf(Math.round(proNay * 100));
+				
+				outputLines.add(formatTerm("Votes For: " + subLines.get(6) + " (" + pcAye + "%)"));
+				outputLines.add(formatTerm("Votes For: " + subLines.get(12) + " (" + pcNay + "%)"));
 
 				outputLines.add("");
 
 				// Add implementation line
-				String implementedLine = lines.get(findLineStartsWith("Implemented:", lines));
-				String[] implementedLineArray = implementedLine.split(":");
-				outputLines.add(RQbb.color("Implemented " + implementedLineArray[1].trim(), "red"));
+				outputLines.add(RQbb.color("Implemented " + subLines.get(2).trim(), "red"));
 
 				outputLines.add("");
 
@@ -172,8 +203,8 @@ public class RexisQuexisParser {
 				String nsLink = "[url=http://www.nationstates.net/page=WA_past_resolutions/council=1/start="
 						+ (Integer.parseInt(resolutionNumber) - 1) + "]" + resolutionNumber + " GA on NS[/url]";
 
-				String string = RQbb.size(RQbb.bold("[" + nsLink + "] [" + RQbb.url("Official Debate Topic", topicUrl)), 85)
-						+ "]";
+				String string = RQbb
+						.size(RQbb.bold("[" + nsLink + "] [" + RQbb.url("Official Debate Topic", topicUrl)) + "]", 85);
 				outputLines.add(string);
 
 				return formatList(outputLines);
@@ -190,16 +221,16 @@ public class RexisQuexisParser {
 
 		JButton repealButton = new JButton("Repeal Format (use bbCode form)");
 		repealButton.addActionListener(new ActionListener() {
-
+			
 			@Override public void actionPerformed(ActionEvent e) {
-
+				
 				List<String> textLines = Arrays.asList(textArea.getText().split("\n"));
 				textArea.setText(repealFormat(textLines));
 
 			}
 
 			private String repealFormat(List<String> textLines) {
-
+				
 				int whichRepeal = Integer.parseInt(
 						JOptionPane.showInputDialog("Enter the number of the resolution that repealed this resolution."));
 				String urlRepeal = JOptionPane.showInputDialog("Enter the RexisQuexis url of the repealing resolution.");
