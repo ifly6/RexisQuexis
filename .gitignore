@@ -1,2 +1,7 @@
 /bin/
 /target/
+
+# Eclipse-specific files
+.settings
+.classpath
+.project
