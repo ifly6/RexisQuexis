@@ -1,4 +1,4 @@
-/* Copyright (c) 2016 Kevin Wong
+/* Copyright (c) 2017 Kevin Wong
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation the
@@ -14,8 +14,18 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package com.git.ifly6.rexisquexis.author;
 
-import java.awt.BorderLayout;
-import java.awt.Font;
+import com.git.ifly6.nsapi.NSConnection;
+import com.git.ifly6.rexisquexis.categories.RqcCategories;
+import com.jcabi.xml.XML;
+import com.jcabi.xml.XMLDocument;
+import org.apache.commons.lang3.text.WordUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -23,25 +33,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.SwingUtilities;
-
-import org.apache.commons.lang3.text.WordUtils;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-
-import com.git.ifly6.nsapi.NSConnection;
-import com.jcabi.xml.XML;
-import com.jcabi.xml.XMLDocument;
 
 /**
  * @author Kevin
@@ -125,8 +116,8 @@ public class RqaParser {
 		Elements elements = doc.select("a");
 		int matches = elements.size();
 
-		System.out.println(
-				"For " + matches + " elements, this will take " + time(Math.round(NSConnection.WAIT_TIME * matches / 1000)));
+		System.out.printf("For %d elements, this will take %s%n", matches,
+				RqcCategories.time(Math.round(NSConnection.WAIT_TIME * matches / 1000)));
 
 		int counter = 1;
 		Iterator<Element> iterator = elements.iterator();
@@ -151,7 +142,7 @@ public class RqaParser {
 			if (strength.equals("0")) {
 
 				if (category.equalsIgnoreCase("Environmental")) {
-					strength = "automotive";
+					strength = "Automotive";
 				} else if (category.equalsIgnoreCase("Health")) {
 					strength = "Healthcare";
 				} else if (category.equalsIgnoreCase("Education and Creativity")) {
@@ -159,7 +150,7 @@ public class RqaParser {
 				} else if (category.equalsIgnoreCase("Gun Control")) {
 					strength = "Tighten";
 				} else {
-					strength = "mild";
+					strength = "Mild";
 				}
 			}
 
@@ -178,15 +169,5 @@ public class RqaParser {
 		}
 
 		return resList;
-	}
-
-	private static String time(int seconds) {
-		int minutes = seconds / 60;
-		seconds -= minutes * 60;
-		int hours = minutes / 60;
-		minutes -= hours * 60;
-		int days = hours / 24;
-		hours -= days * 24;
-		return days + "d:" + hours + "h:" + minutes + "m:" + seconds + "s";
 	}
 }

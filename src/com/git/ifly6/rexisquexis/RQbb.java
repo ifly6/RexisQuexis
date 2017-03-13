@@ -1,4 +1,4 @@
-/* Copyright (c) 2016 Kevin Wong
+/* Copyright (c) 2017 Kevin Wong
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation the
@@ -16,9 +16,10 @@ package com.git.ifly6.rexisquexis;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.net.URL;
+
 /**
  * @author Kevin
- *
  */
 public class RQbb {
 
@@ -33,11 +34,11 @@ public class RQbb {
 	// ======== Generalised tag forms ========
 
 	public static String bbTag(String input, String tag) {
-		return "[" + tag + "]" + input + "[/" + tag + "]";
+		return String.format("[%s]%s[/%s]", tag, input, tag);
 	}
 
 	public static String bbTag(String input, String tag, String var) {
-		return "[" + tag + "=" + var + "]" + input + "[/" + tag + "]";
+		return String.format("[%s=%s]%s[/%s]", tag, var, input, tag);
 	}
 
 	// ======== Hardcoded tags ========
@@ -67,6 +68,10 @@ public class RQbb {
 	public static String url(String input, String url) {
 		return bbTag(input, "url", url);
 		// return "[url=" + url + "]" + input + "[/url]";
+	}
+
+	public static String url(String input, URL url) {
+		return bbTag(input, "url", url.toString());
 	}
 
 	public static String post(String input, int post) {
