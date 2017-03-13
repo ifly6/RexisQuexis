@@ -5,3 +5,7 @@
 .settings
 .classpath
 .project
+
+# IntelliJ-specific files
+.idea/
+RexisQuexis.iml

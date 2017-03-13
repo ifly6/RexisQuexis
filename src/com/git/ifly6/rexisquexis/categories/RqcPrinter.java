@@ -1,4 +1,4 @@
-/* Copyright (c) 2016 ifly6
+/* Copyright (c) 2017 ifly6
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation the
@@ -14,20 +14,11 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package com.git.ifly6.rexisquexis.categories;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.SortedSet;
-import java.util.TreeMap;
-import java.util.TreeSet;
-import java.util.stream.Collectors;
-
+import com.git.ifly6.rexisquexis.RQbb;
 import org.apache.commons.lang3.text.WordUtils;
 
-import com.git.ifly6.rexisquexis.RQbb;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class RqcPrinter {
 
@@ -66,20 +57,17 @@ public class RqcPrinter {
 				append(RQbb.header(key, catResList.size() + " " + (catResList.size() > 1 ? "resolutions" : "resolution")));
 				
 				append("[floatleft][align=right]");
-				for (RqcResolutionData resolution : catResList) {
+				for (RqcResolutionData resolution : catResList)
 					append(WordUtils.capitalize(resolution.strength()) + ": ");
-				}
+
 				append("[/align][/floatleft]");
 				
 				for (RqcResolutionData resolution : catResList) {
-					if (resolution.isRepealed()) {
-						append(RQbb.strike(RQbb.tab(10)
-								+ RQbb.post(RQbb.color(resolution.num() + " GA '" + resolution.name() + "'", "gray"),
-										resolution.postNum())));
-					} else {
-						append(RQbb.post(RQbb.tab(10) + resolution.num() + " GA '" + resolution.name() + "'",
-								resolution.postNum()));
-					}
+					if (resolution.isRepealed()) append(RQbb.strike(RQbb.tab(10) + RQbb.post(RQbb.color(resolution
+									.num() + " GA '" + resolution.name() + "'", "gray"),
+							resolution.postNum())));
+					else append(RQbb.post(RQbb.tab(10) + resolution.num() + " GA '" + resolution.name() + "'",
+							resolution.postNum()));
 				}
 				append("\n");
 			}

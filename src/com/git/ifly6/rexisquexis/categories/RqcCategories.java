@@ -1,4 +1,4 @@
-/* Copyright (c) 2016 ifly6
+/* Copyright (c) 2017 ifly6
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation the
@@ -14,33 +14,21 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package com.git.ifly6.rexisquexis.categories;
 
-import java.awt.BorderLayout;
-import java.awt.Font;
-import java.awt.GridLayout;
+import com.git.ifly6.nsapi.NSConnection;
+import com.jcabi.xml.XML;
+import com.jcabi.xml.XMLDocument;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+import javax.swing.*;
+import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JProgressBar;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.SwingUtilities;
-
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-
-import com.git.ifly6.nsapi.NSConnection;
-import com.jcabi.xml.XML;
-import com.jcabi.xml.XMLDocument;
 
 /** @author ifly6 */
 public class RqcCategories {
@@ -145,11 +133,7 @@ public class RqcCategories {
 			System.out.println("Queried for resolution " + counter + " of " + matches);
 
 			// Iterate progressBar
-			new Runnable() {
-				@Override public void run() {
-					progressBar.setValue(progressBar.getValue() + 1);
-				}
-			}.run();
+			((Runnable) () -> progressBar.setValue(progressBar.getValue() + 1)).run();
 			
 			// Parse the API response
 			XML xml = new XMLDocument(connection.getResponse());
@@ -185,7 +169,7 @@ public class RqcCategories {
 		return resList;
 	}
 
-	private static String time(int seconds) {
+	public static String time(int seconds) {
 		int minutes = seconds / 60;
 		seconds -= minutes * 60;
 		int hours = minutes / 60;
