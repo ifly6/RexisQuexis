@@ -1,18 +1,25 @@
-/* Copyright (c) 2017 ifly6
+/*
+ * Copyright (c) 2017 ifly6
  *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
- * documentation files (the "Software"), to deal in the Software without restriction, including without limitation the
- * rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
- * permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the
- * Software.
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
- * WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
- * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
- * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-package com.git.ifly6.rexisquexis.categories;
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+package com.ifly6.rexisquexis.categories;
 
 import com.git.ifly6.nsapi.NSConnection;
 import com.jcabi.xml.XML;
@@ -51,7 +58,7 @@ public class RqcCategories {
 		label.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 		panel.add(label, BorderLayout.NORTH);
 
-		JTextArea ta = new JTextArea();
+		final JTextArea ta = new JTextArea();
 		ta.setFont(new Font(Font.MONOSPACED, 0, 11));
 		ta.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
@@ -69,23 +76,28 @@ public class RqcCategories {
 		controlPanel.add(progressBar);
 
 		JButton button = new JButton("Parse");
-		button.addActionListener(e -> {
+		button.addActionListener(event -> {
 
-			try {
+			Runnable runnable = () -> {
+				try {
 
-				List<RqcResolutionData> resolutionList = parseSource();
-				HashMap<RqcResolutionData, String> categoryMap = new HashMap<>();
+					List<RqcResolutionData> resolutionList = parseSource();
+					HashMap<RqcResolutionData, String> categoryMap = new HashMap<>();
 
-				for (RqcResolutionData it : resolutionList) {
-					categoryMap.put(it, it.category());
+					for (RqcResolutionData it : resolutionList)
+						categoryMap.put(it, it.category());
+
+					RqcPrinter printer = new RqcPrinter(categoryMap);
+					ta.setText(printer.print());
+
+				} catch (IOException e) {
+					e.printStackTrace();
+					ta.setText(e.toString());
 				}
 
-				RqcPrinter printer = new RqcPrinter(categoryMap);
-				ta.setText(printer.print());
+			};
+			runnable.run();
 
-			} catch (IOException e1) {
-				ta.setText(e1.toString());
-			}
 		});
 		controlPanel.add(button);
 
@@ -129,7 +141,7 @@ public class RqcCategories {
 
 			// Query the API
 			NSConnection connection = new NSConnection(
-					"http://www.nationstates.net/cgi-bin/api.cgi?wa=1&id=" + counter + "&q=resolution");
+					"https://www.nationstates.net/cgi-bin/api.cgi?wa=1&id=" + counter + "&q=resolution");
 			System.out.println("Queried for resolution " + counter + " of " + matches);
 
 			// Iterate progressBar
