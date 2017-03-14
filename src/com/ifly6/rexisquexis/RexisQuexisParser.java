@@ -1,19 +1,26 @@
-/* Copyright (c) 2017 Kevin Wong
+/*
+ * Copyright (c) 2017 Kevin Wong
  *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
- * documentation files (the "Software"), to deal in the Software without restriction, including without limitation the
- * rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
- * permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the
- * Software.
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
- * WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
- * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
- * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 
-package com.git.ifly6.rexisquexis;
+package com.ifly6.rexisquexis;
 
 import com.git.ifly6.nsapi.NSConnection;
 import com.jcabi.xml.XML;
@@ -22,9 +29,11 @@ import org.jsoup.Jsoup;
 import org.jsoup.select.Elements;
 
 import javax.swing.*;
+import javax.swing.undo.UndoManager;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -47,6 +56,10 @@ public class RexisQuexisParser {
 
 		JTextArea textArea = new JTextArea();
 		textArea.setFont(new Font("Monospaced", Font.PLAIN, 11));
+
+		UndoManager undoManager = new UndoManager();
+		textArea.getDocument().addUndoableEditListener(undoManager);
+
 		panel.add(new JScrollPane(textArea), BorderLayout.CENTER);
 
 		JPanel buttonPanel = new JPanel();
@@ -57,10 +70,13 @@ public class RexisQuexisParser {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String topicUrl = JOptionPane.showInputDialog(frame, "Enter the URL for the debate topic.",
+				String url = JOptionPane.showInputDialog(frame, "Enter the URL for the debate topic.",
 						"Parameter Input", JOptionPane.PLAIN_MESSAGE).replace("&hilit=[^#]+", "");
-				String input = textArea.getText();
-				textArea.setText(this.parse(input, topicUrl));
+//				String input = textArea.getText();
+//				textArea.setText(this.parse(input, topicUrl));
+				GAResolution gaResolution = GAResolution.parse(textArea.getText());
+				gaResolution.topicUrl = url;
+				textArea.setText(gaResolution.format());
 			}
 
 			// Parses the string
@@ -216,11 +232,11 @@ public class RexisQuexisParser {
 				outputLines.add("");
 
 				// Add resolution number
-				String officialUrl = RQbb.url(resolutionNumber + " GA on NS","http://www.nationstates" +
+				String officialUrl = RQbb.url(resolutionNumber + " GA on NS", "http://www.nationstates" +
 						".net/page=WA_past_resolutions/council=1/start=" + (resolutionNumber - 1));
 				String finalLine = RQbb.bold(String.format("[%s] [%s]", officialUrl,
 						RQbb.url("Official Debate Topic", topicUrl)));
-				String sizedLine = RQbb.size(finalLine, 85);
+				String sizedLine = RQbb.size(finalLine, RQbb.SMALL);
 				outputLines.add(sizedLine);
 
 				return joinList(outputLines);
@@ -293,10 +309,29 @@ public class RexisQuexisParser {
 
 			}
 		});
-		buttonPanel.add(repealButton);
+//		buttonPanel.add(repealButton);
 
 		JMenuBar menuBar = new JMenuBar();
 		frame.setJMenuBar(menuBar);
+
+		JMenu editMenu = new JMenu("Edit");
+		menuBar.add(editMenu);
+
+		JMenuItem undoItem = new JMenuItem("Undo");
+		undoItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, Toolkit.getDefaultToolkit()
+				.getMenuShortcutKeyMask()));
+		undoItem.addActionListener(e -> {
+			if (undoManager.canUndo()) undoManager.undo();
+		});
+		editMenu.add(undoItem);
+
+		JMenuItem redoItem = new JMenuItem("Redo");
+		redoItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, Toolkit.getDefaultToolkit()
+				.getMenuShortcutKeyMask() | ActionEvent.SHIFT_MASK));
+		redoItem.addActionListener(e -> {
+			if (undoManager.canRedo()) undoManager.redo();
+		});
+		editMenu.add(redoItem);
 
 		JMenu viewMenu = new JMenu("View");
 		menuBar.add(viewMenu);
