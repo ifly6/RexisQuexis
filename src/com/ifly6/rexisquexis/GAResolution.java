@@ -35,12 +35,16 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Month;
 import java.util.*;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 // This class, with public vars, is totally valid. Look:
 // http://www.oracle.com/technetwork/java/javase/documentation/codeconventions-137265.html#177
+@SuppressWarnings("WeakerAccess")
 public class GAResolution {
+
+	transient private static final Logger LOGGER = Logger.getLogger(GAResolution.class.getName());
 
 	public enum GAType {
 		NORMAL, REPEAL
@@ -78,29 +82,15 @@ public class GAResolution {
 	public GARepealData repealData = new GARepealData();
 
 	/**
-	 * Formats the <code>GAResolution</code> from the fields into the format used by RexisQuexis, with valid bbCode
-	 * for immediate posting of the resolution, though there are defaults which must be dealt with if posting a
-	 * repeal. There are five elements, <code>-1</code>, <code>$rtit</code>, <code>$rcat</code>, <code>$rstr</code>,
-	 * <code>-1</code>, for the target resolution's ID, title, category, strength, and post number.
-	 * <p>
-	 * Before directly applying these defaults, it attempts to search the relevant databases for the information it
-	 * needs to put in the correct information.
+	 * Formats the <code>GAResolution</code> from the fields into the format used by RexisQuexis with valid bbCode
+	 * for immediate posting of the resolution. There are defaults from initialisation which must be dealt with if
+	 * posting a repeal. There are five elements, <code>-1</code>, <code>$rtit</code>, <code>$rcat</code>,
+	 * <code>$rstr</code>, <code>-1</code>, for the target resolution's ID, title, category, strength, and post number.
+	 * <p>Before directly applying these defaults, it attempts to search relevant databases for the information it
+	 * needs to fill in the correct information.</p>
 	 * @return a single <code>String</code> holding the RexisQuexis bbCode formatting
 	 */
 	public String format() {
-		return format(this.repealData);
-	}
-
-	/**
-	 * Formats the <code>GAResolution</code> from the fields into the format used by RexisQuexis with valid bbCode
-	 * for immediate posting of the resolution.
-	 * @param data a <code>Map</code> which declares information if necessary. It is only needed for repeals, where it
-	 *             provides information on the target resolution's ID (<code>targetId</code>), title
-	 *             (<code>targetTitle</code>), category (<code>targetCategory</code>), strength
-	 *             (<code>targetStrength</code>), and repeal topic post number (<code>targetPost</code>).
-	 * @return a single <code>String</code> holding the RexisQuexis bbCode formatting
-	 */
-	public String format(GARepealData data) {
 
 		List<String> lines = new ArrayList<>();
 
@@ -130,7 +120,7 @@ public class GAResolution {
 			String repealStrength = repealData.targetStrength;
 
 			descriptionLine = String.format(descriptionLine,
-					RQbb.post(String.format("General Assembly Resolution %d \"%s\"", repealId, repealTitle), postNum),
+					RQbb.post(String.format("General Assembly Resolution #%d \"%s\"", repealId, repealTitle), postNum),
 					/* repeal category */ repealCategory,
 					/* find proper effect */ createEffectLine(repealStrength, repealCategory),
 					/* put in repealed resolution's strength */ translateEffect(repealStrength, repealCategory));
@@ -142,6 +132,7 @@ public class GAResolution {
 		} else {
 			lines.add(RQbb.bold("Description:") + " " + text);
 		}
+
 		lines.add("");
 
 		// Add voting data
@@ -160,13 +151,16 @@ public class GAResolution {
 		String linkSet = RQbb.bold(String.format("[%s] [%s]",
 				RQbb.url(resolutionNum + " GA on NS", "http://www.nationstates.net/page=WA_past_resolutions/" +
 						"council=1/start=" + (resolutionNum - 1)),
-				RQbb.url("Official Debate Topic", topicUrl.toString())));
+				RQbb.url("Official Debate Topic", topicUrl)));
 		lines.add(RQbb.size(linkSet, RQbb.SMALL));
 
 		// Determine if repealed (and therefore, if further formatting is necessary)
 		if (isRepealed && type != GAType.REPEAL)
-			return strikeThrough(lines, this);
-		return lines.stream().collect(Collectors.joining("\n"));
+			lines = strikeThrough(lines, this);
+		return lines.stream()
+				.map(s -> s.replace("”", ""))   // get rid of smart quotes
+				.map(s -> s.replace("“", ""))
+				.collect(Collectors.joining("\n"));
 
 	}
 
@@ -174,7 +168,7 @@ public class GAResolution {
 	 * Strikes through the resolution formatting. Queries the API to get the repealing resolution and its post. If it
 	 * cannot find it, it puts in <code>-1</code> for the repeal number and <code>$repealUrl</code>.
 	 */
-	private static String strikeThrough(List<String> lines, GAResolution gaResolution) {
+	private static List<String> strikeThrough(List<String> lines, GAResolution gaResolution) {
 
 		int whichRepeal = -1;   // get the id of the resolution which repealed this resolution
 		try {
@@ -188,7 +182,7 @@ public class GAResolution {
 			e.printStackTrace();
 		}
 
-		String urlRepeal = "$repealUrl";
+		String urlRepeal;
 		urlRepeal = searchTopics(whichRepeal).toString();
 
 		int postInt;    // post-int isn't always going to be there, because urlRepeal can return the NS forum URL
@@ -207,7 +201,7 @@ public class GAResolution {
 		int lastStrikeLine = RexisQuexisParser.indexStartsWith("[b]Votes Against", lines);
 		lines.set(lastStrikeLine, lines.get(lastStrikeLine) + "[/strike][/color]");
 
-		return lines.stream().collect(Collectors.joining("\n"));
+		return lines;
 	}
 
 	/**
@@ -224,11 +218,11 @@ public class GAResolution {
 			Elements elements = Jsoup.parse(html).select("div#p310 div.content a");
 			String urlRepeal = elements.get(i - 1).attr("href");
 
-			// System.out.println("elements = " + elements);
-			// System.out.println("urlRepeal = " + urlRepeal);
+			// LOGGER.info("elements = " + elements);
+			// LOGGER.info("urlRepeal = " + urlRepeal);
 			if (urlRepeal.startsWith("http:")) urlRepeal = urlRepeal.replaceFirst("http:", "https:");
 			if (!urlRepeal.startsWith("https:")) urlRepeal = "https:" + urlRepeal;
-			// System.out.println("urlRepeal = " + urlRepeal);
+			// LOGGER.info("urlRepeal = " + urlRepeal);
 			return new URL(urlRepeal);
 
 		} catch (Exception e) {
@@ -250,6 +244,7 @@ public class GAResolution {
 	public static GAResolution parse(String input) {
 
 		List<String> lines = Arrays.asList(input.split("\n"));
+		lines.removeIf(s -> s.trim().equalsIgnoreCase("Repeal this Resolution"));   // remove trailing link
 		for (int x = lines.size() - 1; x > -1; x--) {    // remove trailing empty lines, counting from end
 			if (lines.get(x).trim().length() != 0) break;
 			lines.remove(x);
@@ -300,7 +295,8 @@ public class GAResolution {
 
 		resolution.byLine = lines.get(R_BYLINE);
 		resolution.category = fromColon(lines.get(R_CATEGORY));
-		resolution.strengthLine = translateEffect(fromColon(lines.get(R_STRENGTH)), resolution.category);
+		resolution.strengthLine = translateEffect(fromColon(lines.get(R_STRENGTH)), resolution.category)
+				.replaceFirst("GA#", "#");
 		resolution.proposer = fromColon(lines.get(R_AUTHOR));
 
 		try {
@@ -333,7 +329,7 @@ public class GAResolution {
 							s = s.replaceAll(element, "");  // removes all bold, italics, or underline tags
 						return s;
 					})
-					.map(s -> Jsoup.parse(s).text())
+					.map(s -> Jsoup.parse(s).text())    // unescape text from HTML escapes
 					.collect(Collectors.joining("\n"));
 
 			// for some reason, there is no XML tag for this. Check for existence of repealed_by tag to set isRepealed
@@ -343,22 +339,33 @@ public class GAResolution {
 			} catch (Exception e) {
 				resolution.isRepealed = false;
 			}
+			LOGGER.info("Resolution " + (resolution.isRepealed ? "was repealed" : "is active"));
 
 			if (resolution.type == GAType.REPEAL) {
 
+				if (!resolution.title.endsWith("\""))
+					resolution.title = (resolution.title + "\"").replaceFirst(" ", " \"");
+
 				resolution.repealData.targetId = Integer.parseInt(xml.xpath("/WA/RESOLUTION/REPEALS_COUNCILID/text()").get(0));
 				String name = xml.xpath("/WA/RESOLUTION/NAME/text()").get(0);
-				name = name.substring(name.indexOf("\""), name.lastIndexOf("\""));
+				name = name.substring(name.indexOf("\"") + 1, name.lastIndexOf("\""));
 				resolution.repealData.targetTitle = name;
 
 				XML rXml = queryApi(resolution.repealData.targetId);
 				resolution.repealData.targetCategory = rXml.xpath("/WA/RESOLUTION/CATEGORY/text()").get(0);
 				resolution.repealData.targetStrength = rXml.xpath("/WA/RESOLUTION/OPTION/text()").get(0);
 
-				String urlString = searchTopics(resolution.repealData.targetId).toString();
-				String postCode = "#p";
-				resolution.repealData.targetPost = Integer.parseInt(urlString.substring(urlString.lastIndexOf
-						(postCode) + postCode.length()));
+				try {
+					String urlString = searchTopics(resolution.repealData.targetId).toString();
+					String postCode = "#p";
+					resolution.repealData.targetPost = Integer.parseInt(urlString.substring(urlString.lastIndexOf(postCode)
+							+ postCode.length()));
+
+				} catch (NumberFormatException e) {
+					// catch if it isn't there
+					e.printStackTrace();
+					resolution.repealData.targetPost = -1;
+				}
 
 			}
 
@@ -385,6 +392,7 @@ public class GAResolution {
 	private static XML queryApi(int rNum) throws IOException {
 		NSConnection connection = new NSConnection(String.format("https://www.nationstates.net/cgi-bin/api" +
 				".cgi?wa=%d&id=%d&q=resolution", 1, rNum));
+		System.err.printf("Querying API for %d GA%n", rNum);
 		return new XMLDocument(connection.getResponse());
 	}
 

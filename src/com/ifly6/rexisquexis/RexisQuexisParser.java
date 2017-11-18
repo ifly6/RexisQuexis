@@ -33,6 +33,7 @@ import javax.swing.undo.UndoManager;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.net.URL;
@@ -40,12 +41,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class RexisQuexisParser {
 
-	public RexisQuexisParser() {
+	private static final Logger LOGGER = Logger.getLogger(RexisQuexisParser.class.getName());
+
+	private RexisQuexisParser() {
 
 		JFrame frame = new JFrame("WA Resolutions Formatter");
 		frame.setSize(700, 800);
@@ -55,6 +59,8 @@ public class RexisQuexisParser {
 		panel.setLayout(new BorderLayout());
 
 		JTextArea textArea = new JTextArea();
+		textArea.setWrapStyleWord(true);
+		textArea.setLineWrap(true);
 		textArea.setFont(new Font("Monospaced", Font.PLAIN, 11));
 
 		UndoManager undoManager = new UndoManager();
@@ -71,7 +77,9 @@ public class RexisQuexisParser {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String url = JOptionPane.showInputDialog(frame, "Enter the URL for the debate topic.",
-						"Parameter Input", JOptionPane.PLAIN_MESSAGE).replace("&hilit=[^#]+", "");
+						"Parameter Input", JOptionPane.PLAIN_MESSAGE)
+						.replace("&hilit=[^#]+", "")
+						.replace("&sid=[^#]", "");
 //				String input = textArea.getText();
 //				textArea.setText(this.parse(input, topicUrl));
 				GAResolution gaResolution = GAResolution.parse(textArea.getText());
@@ -83,7 +91,9 @@ public class RexisQuexisParser {
 			private String parse(String input, String topicUrl) {
 
 				final List<String> rawLines = Arrays.asList(input.split("\n"));
-				final List<String> lines = rawLines.stream().filter(x -> !(x.trim().length() == 0)).map(String::trim)
+				final List<String> lines = rawLines.stream()
+						.filter(x -> !(x.trim().length() == 0))
+						.map(String::trim)
 						.collect(Collectors.toList());
 
 				List<String> outputLines = new ArrayList<>();
@@ -145,7 +155,7 @@ public class RexisQuexisParser {
 						Elements elements = Jsoup
 								.parse(new URL("http://forum.nationstates.net/viewtopic.php?f=9&t=30"), 2000)
 								.select("div#p310 div.content a");
-						System.out.println("elements.toString()\t" + elements.toString());
+						LOGGER.info("elements.toString()\t" + elements.toString());
 						String finalTargetName = targetName;
 						repealUrl = elements.stream().filter(e -> e.text().trim().equalsIgnoreCase(finalTargetName))
 								.findFirst().get().attr("abs:href");
@@ -281,14 +291,14 @@ public class RexisQuexisParser {
 							"Parameter input", JOptionPane.PLAIN_MESSAGE));
 				}
 
-				String urlRepeal = "$repealUrl";
+				String urlRepeal;
 				try {
 					String html = new NSConnection("http://forum.nationstates.net/viewtopic.php?f=9&t=30")
 							.getResponse();
 					Elements elements = Jsoup.parse(html).select("div#p310 div.content a");
 					urlRepeal = elements.get(whichRepeal + 1).attr("abs:href"); // adjust for 0 -> 1 index
 
-				} catch (IOException | ArrayIndexOutOfBoundsException e) {
+				} catch (IOException | RuntimeException e) {
 					e.printStackTrace();
 					urlRepeal = JOptionPane.showInputDialog(frame,
 							"Cannot find repealing resolution in database, manually provide the RexisQuexis url of the " +
@@ -309,7 +319,7 @@ public class RexisQuexisParser {
 
 			}
 		});
-//		buttonPanel.add(repealButton);
+		buttonPanel.add(repealButton);
 
 		JMenuBar menuBar = new JMenuBar();
 		frame.setJMenuBar(menuBar);
@@ -327,7 +337,7 @@ public class RexisQuexisParser {
 
 		JMenuItem redoItem = new JMenuItem("Redo");
 		redoItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, Toolkit.getDefaultToolkit()
-				.getMenuShortcutKeyMask() | ActionEvent.SHIFT_MASK));
+				.getMenuShortcutKeyMask() | InputEvent.SHIFT_MASK));
 		redoItem.addActionListener(e -> {
 			if (undoManager.canRedo()) undoManager.redo();
 		});
@@ -341,6 +351,7 @@ public class RexisQuexisParser {
 			textArea.setWrapStyleWord(wordWrap.getState());
 			textArea.setLineWrap(wordWrap.getState());
 		});
+		wordWrap.setState(true);
 		viewMenu.add(wordWrap);
 
 		panel.add(buttonPanel, BorderLayout.SOUTH);

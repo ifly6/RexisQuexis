@@ -40,12 +40,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * @author ifly6
  *
  */
 public class RqaParser {
+
+	private static final Logger LOGGER = Logger.getLogger(RqaParser.class.getName());
 
 	public RqaParser() {
 
@@ -140,7 +143,7 @@ public class RqaParser {
 			// Query the API
 			NSConnection connection = new NSConnection(
 					"http://www.nationstates.net/cgi-bin/api.cgi?wa=1&id=" + counter + "&q=resolution");
-			System.out.println("Queried for resolution " + counter + " of " + matches);
+			LOGGER.info("Queried for resolution " + counter + " of " + matches);
 
 			// Parse the API response
 			XML xml = new XMLDocument(connection.getResponse());

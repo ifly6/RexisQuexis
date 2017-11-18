@@ -23,9 +23,10 @@
 package com.ifly6.rexisquexis;
 
 /**
- * Created by ifly6 on 14/3/2017.
+ * Holds information necessary for the repeal.
+ * @since 2017-03-14
  */
-public class GARepealData {
+class GARepealData {
 
 //	Map<String, String> defaults = new HashMap<>();
 //		defaults.put("targetId", "-1");
@@ -34,10 +35,10 @@ public class GARepealData {
 //		defaults.put("targetStrength", "$rstr");
 //		defaults.put("targetPost", "-1");
 
-	public int targetId = -1;
-	public String targetTitle = "$rtit";
-	public String targetCategory = "$rcat";
-	public String targetStrength = "$rstr";
-	public int targetPost = -1;
+	int targetId = -1;
+	String targetTitle = "$rtit";
+	String targetCategory = "$rcat";
+	String targetStrength = "$rstr";
+	int targetPost = -1;
 
 }

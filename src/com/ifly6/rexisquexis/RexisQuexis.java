@@ -29,15 +29,12 @@ import com.jcabi.xml.XMLDocument;
 import javax.swing.*;
 import java.io.IOException;
 
-/**
- * Created by ifly6 on 11/3/2017.
- */
 public class RexisQuexis {
+
 	private JPanel panel;
 	private JTextArea textArea;
 	private JTextField textField;
 	private JButton button;
-
 
 	public RexisQuexis() {
 		button.addActionListener(e -> {
