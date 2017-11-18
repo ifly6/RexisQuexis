@@ -34,15 +34,17 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.logging.Logger;
 
 /** @author Kevin */
 public class RqcCategories {
 
+	private static final Logger LOGGER = Logger.getLogger(RqcCategories.class.getName());
 	private JProgressBar progressBar;
 
-	public RqcCategories() {
+	private RqcCategories() {
 
 		JFrame frame = new JFrame();
 		frame.setTitle("RexisQuexis Categories Parser");
@@ -59,9 +61,8 @@ public class RqcCategories {
 		panel.add(label, BorderLayout.NORTH);
 
 		final JTextArea ta = new JTextArea();
-		ta.setFont(new Font(Font.MONOSPACED, 0, 11));
+		ta.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 11));
 		ta.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-
 		ta.setWrapStyleWord(true);
 		ta.setLineWrap(true);
 
@@ -75,15 +76,15 @@ public class RqcCategories {
 		progressBar.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
 		controlPanel.add(progressBar);
 
-		JButton button = new JButton("Parse");
+		JButton button = new JButton("Query resolutions");
 		button.addActionListener(event -> {
 
 			Runnable runnable = () -> {
 				try {
 
 					List<RqcResolutionData> resolutionList = parseSource();
-					HashMap<RqcResolutionData, String> categoryMap = new HashMap<>();
 
+					HashMap<RqcResolutionData, String> categoryMap = new HashMap<>();
 					for (RqcResolutionData it : resolutionList)
 						categoryMap.put(it, it.category());
 
@@ -105,65 +106,57 @@ public class RqcCategories {
 	}
 
 	public static void main(String[] args) {
-		SwingUtilities.invokeLater(() -> new RqcCategories());
+		SwingUtilities.invokeLater(RqcCategories::new);
 	}
 
-	/** Scrapes and parses the data from the RexisQuexis main page.
+	/**
+	 * Scrapes and parses the data from the RexisQuexis table of contents.
 	 * @return <code>List&lt;RqcResolutionData&gt;</code> containing all relevant resolutions.
-	 * @throws IOException */
+	 * @throws IOException if error in getting data from Internet
+	 */
 	private List<RqcResolutionData> parseSource() throws IOException {
 
-		// TODO parse the source code for the entire list. then, using the 'li' code, assign the resolution number
-		// after that, then query the API for the resolution category and strength and return the list.
-
 		List<RqcResolutionData> resList = new ArrayList<>();
-
 		Elements elements = Jsoup.parse(new URL("http://forum.nationstates.net/viewtopic.php?f=9&t=30"), 2000)
 				.select("div#p310 div.content a");
-		int matches = elements.size();
+		int numOfResolutions = elements.size();
 
-		System.out.println(
-				"For " + matches + " elements, this will take " + time(Math.round(NSConnection.WAIT_TIME * matches / 1000)));
+		System.out.printf("For %d elements, this will take %s%n",
+				numOfResolutions,
+				time(Math.round(NSConnection.WAIT_TIME * numOfResolutions / 1000)));
 
-		int counter = 1;
-		progressBar.setValue(0);
-		progressBar.setMaximum(matches);
+		AtomicInteger counter = new AtomicInteger(1);
+		SwingUtilities.invokeLater(() -> {
+			progressBar.setValue(0);
+			progressBar.setMaximum(numOfResolutions);
+		});
 
-		Iterator<Element> iterator = elements.iterator();
-		while (iterator.hasNext()) {
+		for (Element element : elements) {
 
-			Element element = iterator.next();
+			// Iterate progressBar
+			SwingUtilities.invokeLater(() -> progressBar.setValue(progressBar.getValue() + 1));
+
+			String title = element.text();
 
 			// Get some basic information
-			String title = element.text();
 			String postLink = element.attr("href");
 			int postNum = Integer.parseInt(postLink.substring(postLink.indexOf("#p") + 2, postLink.length()));
 
 			// Query the API
 			NSConnection connection = new NSConnection(
-					"https://www.nationstates.net/cgi-bin/api.cgi?wa=1&id=" + counter + "&q=resolution");
-			System.out.println("Queried for resolution " + counter + " of " + matches);
+					"https://www.nationstates.net/cgi-bin/api.cgi?wa=1&id=" + counter.get() + "&q=resolution");
+			LOGGER.info("Queried for resolution " + counter.get() + " of " + numOfResolutions);
 
-			// Iterate progressBar
-			((Runnable) () -> progressBar.setValue(progressBar.getValue() + 1)).run();
-			
 			// Parse the API response
 			XML xml = new XMLDocument(connection.getResponse());
 			String category = xml.xpath("/WA/RESOLUTION/CATEGORY/text()").get(0);
 			String strength = xml.xpath("/WA/RESOLUTION/OPTION/text()").get(0);
 			if (strength.equals("0")) {
-
-				if (category.equalsIgnoreCase("Environmental")) {
-					strength = "automotive";
-				} else if (category.equalsIgnoreCase("Health")) {
-					strength = "Healthcare";
-				} else if (category.equalsIgnoreCase("Education and Creativity")) {
-					strength = "Artistic";
-				} else if (category.equalsIgnoreCase("Gun Control")) {
-					strength = "Tighten";
-				} else {
-					strength = "mild";
-				}
+				if (category.equalsIgnoreCase("Environmental")) strength = "automotive";
+				else if (category.equalsIgnoreCase("Health")) strength = "Healthcare";
+				else if (category.equalsIgnoreCase("Education and Creativity")) strength = "Artistic";
+				else if (category.equalsIgnoreCase("Gun Control")) strength = "Tighten";
+				else strength = "mild";
 			}
 
 			boolean repealed = true;
@@ -174,8 +167,9 @@ public class RqcCategories {
 			}
 
 			// Make the resolution, add, and increment
-			resList.add(new RqcResolutionData(title, counter, category, strength, postNum, repealed));
-			counter++;
+			resList.add(new RqcResolutionData(title, counter.get(), category, strength, postNum, repealed));
+			counter.getAndIncrement();
+
 		}
 
 		return resList;

@@ -23,7 +23,6 @@ package com.ifly6.rexisquexis.categories;
 
 /**
  * @author Kevin
- *
  */
 public class RqcResolutionData {
 
@@ -36,7 +35,7 @@ public class RqcResolutionData {
 	private int postNum;
 
 	public RqcResolutionData(String resolutionName, int resolutionNum, String category, String strength, int postNum,
-			boolean repealed) {
+	                         boolean repealed) {
 		this.resolutionName = resolutionName;
 		this.num = resolutionNum;
 		this.category = category;
@@ -67,5 +66,9 @@ public class RqcResolutionData {
 
 	public boolean isRepealed() {
 		return repealed;
+	}
+
+	public void setRepealed(boolean repealed) {
+		this.repealed = repealed;
 	}
 }

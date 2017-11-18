@@ -1,0 +1,3224 @@
+{
+  "instant": {
+    "seconds": 1495076034,
+    "nanos": 336000000
+  },
+  "resolutionData": [
+    {
+      "resolutionName": "The World Assembly",
+      "num": 1,
+      "category": "Bookkeeping",
+      "strength": "Sweeping",
+      "repealed": false,
+      "postNum": 312
+    },
+    {
+      "resolutionName": "Rights and Duties of WA States",
+      "num": 2,
+      "category": "Political Stability",
+      "strength": "mild",
+      "repealed": false,
+      "postNum": 313
+    },
+    {
+      "resolutionName": "The Right to a Fair Trial",
+      "num": 3,
+      "category": "Human Rights",
+      "strength": "strong",
+      "repealed": true,
+      "postNum": 314
+    },
+    {
+      "resolutionName": "Restrictions on Child Labor",
+      "num": 4,
+      "category": "Human Rights",
+      "strength": "strong",
+      "repealed": false,
+      "postNum": 316
+    },
+    {
+      "resolutionName": "Coordinating Relief Aid",
+      "num": 5,
+      "category": "Social Justice",
+      "strength": "mild",
+      "repealed": true,
+      "postNum": 317
+    },
+    {
+      "resolutionName": "Humanitarian Transport",
+      "num": 6,
+      "category": "Human Rights",
+      "strength": "mild",
+      "repealed": false,
+      "postNum": 318
+    },
+    {
+      "resolutionName": "Workplace Safety Standards Act",
+      "num": 7,
+      "category": "Human Rights",
+      "strength": "significant",
+      "repealed": false,
+      "postNum": 319
+    },
+    {
+      "resolutionName": "World Assembly Headquarters",
+      "num": 8,
+      "category": "Political Stability",
+      "strength": "mild",
+      "repealed": false,
+      "postNum": 320
+    },
+    {
+      "resolutionName": "Prevention of Torture",
+      "num": 9,
+      "category": "Human Rights",
+      "strength": "strong",
+      "repealed": false,
+      "postNum": 321
+    },
+    {
+      "resolutionName": "Nuclear Arms Possession Act",
+      "num": 10,
+      "category": "International Security",
+      "strength": "mild",
+      "repealed": false,
+      "postNum": 322
+    },
+    {
+      "resolutionName": "Repeal \"The Right to a Fair Trial\"",
+      "num": 11,
+      "category": "Repeal",
+      "strength": "3",
+      "repealed": false,
+      "postNum": 323
+    },
+    {
+      "resolutionName": "Prevention of Terrorism",
+      "num": 12,
+      "category": "International Security",
+      "strength": "significant",
+      "repealed": true,
+      "postNum": 324
+    },
+    {
+      "resolutionName": "Fair Criminal Trial",
+      "num": 13,
+      "category": "Human Rights",
+      "strength": "significant",
+      "repealed": true,
+      "postNum": 325
+    },
+    {
+      "resolutionName": "Neutrality of Nations",
+      "num": 14,
+      "category": "Global Disarmament",
+      "strength": "strong",
+      "repealed": true,
+      "postNum": 326
+    },
+    {
+      "resolutionName": "Freedom of Marriage Act",
+      "num": 15,
+      "category": "Human Rights",
+      "strength": "significant",
+      "repealed": true,
+      "postNum": 327
+    },
+    {
+      "resolutionName": "Sexual Privacy Act",
+      "num": 16,
+      "category": "Human Rights",
+      "strength": "significant",
+      "repealed": true,
+      "postNum": 328
+    },
+    {
+      "resolutionName": "WA General Fund",
+      "num": 17,
+      "category": "Furtherment of Democracy",
+      "strength": "mild",
+      "repealed": false,
+      "postNum": 329
+    },
+    {
+      "resolutionName": "The Prisoners of War Accord",
+      "num": 18,
+      "category": "Human Rights",
+      "strength": "mild",
+      "repealed": false,
+      "postNum": 330
+    },
+    {
+      "resolutionName": "Child Protection Act",
+      "num": 19,
+      "category": "Human Rights",
+      "strength": "significant",
+      "repealed": true,
+      "postNum": 331
+    },
+    {
+      "resolutionName": "Suppress International Piracy",
+      "num": 20,
+      "category": "International Security",
+      "strength": "significant",
+      "repealed": false,
+      "postNum": 332
+    },
+    {
+      "resolutionName": "Living Wage Act",
+      "num": 21,
+      "category": "Social Justice",
+      "strength": "significant",
+      "repealed": true,
+      "postNum": 333
+    },
+    {
+      "resolutionName": "Diplomat Protection Act",
+      "num": 22,
+      "category": "Furtherment of Democracy",
+      "strength": "significant",
+      "repealed": false,
+      "postNum": 334
+    },
+    {
+      "resolutionName": "Ban on Slavery and Trafficking",
+      "num": 23,
+      "category": "Human Rights",
+      "strength": "strong",
+      "repealed": false,
+      "postNum": 335
+    },
+    {
+      "resolutionName": "Repeal \"Prevention of Terrorism\"",
+      "num": 24,
+      "category": "Repeal",
+      "strength": "12",
+      "repealed": false,
+      "postNum": 336
+    },
+    {
+      "resolutionName": "WA Counterterrorism Act",
+      "num": 25,
+      "category": "International Security",
+      "strength": "significant",
+      "repealed": false,
+      "postNum": 387
+    },
+    {
+      "resolutionName": "World Assembly Economic Union",
+      "num": 26,
+      "category": "Free Trade",
+      "strength": "strong",
+      "repealed": true,
+      "postNum": 388
+    },
+    {
+      "resolutionName": "Freedom of Assembly",
+      "num": 27,
+      "category": "Furtherment of Democracy",
+      "strength": "strong",
+      "repealed": false,
+      "postNum": 389
+    },
+    {
+      "resolutionName": "Repeal \"Fair Criminal Trial\"",
+      "num": 28,
+      "category": "Repeal",
+      "strength": "13",
+      "repealed": false,
+      "postNum": 390
+    },
+    {
+      "resolutionName": "Patient\u0027s Rights Act",
+      "num": 29,
+      "category": "Human Rights",
+      "strength": "significant",
+      "repealed": false,
+      "postNum": 391
+    },
+    {
+      "resolutionName": "Freedom of Expression",
+      "num": 30,
+      "category": "Furtherment of Democracy",
+      "strength": "mild",
+      "repealed": false,
+      "postNum": 392
+    },
+    {
+      "resolutionName": "World Health Authority",
+      "num": 31,
+      "category": "Social Justice",
+      "strength": "significant",
+      "repealed": false,
+      "postNum": 393
+    },
+    {
+      "resolutionName": "Veterans Reform Act",
+      "num": 32,
+      "category": "Social Justice",
+      "strength": "strong",
+      "repealed": true,
+      "postNum": 396
+    },
+    {
+      "resolutionName": "Repeal \"Coordinating Relief Aid\"",
+      "num": 33,
+      "category": "Repeal",
+      "strength": "5",
+      "repealed": false,
+      "postNum": 400
+    },
+    {
+      "resolutionName": "International Transport Safety",
+      "num": 34,
+      "category": "Free Trade",
+      "strength": "mild",
+      "repealed": false,
+      "postNum": 408
+    },
+    {
+      "resolutionName": "The Charter of Civil Rights",
+      "num": 35,
+      "category": "Human Rights",
+      "strength": "significant",
+      "repealed": false,
+      "postNum": 414
+    },
+    {
+      "resolutionName": "Repeal \"Veterans Reform Act\"",
+      "num": 36,
+      "category": "Repeal",
+      "strength": "32",
+      "repealed": false,
+      "postNum": 415
+    },
+    {
+      "resolutionName": "Fairness in Criminal Trials",
+      "num": 37,
+      "category": "Human Rights",
+      "strength": "significant",
+      "repealed": false,
+      "postNum": 416
+    },
+    {
+      "resolutionName": "Convention Against Genocide",
+      "num": 38,
+      "category": "Human Rights",
+      "strength": "significant",
+      "repealed": false,
+      "postNum": 419
+    },
+    {
+      "resolutionName": "The Right to a Lawful Divorce",
+      "num": 39,
+      "category": "Human Rights",
+      "strength": "significant",
+      "repealed": false,
+      "postNum": 422
+    },
+    {
+      "resolutionName": "The Landmine Convention",
+      "num": 40,
+      "category": "Global Disarmament",
+      "strength": "significant",
+      "repealed": true,
+      "postNum": 423
+    },
+    {
+      "resolutionName": "Access to Life-Saving Drugs",
+      "num": 41,
+      "category": "Social Justice",
+      "strength": "significant",
+      "repealed": false,
+      "postNum": 424
+    },
+    {
+      "resolutionName": "WA Environmental Council",
+      "num": 42,
+      "category": "Environmental",
+      "strength": "All Businesses",
+      "repealed": true,
+      "postNum": 425
+    },
+    {
+      "resolutionName": "WA Labor Relations Act",
+      "num": 43,
+      "category": "Human Rights",
+      "strength": "significant",
+      "repealed": false,
+      "postNum": 427
+    },
+    {
+      "resolutionName": "Reduction of Abortion Act",
+      "num": 44,
+      "category": "Social Justice",
+      "strength": "mild",
+      "repealed": true,
+      "postNum": 428
+    },
+    {
+      "resolutionName": "Repeal \"World Assembly Economic Union\"",
+      "num": 45,
+      "category": "Repeal",
+      "strength": "26",
+      "repealed": false,
+      "postNum": 615
+    },
+    {
+      "resolutionName": "Right of Emigration",
+      "num": 46,
+      "category": "Human Rights",
+      "strength": "mild",
+      "repealed": true,
+      "postNum": 4296
+    },
+    {
+      "resolutionName": "Law of the Sea",
+      "num": 47,
+      "category": "Political Stability",
+      "strength": "mild",
+      "repealed": true,
+      "postNum": 9888
+    },
+    {
+      "resolutionName": "Access to Science in Schools",
+      "num": 48,
+      "category": "Education and Creativity",
+      "strength": "Educational",
+      "repealed": true,
+      "postNum": 26086
+    },
+    {
+      "resolutionName": "Stem Cells For Greater Health",
+      "num": 49,
+      "category": "Social Justice",
+      "strength": "significant",
+      "repealed": true,
+      "postNum": 249216
+    },
+    {
+      "resolutionName": "International Salvage Laws",
+      "num": 50,
+      "category": "Social Justice",
+      "strength": "mild",
+      "repealed": false,
+      "postNum": 249260
+    },
+    {
+      "resolutionName": "Humanitarian Aid Coordination",
+      "num": 51,
+      "category": "Social Justice",
+      "strength": "significant",
+      "repealed": false,
+      "postNum": 249294
+    },
+    {
+      "resolutionName": "Food Welfare Act",
+      "num": 52,
+      "category": "Social Justice",
+      "strength": "strong",
+      "repealed": false,
+      "postNum": 249337
+    },
+    {
+      "resolutionName": "Epidemic Response Act",
+      "num": 53,
+      "category": "International Security",
+      "strength": "strong",
+      "repealed": false,
+      "postNum": 347256
+    },
+    {
+      "resolutionName": "Dignified End of Life Choices",
+      "num": 54,
+      "category": "Human Rights",
+      "strength": "strong",
+      "repealed": true,
+      "postNum": 347315
+    },
+    {
+      "resolutionName": "Repeal \"Right of Emigration\"",
+      "num": 55,
+      "category": "Repeal",
+      "strength": "46",
+      "repealed": false,
+      "postNum": 347352
+    },
+    {
+      "resolutionName": "Numismatics Appreciation Act",
+      "num": 56,
+      "category": "Education and Creativity",
+      "strength": "Cultural Heritage",
+      "repealed": true,
+      "postNum": 473698
+    },
+    {
+      "resolutionName": "Refugee Protection",
+      "num": 57,
+      "category": "Human Rights",
+      "strength": "significant",
+      "repealed": false,
+      "postNum": 473724
+    },
+    {
+      "resolutionName": "Right to Privacy",
+      "num": 58,
+      "category": "Human Rights",
+      "strength": "strong",
+      "repealed": true,
+      "postNum": 473747
+    },
+    {
+      "resolutionName": "The Right to Education",
+      "num": 59,
+      "category": "Education and Creativity",
+      "strength": "Educational",
+      "repealed": true,
+      "postNum": 668189
+    },
+    {
+      "resolutionName": "Nuclear Disaster Response Act",
+      "num": 60,
+      "category": "International Security",
+      "strength": "strong",
+      "repealed": false,
+      "postNum": 668226
+    },
+    {
+      "resolutionName": "WA Copyright Charter",
+      "num": 61,
+      "category": "Education and Creativity",
+      "strength": "Artistic",
+      "repealed": true,
+      "postNum": 668285
+    },
+    {
+      "resolutionName": "For the Detained and Convicted",
+      "num": 62,
+      "category": "Human Rights",
+      "strength": "significant",
+      "repealed": true,
+      "postNum": 668427
+    },
+    {
+      "resolutionName": "Protection of Outer Space Act",
+      "num": 63,
+      "category": "Environmental",
+      "strength": "All Businesses",
+      "repealed": true,
+      "postNum": 668457
+    },
+    {
+      "resolutionName": "Food and Drug Standards",
+      "num": 64,
+      "category": "Social Justice",
+      "strength": "significant",
+      "repealed": false,
+      "postNum": 668491
+    },
+    {
+      "resolutionName": "Biological Weapons Conference",
+      "num": 65,
+      "category": "Global Disarmament",
+      "strength": "significant",
+      "repealed": true,
+      "postNum": 689802
+    },
+    {
+      "resolutionName": "Endangered Species Protection",
+      "num": 66,
+      "category": "Environmental",
+      "strength": "All Businesses",
+      "repealed": false,
+      "postNum": 731470
+    },
+    {
+      "resolutionName": "Habeas Corpus",
+      "num": 67,
+      "category": "Human Rights",
+      "strength": "significant",
+      "repealed": true,
+      "postNum": 799599
+    },
+    {
+      "resolutionName": "National Economic Freedoms",
+      "num": 68,
+      "category": "Free Trade",
+      "strength": "strong",
+      "repealed": false,
+      "postNum": 799613
+    },
+    {
+      "resolutionName": "Protection of monuments",
+      "num": 69,
+      "category": "Education and Creativity",
+      "strength": "Cultural Heritage",
+      "repealed": true,
+      "postNum": 883533
+    },
+    {
+      "resolutionName": "International Competition Law",
+      "num": 70,
+      "category": "Free Trade",
+      "strength": "significant",
+      "repealed": true,
+      "postNum": 883548
+    },
+    {
+      "resolutionName": "Repeal \"Protection of Monuments\"",
+      "num": 71,
+      "category": "Repeal",
+      "strength": "77",
+      "repealed": false,
+      "postNum": 1193482
+    },
+    {
+      "resolutionName": "Cultural Heritage Protection",
+      "num": 72,
+      "category": "Education and Creativity",
+      "strength": "Cultural Heritage",
+      "repealed": true,
+      "postNum": 1193494
+    },
+    {
+      "resolutionName": "International Postal Union",
+      "num": 73,
+      "category": "Free Trade",
+      "strength": "mild",
+      "repealed": false,
+      "postNum": 1193537
+    },
+    {
+      "resolutionName": "Medical Blockade Restriction",
+      "num": 74,
+      "category": "Free Trade",
+      "strength": "strong",
+      "repealed": true,
+      "postNum": 1639296
+    },
+    {
+      "resolutionName": "International Radio Act",
+      "num": 75,
+      "category": "Free Trade",
+      "strength": "mild",
+      "repealed": true,
+      "postNum": 1639318
+    },
+    {
+      "resolutionName": "Standardised Passport Act",
+      "num": 76,
+      "category": "Political Stability",
+      "strength": "mild",
+      "repealed": false,
+      "postNum": 1639327
+    },
+    {
+      "resolutionName": "Repeal \"The Right to Education\"",
+      "num": 77,
+      "category": "Repeal",
+      "strength": "65",
+      "repealed": false,
+      "postNum": 1639351
+    },
+    {
+      "resolutionName": "Universal Library Coalition",
+      "num": 78,
+      "category": "Education and Creativity",
+      "strength": "Cultural Heritage",
+      "repealed": false,
+      "postNum": 1639383
+    },
+    {
+      "resolutionName": "Ban on Ex Post Facto Laws",
+      "num": 79,
+      "category": "Human Rights",
+      "strength": "significant",
+      "repealed": false,
+      "postNum": 1639391
+    },
+    {
+      "resolutionName": "A Promotion of Basic Education",
+      "num": 80,
+      "category": "Education and Creativity",
+      "strength": "Educational",
+      "repealed": false,
+      "postNum": 1639404
+    },
+    {
+      "resolutionName": "Disaster Preparedness Act",
+      "num": 81,
+      "category": "International Security",
+      "strength": "mild",
+      "repealed": true,
+      "postNum": 1639412
+    },
+    {
+      "resolutionName": "Universal Clinical Trials Act",
+      "num": 82,
+      "category": "Social Justice",
+      "strength": "mild",
+      "repealed": false,
+      "postNum": 1821749
+    },
+    {
+      "resolutionName": "International Road Safety",
+      "num": 83,
+      "category": "Free Trade",
+      "strength": "mild",
+      "repealed": false,
+      "postNum": 1821769
+    },
+    {
+      "resolutionName": "A Ban on Forced Disappearances",
+      "num": 84,
+      "category": "Furtherment of Democracy",
+      "strength": "significant",
+      "repealed": false,
+      "postNum": 1821787
+    },
+    {
+      "resolutionName": "Repeal \"Disaster Preparedness Act\"",
+      "num": 85,
+      "category": "Repeal",
+      "strength": "97",
+      "repealed": false,
+      "postNum": 1821825
+    },
+    {
+      "resolutionName": "Museums of Musical Heritage",
+      "num": 86,
+      "category": "Education and Creativity",
+      "strength": "Cultural Heritage",
+      "repealed": false,
+      "postNum": 1821851
+    },
+    {
+      "resolutionName": "Meteorological Cooperation",
+      "num": 87,
+      "category": "Free Trade",
+      "strength": "mild",
+      "repealed": false,
+      "postNum": 1821884
+    },
+    {
+      "resolutionName": "WA Numeration and Units Act",
+      "num": 88,
+      "category": "Education and Creativity",
+      "strength": "Cultural Heritage",
+      "repealed": false,
+      "postNum": 2035614
+    },
+    {
+      "resolutionName": "Internet Net Neutrality Act",
+      "num": 89,
+      "category": "Education and Creativity",
+      "strength": "Free Press",
+      "repealed": true,
+      "postNum": 2035631
+    },
+    {
+      "resolutionName": "Drug Trafficking Act",
+      "num": 90,
+      "category": "International Security",
+      "strength": "mild",
+      "repealed": false,
+      "postNum": 2035648
+    },
+    {
+      "resolutionName": "A Convention on Gender",
+      "num": 91,
+      "category": "Human Rights",
+      "strength": "significant",
+      "repealed": false,
+      "postNum": 2035664
+    },
+    {
+      "resolutionName": "Cooperation in Science Act",
+      "num": 92,
+      "category": "Education and Creativity",
+      "strength": "Educational",
+      "repealed": true,
+      "postNum": 2035673
+    },
+    {
+      "resolutionName": "The General Patent Charter",
+      "num": 93,
+      "category": "Free Trade",
+      "strength": "mild",
+      "repealed": true,
+      "postNum": 2439096
+    },
+    {
+      "resolutionName": "Microcredit and Microgrants",
+      "num": 94,
+      "category": "Free Trade",
+      "strength": "mild",
+      "repealed": false,
+      "postNum": 2439109
+    },
+    {
+      "resolutionName": "Responsible Offshore Drilling",
+      "num": 95,
+      "category": "Environmental",
+      "strength": "All Businesses",
+      "repealed": false,
+      "postNum": 2439123
+    },
+    {
+      "resolutionName": "The Clean Water Resolution",
+      "num": 96,
+      "category": "Social Justice",
+      "strength": "significant",
+      "repealed": true,
+      "postNum": 2439126
+    },
+    {
+      "resolutionName": "Quality in Health Services",
+      "num": 97,
+      "category": "Social Justice",
+      "strength": "significant",
+      "repealed": false,
+      "postNum": 2439131
+    },
+    {
+      "resolutionName": "Oil Tanker Standards Act",
+      "num": 98,
+      "category": "Environmental",
+      "strength": "All Businesses",
+      "repealed": true,
+      "postNum": 2439145
+    },
+    {
+      "resolutionName": "Multilateral Prosecution Act",
+      "num": 99,
+      "category": "Human Rights",
+      "strength": "mild",
+      "repealed": true,
+      "postNum": 2439155
+    },
+    {
+      "resolutionName": "Anti-Cyberterrorism Act",
+      "num": 100,
+      "category": "International Security",
+      "strength": "mild",
+      "repealed": true,
+      "postNum": 2439163
+    },
+    {
+      "resolutionName": "Repeal \"The Clean Water Resolution\"",
+      "num": 101,
+      "category": "Repeal",
+      "strength": "122",
+      "repealed": false,
+      "postNum": 2861642
+    },
+    {
+      "resolutionName": "International Criminal Court",
+      "num": 102,
+      "category": "Human Rights",
+      "strength": "significant",
+      "repealed": true,
+      "postNum": 2861683
+    },
+    {
+      "resolutionName": "International Drug Education",
+      "num": 103,
+      "category": "Education and Creativity",
+      "strength": "Educational",
+      "repealed": false,
+      "postNum": 2861717
+    },
+    {
+      "resolutionName": "Nautical Pilotage Act",
+      "num": 104,
+      "category": "International Security",
+      "strength": "mild",
+      "repealed": true,
+      "postNum": 2861749
+    },
+    {
+      "resolutionName": "Preparing for Disasters",
+      "num": 105,
+      "category": "International Security",
+      "strength": "mild",
+      "repealed": false,
+      "postNum": 3123124
+    },
+    {
+      "resolutionName": "Assitance Givers Protection",
+      "num": 106,
+      "category": "Advancement of Industry",
+      "strength": "Tort Reform",
+      "repealed": true,
+      "postNum": 3123143
+    },
+    {
+      "resolutionName": "Clean Water Act",
+      "num": 107,
+      "category": "Social Justice",
+      "strength": "significant",
+      "repealed": false,
+      "postNum": 3123158
+    },
+    {
+      "resolutionName": "For the Wrongly Convicted",
+      "num": 108,
+      "category": "Human Rights",
+      "strength": "significant",
+      "repealed": false,
+      "postNum": 3123188
+    },
+    {
+      "resolutionName": "Rights of the Orphaned Child",
+      "num": 109,
+      "category": "Human Rights",
+      "strength": "mild",
+      "repealed": false,
+      "postNum": 3123204
+    },
+    {
+      "resolutionName": "Identity Theft Prevention Act",
+      "num": 110,
+      "category": "International Security",
+      "strength": "mild",
+      "repealed": false,
+      "postNum": 3537660
+    },
+    {
+      "resolutionName": "Medical Research Ethics Act",
+      "num": 111,
+      "category": "Human Rights",
+      "strength": "significant",
+      "repealed": false,
+      "postNum": 3537690
+    },
+    {
+      "resolutionName": "Convention on Execution",
+      "num": 112,
+      "category": "Human Rights",
+      "strength": "strong",
+      "repealed": true,
+      "postNum": 3537739
+    },
+    {
+      "resolutionName": "The Gem Trading Accord",
+      "num": 113,
+      "category": "Free Trade",
+      "strength": "significant",
+      "repealed": true,
+      "postNum": 3537764
+    },
+    {
+      "resolutionName": "On Female Genital Mutilation",
+      "num": 114,
+      "category": "Human Rights",
+      "strength": "significant",
+      "repealed": false,
+      "postNum": 3537785
+    },
+    {
+      "resolutionName": "Space Research Station Program",
+      "num": 115,
+      "category": "Education and Creativity",
+      "strength": "Educational",
+      "repealed": true,
+      "postNum": 3537823
+    },
+    {
+      "resolutionName": "Nuclear Waste Safety Act",
+      "num": 116,
+      "category": "International Security",
+      "strength": "significant",
+      "repealed": false,
+      "postNum": 4025870
+    },
+    {
+      "resolutionName": "Delineation of Borders Act",
+      "num": 117,
+      "category": "Political Stability",
+      "strength": "mild",
+      "repealed": true,
+      "postNum": 4025929
+    },
+    {
+      "resolutionName": "Ethics in International Trade",
+      "num": 118,
+      "category": "Advancement of Industry",
+      "strength": "Protective Tariffs",
+      "repealed": true,
+      "postNum": 4026013
+    },
+    {
+      "resolutionName": "Nuclear Testing Safety",
+      "num": 119,
+      "category": "Global Disarmament",
+      "strength": "significant",
+      "repealed": true,
+      "postNum": 4026048
+    },
+    {
+      "resolutionName": "Missing Minors Database",
+      "num": 120,
+      "category": "International Security",
+      "strength": "mild",
+      "repealed": true,
+      "postNum": 4026082
+    },
+    {
+      "resolutionName": "Medical Facilities Protection",
+      "num": 121,
+      "category": "Global Disarmament",
+      "strength": "mild",
+      "repealed": false,
+      "postNum": 4026110
+    },
+    {
+      "resolutionName": "Read the Resolution Act",
+      "num": 122,
+      "category": "Furtherment of Democracy",
+      "strength": "mild",
+      "repealed": false,
+      "postNum": 4026148
+    },
+    {
+      "resolutionName": "Reducing Problem Gambling",
+      "num": 123,
+      "category": "Education and Creativity",
+      "strength": "Educational",
+      "repealed": false,
+      "postNum": 4524698
+    },
+    {
+      "resolutionName": "Essential Medication Act",
+      "num": 124,
+      "category": "Recreational Drug Use",
+      "strength": "legalize",
+      "repealed": false,
+      "postNum": 4524724
+    },
+    {
+      "resolutionName": "Repeal \"Missing Minors Database\"",
+      "num": 125,
+      "category": "Repeal",
+      "strength": "156",
+      "repealed": false,
+      "postNum": 4524771
+    },
+    {
+      "resolutionName": "Extinction Preparation Act",
+      "num": 126,
+      "category": "Education and Creativity",
+      "strength": "Educational",
+      "repealed": true,
+      "postNum": 4524833
+    },
+    {
+      "resolutionName": "Conscientious Objector Act",
+      "num": 127,
+      "category": "Human Rights",
+      "strength": "significant",
+      "repealed": true,
+      "postNum": 4524895
+    },
+    {
+      "resolutionName": "On Abortion",
+      "num": 128,
+      "category": "Human Rights",
+      "strength": "mild",
+      "repealed": false,
+      "postNum": 4524923
+    },
+    {
+      "resolutionName": "Repeal \"Conscientious Objector Act\"",
+      "num": 129,
+      "category": "Repeal",
+      "strength": "168",
+      "repealed": false,
+      "postNum": 4524963
+    },
+    {
+      "resolutionName": "Elections and Assistance Act",
+      "num": 130,
+      "category": "Furtherment of Democracy",
+      "strength": "significant",
+      "repealed": false,
+      "postNum": 4592277
+    },
+    {
+      "resolutionName": "Missing Minors Act",
+      "num": 131,
+      "category": "International Security",
+      "strength": "mild",
+      "repealed": true,
+      "postNum": 4961916
+    },
+    {
+      "resolutionName": "Military Freedom Act",
+      "num": 132,
+      "category": "Furtherment of Democracy",
+      "strength": "significant",
+      "repealed": false,
+      "postNum": 4962141
+    },
+    {
+      "resolutionName": "Repeal \"Missing Minors Act\"",
+      "num": 133,
+      "category": "Repeal",
+      "strength": "175",
+      "repealed": false,
+      "postNum": 4962210
+    },
+    {
+      "resolutionName": "Guns and Mental Capacity",
+      "num": 134,
+      "category": "Gun Control",
+      "strength": "Tighten",
+      "repealed": true,
+      "postNum": 4962273
+    },
+    {
+      "resolutionName": "Universal Standard Time Act",
+      "num": 135,
+      "category": "Free Trade",
+      "strength": "mild",
+      "repealed": true,
+      "postNum": 4962328
+    },
+    {
+      "resolutionName": "Convention on Wartime Deceased",
+      "num": 136,
+      "category": "Moral Decency",
+      "strength": "mild",
+      "repealed": false,
+      "postNum": 4962383
+    },
+    {
+      "resolutionName": "Repeal \"Universal Standard Time Act\"",
+      "num": 137,
+      "category": "Repeal",
+      "strength": "180",
+      "repealed": false,
+      "postNum": 4962449
+    },
+    {
+      "resolutionName": "Repeal \"Space Station Research Program\"",
+      "num": 138,
+      "category": "Repeal",
+      "strength": "146",
+      "repealed": false,
+      "postNum": 4962550
+    },
+    {
+      "resolutionName": "Consumer Product Safety",
+      "num": 139,
+      "category": "Social Justice",
+      "strength": "mild",
+      "repealed": true,
+      "postNum": 5103028
+    },
+    {
+      "resolutionName": "Institutional Psychiatry Act",
+      "num": 140,
+      "category": "Human Rights",
+      "strength": "significant",
+      "repealed": false,
+      "postNum": 5103076
+    },
+    {
+      "resolutionName": "Permit Male Circumcision",
+      "num": 141,
+      "category": "Human Rights",
+      "strength": "mild",
+      "repealed": false,
+      "postNum": 5103118
+    },
+    {
+      "resolutionName": "In Regards to Cloning",
+      "num": 142,
+      "category": "Human Rights",
+      "strength": "mild",
+      "repealed": true,
+      "postNum": 5103169
+    },
+    {
+      "resolutionName": "Repeal \"In Regards to Cloning\"",
+      "num": 143,
+      "category": "Repeal",
+      "strength": "190",
+      "repealed": false,
+      "postNum": 5466170
+    },
+    {
+      "resolutionName": "Repeal \"Neutrality of Nations\"",
+      "num": 144,
+      "category": "Repeal",
+      "strength": "14",
+      "repealed": false,
+      "postNum": 5466214
+    },
+    {
+      "resolutionName": "Animal Cruelty Prevention",
+      "num": 145,
+      "category": "Moral Decency",
+      "strength": "mild",
+      "repealed": true,
+      "postNum": 5466267
+    },
+    {
+      "resolutionName": "Recognising Achievements Act",
+      "num": 146,
+      "category": "Free Trade",
+      "strength": "mild",
+      "repealed": false,
+      "postNum": 5466418
+    },
+    {
+      "resolutionName": "Extradition Rights",
+      "num": 147,
+      "category": "Human Rights",
+      "strength": "significant",
+      "repealed": false,
+      "postNum": 5466479
+    },
+    {
+      "resolutionName": "Against Conflict Minerals",
+      "num": 148,
+      "category": "Free Trade",
+      "strength": "mild",
+      "repealed": false,
+      "postNum": 5721720
+    },
+    {
+      "resolutionName": "On Expiration Dates",
+      "num": 149,
+      "category": "Social Justice",
+      "strength": "mild",
+      "repealed": true,
+      "postNum": 5721744
+    },
+    {
+      "resolutionName": "Repeal \"Guns and Mental Capacity\"",
+      "num": 150,
+      "category": "Repeal",
+      "strength": "179",
+      "repealed": false,
+      "postNum": 5721778
+    },
+    {
+      "resolutionName": "Missing Individuals Act",
+      "num": 151,
+      "category": "International Security",
+      "strength": "mild",
+      "repealed": false,
+      "postNum": 5721837
+    },
+    {
+      "resolutionName": "Repeal \"WA Environmental Council\"",
+      "num": 152,
+      "category": "Repeal",
+      "strength": "42",
+      "repealed": false,
+      "postNum": 5721866
+    },
+    {
+      "resolutionName": "Repeal \"Biological Weapons Conference\"",
+      "num": 153,
+      "category": "Repeal",
+      "strength": "71",
+      "repealed": false,
+      "postNum": 6128529
+    },
+    {
+      "resolutionName": "Repeal \"Extinction Preparation Act\"",
+      "num": 154,
+      "category": "Repeal",
+      "strength": "166",
+      "repealed": false,
+      "postNum": 6128604
+    },
+    {
+      "resolutionName": "Freedom of the Press",
+      "num": 155,
+      "category": "Education and Creativity",
+      "strength": "Free Press",
+      "repealed": false,
+      "postNum": 6128667
+    },
+    {
+      "resolutionName": "Safety in Difficult Times",
+      "num": 156,
+      "category": "Social Justice",
+      "strength": "significant",
+      "repealed": true,
+      "postNum": 6551446
+    },
+    {
+      "resolutionName": "Repeal \"Safety in Difficult Times\"",
+      "num": 157,
+      "category": "Repeal",
+      "strength": "216",
+      "repealed": false,
+      "postNum": 6551512
+    },
+    {
+      "resolutionName": "On Genetically Modified Foods",
+      "num": 158,
+      "category": "Free Trade",
+      "strength": "mild",
+      "repealed": true,
+      "postNum": 6551567
+    },
+    {
+      "resolutionName": "Promotion of Intl Education",
+      "num": 159,
+      "category": "Education and Creativity",
+      "strength": "Educational",
+      "repealed": false,
+      "postNum": 6551614
+    },
+    {
+      "resolutionName": "Forced Marriages Ban Act",
+      "num": 160,
+      "category": "Human Rights",
+      "strength": "mild",
+      "repealed": false,
+      "postNum": 6925600
+    },
+    {
+      "resolutionName": "Medical Standards in Prisons",
+      "num": 161,
+      "category": "Human Rights",
+      "strength": "significant",
+      "repealed": false,
+      "postNum": 6925619
+    },
+    {
+      "resolutionName": "On Humanitarian Aid",
+      "num": 162,
+      "category": "Human Rights",
+      "strength": "significant",
+      "repealed": true,
+      "postNum": 6925654
+    },
+    {
+      "resolutionName": "Repeal \"Law of the Sea\"",
+      "num": 163,
+      "category": "Repeal",
+      "strength": "47",
+      "repealed": false,
+      "postNum": 7156678
+    },
+    {
+      "resolutionName": "Consular Rights",
+      "num": 164,
+      "category": "Human Rights",
+      "strength": "mild",
+      "repealed": false,
+      "postNum": 7156721
+    },
+    {
+      "resolutionName": "A Model World Assembly",
+      "num": 165,
+      "category": "Education and Creativity",
+      "strength": "Educational",
+      "repealed": true,
+      "postNum": 7156828
+    },
+    {
+      "resolutionName": "Repeal \"On Humanitarian Aid\"",
+      "num": 166,
+      "category": "Repeal",
+      "strength": "228",
+      "repealed": false,
+      "postNum": 7156861
+    },
+    {
+      "resolutionName": "Legalizing Prostitution",
+      "num": 167,
+      "category": "Free Trade",
+      "strength": "significant",
+      "repealed": true,
+      "postNum": 7463209
+    },
+    {
+      "resolutionName": "Law of the Seas",
+      "num": 168,
+      "category": "Global Disarmament",
+      "strength": "mild",
+      "repealed": false,
+      "postNum": 7463244
+    },
+    {
+      "resolutionName": "Social Assistance Accord",
+      "num": 169,
+      "category": "Social Justice",
+      "strength": "significant",
+      "repealed": true,
+      "postNum": 7463285
+    },
+    {
+      "resolutionName": "Protect War Correspondents",
+      "num": 170,
+      "category": "Human Rights",
+      "strength": "significant",
+      "repealed": true,
+      "postNum": 7811167
+    },
+    {
+      "resolutionName": "Freedom in Medical Research",
+      "num": 171,
+      "category": "Free Trade",
+      "strength": "significant",
+      "repealed": true,
+      "postNum": 7811214
+    },
+    {
+      "resolutionName": "International Expositions Act",
+      "num": 172,
+      "category": "Education and Creativity",
+      "strength": "Cultural Heritage",
+      "repealed": true,
+      "postNum": 7811320
+    },
+    {
+      "resolutionName": "Repeal \"Social Assistance Accord\"",
+      "num": 173,
+      "category": "Repeal",
+      "strength": "239",
+      "repealed": false,
+      "postNum": 7811367
+    },
+    {
+      "resolutionName": "Right to Petition",
+      "num": 174,
+      "category": "Furtherment of Democracy",
+      "strength": "mild",
+      "repealed": false,
+      "postNum": 8007210
+    },
+    {
+      "resolutionName": "Organ and Blood Donations Act",
+      "num": 175,
+      "category": "Social Justice",
+      "strength": "significant",
+      "repealed": true,
+      "postNum": 8007241
+    },
+    {
+      "resolutionName": "Disability Welfare Act",
+      "num": 176,
+      "category": "Social Justice",
+      "strength": "significant",
+      "repealed": false,
+      "postNum": 8007251
+    },
+    {
+      "resolutionName": "Concerning Financial Fraud",
+      "num": 177,
+      "category": "Free Trade",
+      "strength": "significant",
+      "repealed": false,
+      "postNum": 8487412
+    },
+    {
+      "resolutionName": "Repeal \"Legalizing Prostitution\"",
+      "num": 178,
+      "category": "Repeal",
+      "strength": "237",
+      "repealed": false,
+      "postNum": 8487450
+    },
+    {
+      "resolutionName": "Clean Prostitute Act",
+      "num": 179,
+      "category": "Free Trade",
+      "strength": "mild",
+      "repealed": false,
+      "postNum": 8487479
+    },
+    {
+      "resolutionName": "A Decriminalization of Suicide",
+      "num": 180,
+      "category": "Human Rights",
+      "strength": "significant",
+      "repealed": false,
+      "postNum": 8487495
+    },
+    {
+      "resolutionName": "Repeal \"Medical Blockade Restriction\"",
+      "num": 181,
+      "category": "Repeal",
+      "strength": "87",
+      "repealed": false,
+      "postNum": 8487523
+    },
+    {
+      "resolutionName": "Renewable Research Commitment",
+      "num": 182,
+      "category": "Environmental",
+      "strength": "All Businesses",
+      "repealed": true,
+      "postNum": 8784352
+    },
+    {
+      "resolutionName": "Defense of Self and Others",
+      "num": 183,
+      "category": "Human Rights",
+      "strength": "significant",
+      "repealed": true,
+      "postNum": 8784370
+    },
+    {
+      "resolutionName": "Repeal \"Habeas Corpus\"",
+      "num": 184,
+      "category": "Repeal",
+      "strength": "74",
+      "repealed": false,
+      "postNum": 8784410
+    },
+    {
+      "resolutionName": "Repeal \"WA Copyright Charter\"",
+      "num": 185,
+      "category": "Repeal",
+      "strength": "67",
+      "repealed": false,
+      "postNum": 8784440
+    },
+    {
+      "resolutionName": "Medical Provisions in Blockade",
+      "num": 186,
+      "category": "Free Trade",
+      "strength": "significant",
+      "repealed": false,
+      "postNum": 8784465
+    },
+    {
+      "resolutionName": "Double Jeopardy Prohibition",
+      "num": 187,
+      "category": "Human Rights",
+      "strength": "significant",
+      "repealed": true,
+      "postNum": 8784489
+    },
+    {
+      "resolutionName": "Repeal \"A Model World Assembly\"",
+      "num": 188,
+      "category": "Repeal",
+      "strength": "233",
+      "repealed": false,
+      "postNum": 8784536
+    },
+    {
+      "resolutionName": "Repeal \"For the Detained and Convicted\"",
+      "num": 189,
+      "category": "Repeal",
+      "strength": "68",
+      "repealed": false,
+      "postNum": 9214342
+    },
+    {
+      "resolutionName": "Habeas Corpus Act",
+      "num": 190,
+      "category": "Human Rights",
+      "strength": "strong",
+      "repealed": true,
+      "postNum": 9214425
+    },
+    {
+      "resolutionName": "Repeal \"Animal Cruelty Prevention\"",
+      "num": 191,
+      "category": "Repeal",
+      "strength": "199",
+      "repealed": false,
+      "postNum": 9214497
+    },
+    {
+      "resolutionName": "Repeal \"Right to Privacy\"",
+      "num": 192,
+      "category": "Repeal",
+      "strength": "63",
+      "repealed": false,
+      "postNum": 9214561
+    },
+    {
+      "resolutionName": "Repeal \"Double Jeopardy Prohibition\"",
+      "num": 193,
+      "category": "Repeal",
+      "strength": "269",
+      "repealed": false,
+      "postNum": 9214631
+    },
+    {
+      "resolutionName": "Treatment of Inmates",
+      "num": 194,
+      "category": "Human Rights",
+      "strength": "significant",
+      "repealed": false,
+      "postNum": 9214687
+    },
+    {
+      "resolutionName": "Repeal \"Habeas Corpus Act\"",
+      "num": 195,
+      "category": "Repeal",
+      "strength": "275",
+      "repealed": false,
+      "postNum": 9214774
+    },
+    {
+      "resolutionName": "Freedom of Information Act",
+      "num": 196,
+      "category": "Furtherment of Democracy",
+      "strength": "significant",
+      "repealed": false,
+      "postNum": 9652789
+    },
+    {
+      "resolutionName": "Banning Extrajudicial Transfer",
+      "num": 197,
+      "category": "Human Rights",
+      "strength": "significant",
+      "repealed": false,
+      "postNum": 9652923
+    },
+    {
+      "resolutionName": "Preventing Multiple Trials",
+      "num": 198,
+      "category": "Human Rights",
+      "strength": "significant",
+      "repealed": false,
+      "postNum": 9653011
+    },
+    {
+      "resolutionName": "Sustainable Fishing Act",
+      "num": 199,
+      "category": "Environmental",
+      "strength": "All Businesses",
+      "repealed": false,
+      "postNum": 9653061
+    },
+    {
+      "resolutionName": "Foreign Marriage Recognition",
+      "num": 200,
+      "category": "Human Rights",
+      "strength": "mild",
+      "repealed": false,
+      "postNum": 9653108
+    },
+    {
+      "resolutionName": "Habeas Corpus",
+      "num": 201,
+      "category": "Human Rights",
+      "strength": "significant",
+      "repealed": false,
+      "postNum": 9653153
+    },
+    {
+      "resolutionName": "Convict Appellate Rights",
+      "num": 202,
+      "category": "Human Rights",
+      "strength": "significant",
+      "repealed": false,
+      "postNum": 10021266
+    },
+    {
+      "resolutionName": "Repeal \"Nautical Pilotage Act\"",
+      "num": 203,
+      "category": "Repeal",
+      "strength": "130",
+      "repealed": false,
+      "postNum": 10021307
+    },
+    {
+      "resolutionName": "Nuclear Power Safety Act",
+      "num": 204,
+      "category": "Environmental",
+      "strength": "Mining",
+      "repealed": true,
+      "postNum": 10021346
+    },
+    {
+      "resolutionName": "Freedom to Contract",
+      "num": 205,
+      "category": "Human Rights",
+      "strength": "strong",
+      "repealed": false,
+      "postNum": 10021368
+    },
+    {
+      "resolutionName": "Repeal \"Delineation of Borders Act\"",
+      "num": 206,
+      "category": "Repeal",
+      "strength": "149",
+      "repealed": false,
+      "postNum": 10021407
+    },
+    {
+      "resolutionName": "Intangible Cultural Heritage",
+      "num": 207,
+      "category": "Education and Creativity",
+      "strength": "Cultural Heritage",
+      "repealed": true,
+      "postNum": 10021443
+    },
+    {
+      "resolutionName": "Resolving WA Trade Disputes",
+      "num": 208,
+      "category": "Free Trade",
+      "strength": "significant",
+      "repealed": false,
+      "postNum": 10021560
+    },
+    {
+      "resolutionName": "World Assembly Trade Rights",
+      "num": 209,
+      "category": "Free Trade",
+      "strength": "strong",
+      "repealed": false,
+      "postNum": 10556924
+    },
+    {
+      "resolutionName": "Repeal \"Numismatics Appreciation Act\"",
+      "num": 210,
+      "category": "Repeal",
+      "strength": "61",
+      "repealed": false,
+      "postNum": 10556997
+    },
+    {
+      "resolutionName": "Repeal \"On Expiration Dates\"",
+      "num": 211,
+      "category": "Repeal",
+      "strength": "204",
+      "repealed": false,
+      "postNum": 10914093
+    },
+    {
+      "resolutionName": "Repeal \"Nuclear Power Safety Act\"",
+      "num": 212,
+      "category": "Repeal",
+      "strength": "295",
+      "repealed": false,
+      "postNum": 10914208
+    },
+    {
+      "resolutionName": "Privacy Protection Act",
+      "num": 213,
+      "category": "Human Rights",
+      "strength": "significant",
+      "repealed": false,
+      "postNum": 10914292
+    },
+    {
+      "resolutionName": "Repeal \"Intangible Cultural Heritage\"",
+      "num": 214,
+      "category": "Repeal",
+      "strength": "299",
+      "repealed": false,
+      "postNum": 10914351
+    },
+    {
+      "resolutionName": "Repeal \"Organ and Blood Donations Act\"",
+      "num": 215,
+      "category": "Repeal",
+      "strength": "250",
+      "repealed": false,
+      "postNum": 10914471
+    },
+    {
+      "resolutionName": "Repeal \"Stem Cells For Greater Health\"",
+      "num": 216,
+      "category": "Repeal",
+      "strength": "49",
+      "repealed": false,
+      "postNum": 10914602
+    },
+    {
+      "resolutionName": "Biomedical Donor Rights",
+      "num": 217,
+      "category": "Human Rights",
+      "strength": "significant",
+      "repealed": false,
+      "postNum": 11260258
+    },
+    {
+      "resolutionName": "Biomedical Recipient Rights",
+      "num": 218,
+      "category": "Human Rights",
+      "strength": "significant",
+      "repealed": false,
+      "postNum": 11260300
+    },
+    {
+      "resolutionName": "Biomedical Innovation Org",
+      "num": 219,
+      "category": "Education and Creativity",
+      "strength": "Educational",
+      "repealed": false,
+      "postNum": 11260364
+    },
+    {
+      "resolutionName": "Repeal \"Child Protection Act\"",
+      "num": 220,
+      "category": "Repeal",
+      "strength": "19",
+      "repealed": false,
+      "postNum": 11260449
+    },
+    {
+      "resolutionName": "On Multilateral Trade Talks",
+      "num": 221,
+      "category": "Free Trade",
+      "strength": "mild",
+      "repealed": false,
+      "postNum": 11260510
+    },
+    {
+      "resolutionName": "Prevention of Child Abuse",
+      "num": 222,
+      "category": "Human Rights",
+      "strength": "significant",
+      "repealed": false,
+      "postNum": 11260571
+    },
+    {
+      "resolutionName": "Transboundary Water Use Act",
+      "num": 223,
+      "category": "Environmental",
+      "strength": "All Businesses",
+      "repealed": false,
+      "postNum": 11629208
+    },
+    {
+      "resolutionName": "Promotion of Bee-keeping",
+      "num": 224,
+      "category": "Free Trade",
+      "strength": "mild",
+      "repealed": false,
+      "postNum": 11629257
+    },
+    {
+      "resolutionName": "Repeal \"Assitance Givers Protection\"",
+      "num": 225,
+      "category": "Repeal",
+      "strength": "133",
+      "repealed": false,
+      "postNum": 11629322
+    },
+    {
+      "resolutionName": "WA Development Foundation",
+      "num": 226,
+      "category": "Free Trade",
+      "strength": "mild",
+      "repealed": false,
+      "postNum": 12008764
+    },
+    {
+      "resolutionName": "Rights of the Disabled Act",
+      "num": 227,
+      "category": "Human Rights",
+      "strength": "significant",
+      "repealed": true,
+      "postNum": 12008838
+    },
+    {
+      "resolutionName": "Animal Protection Act",
+      "num": 228,
+      "category": "Moral Decency",
+      "strength": "significant",
+      "repealed": true,
+      "postNum": 12008898
+    },
+    {
+      "resolutionName": "Access to Courts",
+      "num": 229,
+      "category": "Social Justice",
+      "strength": "mild",
+      "repealed": false,
+      "postNum": 12008956
+    },
+    {
+      "resolutionName": "The Early Learning Act",
+      "num": 230,
+      "category": "Education and Creativity",
+      "strength": "Educational",
+      "repealed": true,
+      "postNum": 12643044
+    },
+    {
+      "resolutionName": "Marital Rape Justice Act",
+      "num": 231,
+      "category": "Moral Decency",
+      "strength": "mild",
+      "repealed": true,
+      "postNum": 12643060
+    },
+    {
+      "resolutionName": "Foreign Copyright Recognition",
+      "num": 232,
+      "category": "Free Trade",
+      "strength": "mild",
+      "repealed": false,
+      "postNum": 12643083
+    },
+    {
+      "resolutionName": "Ban Profits on Workers\u0027 Deaths",
+      "num": 233,
+      "category": "Social Justice",
+      "strength": "mild",
+      "repealed": false,
+      "postNum": 13323567
+    },
+    {
+      "resolutionName": "Freedom to Read and Learn",
+      "num": 234,
+      "category": "Human Rights",
+      "strength": "significant",
+      "repealed": false,
+      "postNum": 13323627
+    },
+    {
+      "resolutionName": "Child Firearm Safety Act",
+      "num": 235,
+      "category": "Gun Control",
+      "strength": "Tighten",
+      "repealed": false,
+      "postNum": 13323697
+    },
+    {
+      "resolutionName": "Renewable Energy Installations",
+      "num": 236,
+      "category": "Environmental",
+      "strength": "All Businesses",
+      "repealed": true,
+      "postNum": 13323746
+    },
+    {
+      "resolutionName": "First Responder Protection Act",
+      "num": 237,
+      "category": "Human Rights",
+      "strength": "mild",
+      "repealed": true,
+      "postNum": 13323915
+    },
+    {
+      "resolutionName": "Repeal \"Marital Rape Justice Act\"",
+      "num": 238,
+      "category": "Repeal",
+      "strength": "336",
+      "repealed": false,
+      "postNum": 13324000
+    },
+    {
+      "resolutionName": "Vehicle Emissions Convention",
+      "num": 239,
+      "category": "Environmental",
+      "strength": "automotive",
+      "repealed": true,
+      "postNum": 13324126
+    },
+    {
+      "resolutionName": "Sexual Autonomy Guarantee",
+      "num": 240,
+      "category": "Human Rights",
+      "strength": "significant",
+      "repealed": false,
+      "postNum": 13324182
+    },
+    {
+      "resolutionName": "Repeal \"Consumer Product Safety\"",
+      "num": 241,
+      "category": "Repeal",
+      "strength": "185",
+      "repealed": false,
+      "postNum": 13324247
+    },
+    {
+      "resolutionName": "Biological Warfare Convention",
+      "num": 242,
+      "category": "Global Disarmament",
+      "strength": "significant",
+      "repealed": false,
+      "postNum": 13324353
+    },
+    {
+      "resolutionName": "Language Preservation",
+      "num": 243,
+      "category": "Education and Creativity",
+      "strength": "Cultural Heritage",
+      "repealed": true,
+      "postNum": 14760245
+    },
+    {
+      "resolutionName": "Physical Sites Protection Act",
+      "num": 244,
+      "category": "Environmental",
+      "strength": "All Businesses",
+      "repealed": true,
+      "postNum": 14760317
+    },
+    {
+      "resolutionName": "Repeal \"First Responder Protection Act\"",
+      "num": 245,
+      "category": "Repeal",
+      "strength": "344",
+      "repealed": false,
+      "postNum": 14760414
+    },
+    {
+      "resolutionName": "Repeal \"Vehicle Emissions Convention\"",
+      "num": 246,
+      "category": "Repeal",
+      "strength": "347",
+      "repealed": false,
+      "postNum": 14760679
+    },
+    {
+      "resolutionName": "Rights of Crime Victims",
+      "num": 247,
+      "category": "Human Rights",
+      "strength": "significant",
+      "repealed": false,
+      "postNum": 14760870
+    },
+    {
+      "resolutionName": "Against Corruption",
+      "num": 248,
+      "category": "Political Stability",
+      "strength": "significant",
+      "repealed": true,
+      "postNum": 14760997
+    },
+    {
+      "resolutionName": "Stopping Suicide Seeds",
+      "num": 249,
+      "category": "Environmental",
+      "strength": "All Businesses",
+      "repealed": true,
+      "postNum": 14761201
+    },
+    {
+      "resolutionName": "Repeal \"Reduction of Abortion Act\"",
+      "num": 250,
+      "category": "Repeal",
+      "strength": "44",
+      "repealed": false,
+      "postNum": 14761547
+    },
+    {
+      "resolutionName": "Repeal \"Physical Sites Protection Act\"",
+      "num": 251,
+      "category": "Repeal",
+      "strength": "352",
+      "repealed": false,
+      "postNum": 14788308
+    },
+    {
+      "resolutionName": "Repeal \"International Competition Law\"",
+      "num": 252,
+      "category": "Repeal",
+      "strength": "78",
+      "repealed": false,
+      "postNum": 15866657
+    },
+    {
+      "resolutionName": "Repeal \"Freedom in Medical Research\"",
+      "num": 253,
+      "category": "Repeal",
+      "strength": "244",
+      "repealed": false,
+      "postNum": 15866831
+    },
+    {
+      "resolutionName": "Invasive Species Response Act",
+      "num": 254,
+      "category": "Environmental",
+      "strength": "All Businesses",
+      "repealed": true,
+      "postNum": 15867008
+    },
+    {
+      "resolutionName": "Rights of Neutral States",
+      "num": 255,
+      "category": "Global Disarmament",
+      "strength": "mild",
+      "repealed": false,
+      "postNum": 15867113
+    },
+    {
+      "resolutionName": "Foreign Trademark Recognition",
+      "num": 256,
+      "category": "Free Trade",
+      "strength": "mild",
+      "repealed": false,
+      "postNum": 15867195
+    },
+    {
+      "resolutionName": "Reducing Automobile Emissions",
+      "num": 257,
+      "category": "Environmental",
+      "strength": "automotive",
+      "repealed": true,
+      "postNum": 15867320
+    },
+    {
+      "resolutionName": "Repeal \"Invasive Species Response Act\"",
+      "num": 258,
+      "category": "Repeal",
+      "strength": "371",
+      "repealed": false,
+      "postNum": 16712616
+    },
+    {
+      "resolutionName": "Stopping Invasive Species",
+      "num": 259,
+      "category": "Environmental",
+      "strength": "All Businesses",
+      "repealed": true,
+      "postNum": 16712682
+    },
+    {
+      "resolutionName": "Repeal \"Access to Science in Schools\"",
+      "num": 260,
+      "category": "Repeal",
+      "strength": "48",
+      "repealed": false,
+      "postNum": 16712782
+    },
+    {
+      "resolutionName": "Rainforest Protection Act",
+      "num": 261,
+      "category": "Environmental",
+      "strength": "Logging",
+      "repealed": true,
+      "postNum": 16712891
+    },
+    {
+      "resolutionName": "Repeal \"Rainforest Protection Act\"",
+      "num": 262,
+      "category": "Repeal",
+      "strength": "380",
+      "repealed": false,
+      "postNum": 16712993
+    },
+    {
+      "resolutionName": "Uranium Mining Standards Act",
+      "num": 263,
+      "category": "Environmental",
+      "strength": "Mining",
+      "repealed": false,
+      "postNum": 16713070
+    },
+    {
+      "resolutionName": "Repeal \"Language Preservation\"",
+      "num": 264,
+      "category": "Repeal",
+      "strength": "351",
+      "repealed": false,
+      "postNum": 16713150
+    },
+    {
+      "resolutionName": "Repeal \"Animal Protection Act \"",
+      "num": 265,
+      "category": "Repeal",
+      "strength": "332",
+      "repealed": false,
+      "postNum": 17266392
+    },
+    {
+      "resolutionName": "Chemical Weapons Protocol",
+      "num": 266,
+      "category": "International Security",
+      "strength": "mild",
+      "repealed": true,
+      "postNum": 17266447
+    },
+    {
+      "resolutionName": "Sensible Limits on Hunting",
+      "num": 267,
+      "category": "Moral Decency",
+      "strength": "mild",
+      "repealed": false,
+      "postNum": 17266501
+    },
+    {
+      "resolutionName": "Repeal \"Chemical Weapons Protocol\"",
+      "num": 268,
+      "category": "Repeal",
+      "strength": "386",
+      "repealed": false,
+      "postNum": 17266542
+    },
+    {
+      "resolutionName": "Repeal \"Against Corruption\"",
+      "num": 269,
+      "category": "Repeal",
+      "strength": "358",
+      "repealed": false,
+      "postNum": 17791452
+    },
+    {
+      "resolutionName": "Repeal \"Rights of the Disabled Act\"",
+      "num": 270,
+      "category": "Repeal",
+      "strength": "330",
+      "repealed": false,
+      "postNum": 17791610
+    },
+    {
+      "resolutionName": "Repeal \"Protection of Outer Space Act\"",
+      "num": 271,
+      "category": "Repeal",
+      "strength": "69",
+      "repealed": false,
+      "postNum": 17791719
+    },
+    {
+      "resolutionName": "Chemical Weapons Accord",
+      "num": 272,
+      "category": "International Security",
+      "strength": "mild",
+      "repealed": false,
+      "postNum": 17791853
+    },
+    {
+      "resolutionName": "Repeal \"Internet Net Neutrality Act\"",
+      "num": 273,
+      "category": "Repeal",
+      "strength": "111",
+      "repealed": false,
+      "postNum": 17791984
+    },
+    {
+      "resolutionName": "Repeal \"Renewable Energy Installations\"",
+      "num": 274,
+      "category": "Repeal",
+      "strength": "343",
+      "repealed": false,
+      "postNum": 17792124
+    },
+    {
+      "resolutionName": "Repeal \"Cultural Heritage Protection\"",
+      "num": 275,
+      "category": "Repeal",
+      "strength": "81",
+      "repealed": false,
+      "postNum": 17792241
+    },
+    {
+      "resolutionName": "Repeal \"The Early Learning Act\"",
+      "num": 276,
+      "category": "Repeal",
+      "strength": "335",
+      "repealed": false,
+      "postNum": 18468463
+    },
+    {
+      "resolutionName": "Repeal \"Dignified End of Life Choices\"",
+      "num": 277,
+      "category": "Repeal",
+      "strength": "57",
+      "repealed": false,
+      "postNum": 18468542
+    },
+    {
+      "resolutionName": "Repeal \"Anti-Cyberterrorism Act \"",
+      "num": 278,
+      "category": "Repeal",
+      "strength": "126",
+      "repealed": false,
+      "postNum": 18823100
+    },
+    {
+      "resolutionName": "Right of Emigration",
+      "num": 279,
+      "category": "Human Rights",
+      "strength": "significant",
+      "repealed": false,
+      "postNum": 18823151
+    },
+    {
+      "resolutionName": "Repeal \"International Radio Act\"",
+      "num": 280,
+      "category": "Repeal",
+      "strength": "90",
+      "repealed": false,
+      "postNum": 18823209
+    },
+    {
+      "resolutionName": "Industrial Pollution Control",
+      "num": 281,
+      "category": "Environmental",
+      "strength": "All Businesses",
+      "repealed": true,
+      "postNum": 18823264
+    },
+    {
+      "resolutionName": "Repeal \"Protect War Correspondents\"",
+      "num": 282,
+      "category": "Repeal",
+      "strength": "242",
+      "repealed": false,
+      "postNum": 18823318
+    },
+    {
+      "resolutionName": "Repeal \"Industrial Pollution Control \"",
+      "num": 283,
+      "category": "Repeal",
+      "strength": "411",
+      "repealed": false,
+      "postNum": 19281534
+    },
+    {
+      "resolutionName": "Repeal \"Ethics in International Trade\"",
+      "num": 284,
+      "category": "Repeal",
+      "strength": "151",
+      "repealed": false,
+      "postNum": 19281618
+    },
+    {
+      "resolutionName": "Assisted Suicide Act",
+      "num": 285,
+      "category": "Human Rights",
+      "strength": "mild",
+      "repealed": false,
+      "postNum": 19281675
+    },
+    {
+      "resolutionName": "Reproductive Freedoms",
+      "num": 286,
+      "category": "Human Rights",
+      "strength": "significant",
+      "repealed": false,
+      "postNum": 19281778
+    },
+    {
+      "resolutionName": "Cultural Site Preservation",
+      "num": 287,
+      "category": "Education and Creativity",
+      "strength": "Cultural Heritage",
+      "repealed": false,
+      "postNum": 19281851
+    },
+    {
+      "resolutionName": "Right to Adequate Sanitation",
+      "num": 288,
+      "category": "Social Justice",
+      "strength": "significant",
+      "repealed": false,
+      "postNum": 19281910
+    },
+    {
+      "resolutionName": "Radiological Terrorism",
+      "num": 289,
+      "category": "International Security",
+      "strength": "mild",
+      "repealed": false,
+      "postNum": 20668824
+    },
+    {
+      "resolutionName": "Protecting Migratory Animals",
+      "num": 290,
+      "category": "Environmental",
+      "strength": "All Businesses",
+      "repealed": false,
+      "postNum": 20668869
+    },
+    {
+      "resolutionName": "Sustainable Forest Management",
+      "num": 291,
+      "category": "Environmental",
+      "strength": "Logging",
+      "repealed": false,
+      "postNum": 20668912
+    },
+    {
+      "resolutionName": "Nuclear Security Convention",
+      "num": 292,
+      "category": "International Security",
+      "strength": "mild",
+      "repealed": true,
+      "postNum": 20668964
+    },
+    {
+      "resolutionName": "Repeal \"International Criminal Court\"",
+      "num": 293,
+      "category": "Repeal",
+      "strength": "128",
+      "repealed": false,
+      "postNum": 20669035
+    },
+    {
+      "resolutionName": "Repeal \"Multilateral Prosecution Act\"",
+      "num": 294,
+      "category": "Repeal",
+      "strength": "125",
+      "repealed": false,
+      "postNum": 20669096
+    },
+    {
+      "resolutionName": "Repeal \"Oil Tanker Standards Act\"",
+      "num": 295,
+      "category": "Repeal",
+      "strength": "124",
+      "repealed": false,
+      "postNum": 21185944
+    },
+    {
+      "resolutionName": "Prevention of Wildfires",
+      "num": 296,
+      "category": "International Security",
+      "strength": "mild",
+      "repealed": false,
+      "postNum": 21186059
+    },
+    {
+      "resolutionName": "Child Welfare in Adoption",
+      "num": 297,
+      "category": "Social Justice",
+      "strength": "mild",
+      "repealed": false,
+      "postNum": 21186155
+    },
+    {
+      "resolutionName": "Reducing Spills and Leaks",
+      "num": 298,
+      "category": "Environmental",
+      "strength": "All Businesses",
+      "repealed": false,
+      "postNum": 21186265
+    },
+    {
+      "resolutionName": "Legal Competence",
+      "num": 299,
+      "category": "Human Rights",
+      "strength": "significant",
+      "repealed": false,
+      "postNum": 21186344
+    },
+    {
+      "resolutionName": "Child Pornography Ban",
+      "num": 300,
+      "category": "Moral Decency",
+      "strength": "significant",
+      "repealed": false,
+      "postNum": 21186396
+    },
+    {
+      "resolutionName": "Ban on Leaded Fuel",
+      "num": 301,
+      "category": "Environmental",
+      "strength": "automotive",
+      "repealed": false,
+      "postNum": 23047098
+    },
+    {
+      "resolutionName": "Individual Working Freedoms",
+      "num": 302,
+      "category": "Advancement of Industry",
+      "strength": "Labor Deregulation",
+      "repealed": false,
+      "postNum": 23047137
+    },
+    {
+      "resolutionName": "Debris Prevention",
+      "num": 303,
+      "category": "Environmental",
+      "strength": "Manufacturing",
+      "repealed": true,
+      "postNum": 23047167
+    },
+    {
+      "resolutionName": "Repeal \"The Landmine Convention\"",
+      "num": 304,
+      "category": "Repeal",
+      "strength": "40",
+      "repealed": false,
+      "postNum": 23047209
+    },
+    {
+      "resolutionName": "Repeal \"The General Patent Charter\"",
+      "num": 305,
+      "category": "Repeal",
+      "strength": "116",
+      "repealed": false,
+      "postNum": 23047384
+    },
+    {
+      "resolutionName": "Rules of Surrender",
+      "num": 306,
+      "category": "Human Rights",
+      "strength": "mild",
+      "repealed": false,
+      "postNum": 23047442
+    },
+    {
+      "resolutionName": "Anti-Counterfeiting Pact",
+      "num": 307,
+      "category": "International Security",
+      "strength": "mild",
+      "repealed": false,
+      "postNum": 23047501
+    },
+    {
+      "resolutionName": "Nuclear Arms Protocol",
+      "num": 308,
+      "category": "Global Disarmament",
+      "strength": "mild",
+      "repealed": true,
+      "postNum": 23823433
+    },
+    {
+      "resolutionName": "Marine Debris Accord",
+      "num": 309,
+      "category": "Environmental",
+      "strength": "All Businesses",
+      "repealed": true,
+      "postNum": 23823507
+    },
+    {
+      "resolutionName": "Disabled Voters Act",
+      "num": 310,
+      "category": "Furtherment of Democracy",
+      "strength": "significant",
+      "repealed": false,
+      "postNum": 23823572
+    },
+    {
+      "resolutionName": "Repeal \"Marine Debris Accord\"",
+      "num": 311,
+      "category": "Repeal",
+      "strength": "476",
+      "repealed": false,
+      "postNum": 23823621
+    },
+    {
+      "resolutionName": "On Universal Jurisdiction",
+      "num": 312,
+      "category": "International Security",
+      "strength": "significant",
+      "repealed": false,
+      "postNum": 23823680
+    },
+    {
+      "resolutionName": "Repeal \"Freedom of Marriage Act\"",
+      "num": 313,
+      "category": "Repeal",
+      "strength": "15",
+      "repealed": false,
+      "postNum": 23823765
+    },
+    {
+      "resolutionName": "Repeal \"Defense of Self and Others\"",
+      "num": 314,
+      "category": "Repeal",
+      "strength": "261",
+      "repealed": false,
+      "postNum": 23823830
+    },
+    {
+      "resolutionName": "Nuclear Power Safeguards Act",
+      "num": 315,
+      "category": "Environmental",
+      "strength": "All Businesses",
+      "repealed": true,
+      "postNum": 23823904
+    },
+    {
+      "resolutionName": "Repeal \"On Genetically Modified Foods\"",
+      "num": 316,
+      "category": "Repeal",
+      "strength": "220",
+      "repealed": false,
+      "postNum": 23823988
+    },
+    {
+      "resolutionName": "Wartime Looting and Pillage",
+      "num": 317,
+      "category": "Human Rights",
+      "strength": "significant",
+      "repealed": false,
+      "postNum": 23824026
+    },
+    {
+      "resolutionName": "Repeal \"Nuclear Testing Safety\"",
+      "num": 318,
+      "category": "Repeal",
+      "strength": "154",
+      "repealed": false,
+      "postNum": 23824061
+    },
+    {
+      "resolutionName": "Repeal \"Cooperation in Science Act\"",
+      "num": 319,
+      "category": "Repeal",
+      "strength": "115",
+      "repealed": false,
+      "postNum": 24711000
+    },
+    {
+      "resolutionName": "Infectious Disease Control",
+      "num": 320,
+      "category": "Health",
+      "strength": "Healthcare",
+      "repealed": false,
+      "postNum": 24711356
+    },
+    {
+      "resolutionName": "Repeal \"International Expositions Act\"",
+      "num": 321,
+      "category": "Repeal",
+      "strength": "246",
+      "repealed": false,
+      "postNum": 24711495
+    },
+    {
+      "resolutionName": "On Scientific Cooperation",
+      "num": 322,
+      "category": "Education and Creativity",
+      "strength": "Educational",
+      "repealed": false,
+      "postNum": 24711618
+    },
+    {
+      "resolutionName": "No Penalty Without Law",
+      "num": 323,
+      "category": "Human Rights",
+      "strength": "significant",
+      "repealed": false,
+      "postNum": 24711709
+    },
+    {
+      "resolutionName": "Repeal \"Reducing Automobile Emissions\"",
+      "num": 324,
+      "category": "Repeal",
+      "strength": "375",
+      "repealed": false,
+      "postNum": 24711793
+    },
+    {
+      "resolutionName": "Responsible Arms Trading",
+      "num": 325,
+      "category": "Global Disarmament",
+      "strength": "mild",
+      "repealed": true,
+      "postNum": 24711892
+    },
+    {
+      "resolutionName": "Repeal \"Responsible Arms Trading\"",
+      "num": 326,
+      "category": "Repeal",
+      "strength": "503",
+      "repealed": false,
+      "postNum": 24711939
+    },
+    {
+      "resolutionName": "Repeal \"Sexual Privacy Act\"",
+      "num": 327,
+      "category": "Repeal",
+      "strength": "16",
+      "repealed": false,
+      "postNum": 24711998
+    },
+    {
+      "resolutionName": "Rights of Indigenous Peoples",
+      "num": 328,
+      "category": "Human Rights",
+      "strength": "mild",
+      "repealed": true,
+      "postNum": 25513053
+    },
+    {
+      "resolutionName": "Repeal \"Rights of Indigenous Peoples\"",
+      "num": 329,
+      "category": "Repeal",
+      "strength": "506",
+      "repealed": false,
+      "postNum": 25513115
+    },
+    {
+      "resolutionName": "Nuclear Testing Protocol",
+      "num": 330,
+      "category": "International Security",
+      "strength": "mild",
+      "repealed": false,
+      "postNum": 25513185
+    },
+    {
+      "resolutionName": "Repeal \"The Gem Trading Accord\"",
+      "num": 331,
+      "category": "Repeal",
+      "strength": "143",
+      "repealed": false,
+      "postNum": 25513246
+    },
+    {
+      "resolutionName": "Repeal \"Nuclear Power Safeguards Act\"",
+      "num": 332,
+      "category": "Repeal",
+      "strength": "484",
+      "repealed": false,
+      "postNum": 25513386
+    },
+    {
+      "resolutionName": "Preserving Antimicrobials",
+      "num": 333,
+      "category": "Health",
+      "strength": "Research",
+      "repealed": false,
+      "postNum": 25513564
+    },
+    {
+      "resolutionName": "Protected Status in Wartime",
+      "num": 334,
+      "category": "Human Rights",
+      "strength": "significant",
+      "repealed": false,
+      "postNum": 25513608
+    },
+    {
+      "resolutionName": "Prohibiting Animal Abuse",
+      "num": 335,
+      "category": "Moral Decency",
+      "strength": "significant",
+      "repealed": true,
+      "postNum": 25513722
+    },
+    {
+      "resolutionName": "World Space Administration",
+      "num": 336,
+      "category": "Education and Creativity",
+      "strength": "Educational",
+      "repealed": true,
+      "postNum": 25513803
+    },
+    {
+      "resolutionName": "Repeal \"Prohibiting Animal Abuse\"",
+      "num": 337,
+      "category": "Repeal",
+      "strength": "517",
+      "repealed": false,
+      "postNum": 25513844
+    },
+    {
+      "resolutionName": "Protection of Sapient Rights",
+      "num": 338,
+      "category": "Human Rights",
+      "strength": "significant",
+      "repealed": true,
+      "postNum": 25513878
+    },
+    {
+      "resolutionName": "Repeal \"World Space Administration\"",
+      "num": 339,
+      "category": "Repeal",
+      "strength": "518",
+      "repealed": false,
+      "postNum": 25513919
+    },
+    {
+      "resolutionName": "Access to Humanitarian Aid",
+      "num": 340,
+      "category": "Health",
+      "strength": "International Aid",
+      "repealed": false,
+      "postNum": 26911234
+    },
+    {
+      "resolutionName": "Repeal \"Living Wage Act\"",
+      "num": 341,
+      "category": "Repeal",
+      "strength": "21",
+      "repealed": false,
+      "postNum": 26911498
+    },
+    {
+      "resolutionName": "Civilian Aircraft Accord",
+      "num": 342,
+      "category": "International Security",
+      "strength": "mild",
+      "repealed": false,
+      "postNum": 26911575
+    },
+    {
+      "resolutionName": "Repeal \"Debris Prevention\"",
+      "num": 343,
+      "category": "Repeal",
+      "strength": "460",
+      "repealed": false,
+      "postNum": 26911684
+    },
+    {
+      "resolutionName": "Minimum Standard of Living Act",
+      "num": 344,
+      "category": "Social Justice",
+      "strength": "strong",
+      "repealed": false,
+      "postNum": 26911746
+    },
+    {
+      "resolutionName": "Proscription on Living Shields",
+      "num": 345,
+      "category": "Human Rights",
+      "strength": "mild",
+      "repealed": false,
+      "postNum": 26911818
+    },
+    {
+      "resolutionName": "Researching Unique Ecosystems",
+      "num": 346,
+      "category": "Education and Creativity",
+      "strength": "Educational",
+      "repealed": false,
+      "postNum": 26911900
+    },
+    {
+      "resolutionName": "Foreign Patent Recognition",
+      "num": 347,
+      "category": "Free Trade",
+      "strength": "mild",
+      "repealed": true,
+      "postNum": 26911977
+    },
+    {
+      "resolutionName": "Convention on Ceasefires",
+      "num": 348,
+      "category": "Global Disarmament",
+      "strength": "mild",
+      "repealed": false,
+      "postNum": 26912012
+    },
+    {
+      "resolutionName": "To Prevent Dangerous Debris",
+      "num": 349,
+      "category": "Environmental",
+      "strength": "Manufacturing",
+      "repealed": false,
+      "postNum": 26912108
+    },
+    {
+      "resolutionName": "Repeal \"Nuclear Security Convention\"",
+      "num": 350,
+      "category": "Repeal",
+      "strength": "438",
+      "repealed": false,
+      "postNum": 26912190
+    },
+    {
+      "resolutionName": "Nuclear Material Safeguards",
+      "num": 351,
+      "category": "International Security",
+      "strength": "mild",
+      "repealed": true,
+      "postNum": 26912274
+    },
+    {
+      "resolutionName": "Repeal \"Protection of Sapient Rights\"",
+      "num": 352,
+      "category": "Repeal",
+      "strength": "520",
+      "repealed": false,
+      "postNum": 27245033
+    },
+    {
+      "resolutionName": "Repeal \"Renewable Research Commitment\"",
+      "num": 353,
+      "category": "Repeal",
+      "strength": "260",
+      "repealed": false,
+      "postNum": 27245125
+    },
+    {
+      "resolutionName": "AI Coexistence Protocol",
+      "num": 354,
+      "category": "Human Rights",
+      "strength": "mild",
+      "repealed": false,
+      "postNum": 27245198
+    },
+    {
+      "resolutionName": "Rights of Sapient Species",
+      "num": 355,
+      "category": "Human Rights",
+      "strength": "strong",
+      "repealed": false,
+      "postNum": 27310640
+    },
+    {
+      "resolutionName": "Landmine Safety Protocol",
+      "num": 356,
+      "category": "International Security",
+      "strength": "mild",
+      "repealed": false,
+      "postNum": 27489941
+    },
+    {
+      "resolutionName": "Promotion of Clean Energy",
+      "num": 357,
+      "category": "Environmental",
+      "strength": "All Businesses",
+      "repealed": false,
+      "postNum": 27599850
+    },
+    {
+      "resolutionName": "Explosive Remnants of War",
+      "num": 358,
+      "category": "Health",
+      "strength": "International Aid",
+      "repealed": false,
+      "postNum": 27672052
+    },
+    {
+      "resolutionName": "Sexual Health and Education Act",
+      "num": 359,
+      "category": "Education and Creativity",
+      "strength": "Educational",
+      "repealed": true,
+      "postNum": 28179469
+    },
+    {
+      "resolutionName": "Cyber Security Convention",
+      "num": 360,
+      "category": "International Security",
+      "strength": "significant",
+      "repealed": true,
+      "postNum": 28179508
+    },
+    {
+      "resolutionName": "Repeal \"Nuclear Material Safeguards\"",
+      "num": 361,
+      "category": "Repeal",
+      "strength": "537",
+      "repealed": false,
+      "postNum": 28179545
+    },
+    {
+      "resolutionName": "Repeal \"Sexual Health and Education Act\"",
+      "num": 362,
+      "category": "Repeal",
+      "strength": "550",
+      "repealed": false,
+      "postNum": 28179556
+    },
+    {
+      "resolutionName": "Preservation of Artefacts",
+      "num": 363,
+      "category": "Education and Creativity",
+      "strength": "Cultural Heritage",
+      "repealed": true,
+      "postNum": 28517246
+    },
+    {
+      "resolutionName": "Repeal \"Cyber Security Convention\"",
+      "num": 364,
+      "category": "Repeal",
+      "strength": "551",
+      "repealed": false,
+      "postNum": 28517271
+    },
+    {
+      "resolutionName": "Law Enforcement Education",
+      "num": 365,
+      "category": "International Security",
+      "strength": "significant",
+      "repealed": true,
+      "postNum": 28517296
+    },
+    {
+      "resolutionName": "Repeal \"Stopping Suicide Seeds\"",
+      "num": 366,
+      "category": "Repeal",
+      "strength": "360",
+      "repealed": false,
+      "postNum": 28517310
+    },
+    {
+      "resolutionName": "Repeal \"Preservation of Artefacts\"",
+      "num": 367,
+      "category": "Repeal",
+      "strength": "557",
+      "repealed": false,
+      "postNum": 28657928
+    },
+    {
+      "resolutionName": "Repeal \"Law Enforcement Education\"",
+      "num": 368,
+      "category": "Repeal",
+      "strength": "560",
+      "repealed": false,
+      "postNum": 28657972
+    },
+    {
+      "resolutionName": "Reproductive Education Act",
+      "num": 369,
+      "category": "Education and Creativity",
+      "strength": "Educational",
+      "repealed": false,
+      "postNum": 28952015
+    },
+    {
+      "resolutionName": "Repeal \"Stopping Invasive Species\"",
+      "num": 370,
+      "category": "Repeal",
+      "strength": "378",
+      "repealed": false,
+      "postNum": 28952051
+    },
+    {
+      "resolutionName": "Toxic Heavy Metals Act",
+      "num": 371,
+      "category": "Environmental",
+      "strength": "All Businesses",
+      "repealed": false,
+      "postNum": 28952100
+    },
+    {
+      "resolutionName": "Preventing Animal Abuse",
+      "num": 372,
+      "category": "Moral Decency",
+      "strength": "significant",
+      "repealed": true,
+      "postNum": 28952112
+    },
+    {
+      "resolutionName": "Repeal \"Convention on Execution\"",
+      "num": 373,
+      "category": "Repeal",
+      "strength": "142",
+      "repealed": false,
+      "postNum": 28952143
+    },
+    {
+      "resolutionName": "The Rule of Law",
+      "num": 374,
+      "category": "Human Rights",
+      "strength": "strong",
+      "repealed": false,
+      "postNum": 28952487
+    },
+    {
+      "resolutionName": "Crime and Punishment",
+      "num": 375,
+      "category": "Human Rights",
+      "strength": "significant",
+      "repealed": false,
+      "postNum": 28973814
+    },
+    {
+      "resolutionName": "Pesticide Regulations",
+      "num": 376,
+      "category": "Environmental",
+      "strength": "Agriculture",
+      "repealed": false,
+      "postNum": 29087015
+    },
+    {
+      "resolutionName": "Repeal \"Preventing Animal Abuse\"",
+      "num": 377,
+      "category": "Repeal",
+      "strength": "568",
+      "repealed": false,
+      "postNum": 29209758
+    },
+    {
+      "resolutionName": "Digital Network Defense",
+      "num": 378,
+      "category": "International Security",
+      "strength": "mild",
+      "repealed": false,
+      "postNum": 29439106
+    },
+    {
+      "resolutionName": "Repeal \"Nuclear Arms Protocol\"",
+      "num": 379,
+      "category": "Repeal",
+      "strength": "474",
+      "repealed": false,
+      "postNum": 29439144
+    },
+    {
+      "resolutionName": "Humanitarian Aid Expansion Act",
+      "num": 380,
+      "category": "Health",
+      "strength": "International Aid",
+      "repealed": true,
+      "postNum": 29439158
+    },
+    {
+      "resolutionName": "Repeal \"Humanitarian Aid Expansion Act\"",
+      "num": 381,
+      "category": "Repeal",
+      "strength": "581",
+      "repealed": false,
+      "postNum": 29812438
+    },
+    {
+      "resolutionName": "Environmental Warfare Act",
+      "num": 382,
+      "category": "Global Disarmament",
+      "strength": "mild",
+      "repealed": false,
+      "postNum": 29812447
+    },
+    {
+      "resolutionName": "Right to Sexual Privacy",
+      "num": 383,
+      "category": "Human Rights",
+      "strength": "significant",
+      "repealed": false,
+      "postNum": 29812469
+    },
+    {
+      "resolutionName": "Repeal \"Foreign Patent Recognition\"",
+      "num": 384,
+      "category": "Repeal",
+      "strength": "529",
+      "repealed": false,
+      "postNum": 29812488
+    },
+    {
+      "resolutionName": "Quarantine Regulation",
+      "num": 385,
+      "category": "Health",
+      "strength": "Healthcare",
+      "repealed": true,
+      "postNum": 29812505
+    },
+    {
+      "resolutionName": "Reducing Statelessness",
+      "num": 386,
+      "category": "Human Rights",
+      "strength": "mild",
+      "repealed": false,
+      "postNum": 30367063
+    },
+    {
+      "resolutionName": "Repeal \"Quarantine Regulation\"",
+      "num": 387,
+      "category": "Repeal",
+      "strength": "589",
+      "repealed": false,
+      "postNum": 30367080
+    },
+    {
+      "resolutionName": "Foreign Patent Act",
+      "num": 388,
+      "category": "Free Trade",
+      "strength": "mild",
+      "repealed": true,
+      "postNum": 30623981
+    },
+    {
+      "resolutionName": "Rights Of The Quarantined",
+      "num": 389,
+      "category": "Health",
+      "strength": "Healthcare",
+      "repealed": false,
+      "postNum": 30624184
+    },
+    {
+      "resolutionName": "Compliance Commission",
+      "num": 390,
+      "category": "International Security",
+      "strength": "mild",
+      "repealed": false,
+      "postNum": 30624199
+    },
+    {
+      "resolutionName": "Securing Nuclear Materials From Dastardly Menaces",
+      "num": 391,
+      "category": "International Security",
+      "strength": "mild",
+      "repealed": true,
+      "postNum": 30715546
+    },
+    {
+      "resolutionName": "Repeal \"Securing Nuclear Materials From Dastardly Menaces\"",
+      "num": 392,
+      "category": "Repeal",
+      "strength": "602",
+      "repealed": false,
+      "postNum": 31288510
+    },
+    {
+      "resolutionName": "Repeal \"Foreign Patent Act\"",
+      "num": 393,
+      "category": "Repeal",
+      "strength": "597",
+      "repealed": false,
+      "postNum": 31288699
+    },
+    {
+      "resolutionName": "International Patent Agreement",
+      "num": 394,
+      "category": "Free Trade",
+      "strength": "mild",
+      "repealed": false,
+      "postNum": 31288881
+    },
+    {
+      "resolutionName": "Open Internet Order",
+      "num": 395,
+      "category": "Social Justice",
+      "strength": "mild",
+      "repealed": true,
+      "postNum": 31364803
+    },
+    {
+      "resolutionName": "Repeal \"Open Internet Order\"",
+      "num": 396,
+      "category": "Repeal",
+      "strength": "613",
+      "repealed": false,
+      "postNum": 31364845
+    },
+    {
+      "resolutionName": "World Assembly Central Library Compact",
+      "num": 397,
+      "category": "Education and Creativity",
+      "strength": "Cultural Heritage",
+      "repealed": false,
+      "postNum": 31526983
+    },
+    {
+      "resolutionName": "Internet Neutrality Act",
+      "num": 398,
+      "category": "Social Justice",
+      "strength": "mild",
+      "repealed": false,
+      "postNum": 31526992
+    },
+    {
+      "resolutionName": "Responsibility In Transferring Arms",
+      "num": 399,
+      "category": "Global Disarmament",
+      "strength": "mild",
+      "repealed": false,
+      "postNum": 31755342
+    },
+    {
+      "resolutionName": "World Assembly Central Medicinal Database Compact",
+      "num": 400,
+      "category": "Health",
+      "strength": "Research",
+      "repealed": true,
+      "postNum": 31755362
+    },
+    {
+      "resolutionName": "Stock Exchanges And Foreign Investment",
+      "num": 401,
+      "category": "Free Trade",
+      "strength": "mild",
+      "repealed": false,
+      "postNum": 31755370
+    },
+    {
+      "resolutionName": "Repeal \"World Assembly Central Medicinal Database Compact\"",
+      "num": 402,
+      "category": "Repeal",
+      "strength": "621",
+      "repealed": false,
+      "postNum": 31755384
+    }
+  ]
+}

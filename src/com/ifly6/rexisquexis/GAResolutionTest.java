@@ -27,12 +27,15 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 /**
  * Created by ifly6 on 13/3/2017.
  */
 public class GAResolutionTest {
+
+	private static final Logger LOGGER = Logger.getLogger(GAResolutionTest.class.getName());
 
 	public static void main(String[] args) {
 
@@ -47,13 +50,13 @@ public class GAResolutionTest {
 	}
 
 	private static void print(String format) {
-		System.out.println(format);
+		LOGGER.info(format);
 	}
 
 	private static void parse(Path path) throws IOException {
 		List<String> lines = Files.readAllLines(path);
 		GAResolution resolution = GAResolution.parse(lines.stream().collect(Collectors.joining("\n")));
-		System.out.println(resolution.format());
+		LOGGER.info(resolution.format());
 	}
 
 }

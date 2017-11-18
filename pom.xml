@@ -52,5 +52,15 @@
 			<artifactId>jcabi-xml</artifactId>
 			<version>0.17.2</version>
 		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.7</version>
+        </dependency>
+        <dependency>
+            <groupId>JavaTelegram</groupId>
+            <artifactId>JavaTelegram</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 </project>
