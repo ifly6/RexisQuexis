@@ -52,7 +52,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-/** @author Kevin */
+/** This is a breakdown of the resolutions which were done by some person? --2019-12-06
+ * @author Kevin */
 public class RqBreakdown {
 	
 	private static final Logger LOGGER = Logger.getLogger(RqBreakdown.class.getName());
@@ -166,7 +167,12 @@ public class RqBreakdown {
 			
 			// Get some basic information
 			String postLink = element.attr("href");
-			int postNum = Integer.parseInt(postLink.substring(postLink.indexOf("#p") + 2));
+			int postNum;
+			try {
+				postNum = Integer.parseInt(postLink.substring(postLink.indexOf("#p") + 2));
+			} catch (StringIndexOutOfBoundsException e) {
+				throw new RuntimeException(String.format("attempting to substring for #p in '%s'", postLink), e);
+			}
 			
 			// Query the API
 			NSConnection connection = new NSConnection(
