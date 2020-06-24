@@ -28,6 +28,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Month;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -280,8 +281,6 @@ public class GAResolution {
             R_STRENGTH = 10;
             R_AUTHOR = 12;
             R_IMPLEMENTATION = lines.size() - 17;
-            R_FOR = lines.size() - 9;
-            R_AGAINST = lines.size() - 3;
 
         } else {
             R_TITLE = 2;
@@ -290,13 +289,15 @@ public class GAResolution {
             R_STRENGTH = 8;
             R_AUTHOR = 10;
             R_IMPLEMENTATION = lines.size() - 13;
-            R_FOR = lines.size() - 9;
-            R_AGAINST = lines.size() - 3;
         }
+        R_FOR = lines.size() - 9;
+        R_AGAINST = lines.size() - 3;
 
         resolution.title = lines.get(R_TITLE).replace("Repeal:", "Repeal");
         if (resolution.title.contains("Repeal") || resolution.title.contains("repeal"))
             resolution.type = GAType.REPEAL;
+
+        resolution.title = capitalise(resolution.title);
 
         resolution.byLine = lines.get(R_BYLINE);
         resolution.category = fromColon(lines.get(R_CATEGORY));
@@ -393,6 +394,49 @@ public class GAResolution {
         }
 
         return resolution;
+
+    }
+
+    private static String capitalise(String s) {
+        /* s = " ".join(
+        w.capitalize()
+        if (len(w) > 2 and w not in ['for', 'and', 'nor', 'but', 'yet', 'the']) or (i == 0) else w
+        for i, w in enumerate(s.split())
+        ).strip()  # avoid apostrophe capitalisations
+
+        # for split in ['-']:
+        #     # as first should always be capitalised, not checking doesn't matter
+        #     s = split.join(w[:1].upper() + w[1:] for i, w in enumerate(s.split(split)))  # capitalise first letter only
+        # "Christian DeMocrats"
+        # python str.capitalize forces all other chars to lower
+        # don't use str.capitalize above
+
+        for numeral in ['ii', 'iii', 'iv', 'v', 'vi', 'vii', 'viii', 'ix', 'x']:
+            s = re.sub(r'(?<=\s){}$'.format(numeral), numeral.upper(), s)  # matches only trailing numerals
+
+        # people used to use WA missions; capitalise these, they are separate words
+        s = re.sub(r'(?<=\s)(Wa|wa|wA)(?=\s)', 'WA', s) */
+
+        final List<String> exceptions = Arrays.asList("for", "and", "nor", "but", "yet", "the");
+        final List<String> romanNumerals = Arrays.asList("ii", "iii", "iv", "v", "vi", "vii", "viii", "ix", "x");
+
+        // java really does love loops doesn't it
+        List<String> elements = new ArrayList<>();
+        String[] split = s.trim().split("\\w");
+        for (int i = 0; i < split.length; i++) {
+            String e = split[i];
+            if (((e.length() > 2) && !exceptions.contains(e)) || (i == 0))
+                e = e.substring(0, 1).toUpperCase() + e.substring(1);
+
+            // regardless, if last word...
+            if (i == split.length - 1)
+                if (romanNumerals.contains(e.toUpperCase()))
+                    e = e.toUpperCase();
+
+            elements.add(e);
+        }
+        return String.join(" ", elements);
+
 
     }
 

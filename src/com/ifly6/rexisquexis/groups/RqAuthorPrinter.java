@@ -25,6 +25,7 @@ import com.ifly6.rexisquexis.RQbb;
 import org.apache.commons.lang3.text.WordUtils;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -39,12 +40,12 @@ import java.util.stream.Collectors;
 @SuppressWarnings({"JavaDoc", "WeakerAccess", "UnusedReturnValue"})
 public class RqAuthorPrinter {
 
-    List<String> lines;
+    private static Comparator<RqResolutionData> comparator = Comparator.comparing(RqResolutionData::num);
 
+    private List<String> lines = new ArrayList<>();
     private Map<RqResolutionData, String> categoryMap;
 
     public RqAuthorPrinter() {
-        lines = new ArrayList<>();
     }
 
     public RqAuthorPrinter(Map<RqResolutionData, String> categoryMap) {
@@ -55,11 +56,39 @@ public class RqAuthorPrinter {
     public String print() {
 
         Set<RqResolutionData> resolutions = categoryMap.keySet();
-        Comparator<RqResolutionData> comparator = Comparator.comparing(RqResolutionData::num);
+
 
         Map<String, List<RqResolutionData>> authorGroups =
                 resolutions.stream().collect(Collectors.groupingBy(RqResolutionData::getAuthor));
 
+        lines.add(RQbb.header("Authors", "by number of resolutions", 150, false));
+        lines.add(makeTable(authorGroups));
+        lines.add("\n");
+
+        lines.add(RQbb.header("Authors", "by resolution", 150, false));
+        lines.addAll(makeList(authorGroups));
+
+        return makeString();
+    }
+
+    private String makeTable(Map<String, List<RqResolutionData>> authorGroups) {
+        List<String> internalList = new ArrayList<>();
+        internalList.add("[tr][td][b]Author[/b][/td][td][b]Resolutions authored[/b][/td][/tr]");
+
+        authorGroups.entrySet().stream()
+                .sorted(Comparator
+                        .comparing((Map.Entry<String, List<RqResolutionData>> i) -> 1 - i.getValue().size())
+                        .thenComparing(Map.Entry::getKey))
+                .map(entry -> String.format("[tr][td]%s[/td][td]%d[/td][/tr]",  // map to this format
+                        formatAuthorName(entry.getKey()),  // capitalise name
+                        entry.getValue().size()))  // get count
+                .forEach(internalList::add);  // add to internal list
+
+        return RQbb.bbTag(String.join("", internalList), "table");  // surround list with table tags
+    }
+
+    private Collection<? extends String> makeList(Map<String, List<RqResolutionData>> authorGroups) {
+        List<String> internalLines = new ArrayList<>();
         // Write each section
         SortedSet<String> keys = new TreeSet<>(authorGroups.keySet());
         for (String authorName : keys) {
@@ -70,23 +99,24 @@ public class RqAuthorPrinter {
                 resList.sort(comparator); // sort
 
                 // append header
-                lines.add(RQbb.header(WordUtils.capitalize(authorName),
+                internalLines.add(RQbb.header(formatAuthorName(authorName),
                         String.format("%d resolution%s",
                                 resList.size(),
-                                resList.size() > 1 ? "s" : "")));
+                                resList.size() > 1 ? "s" : ""),
+                        134,
+                        true));
 
                 for (RqResolutionData resolution : resList) {
                     String resolutionLink = RQbb.post(String.format("%d GA '%s'", resolution.num(), resolution.name()),
                             resolution.postNum());
                     String line = RQbb.tab(10) + resolutionLink;
-                    lines.add(resolution.isRepealed() ? RQbb.strike(line) : line); // Strike through if repealed
+                    internalLines.add(resolution.isRepealed() ? RQbb.strike(line) : line); // Strike through if repealed
                 }
-                lines.add("\n");
+                internalLines.add("\n");
 
             }
         }
-
-        return makeString();
+        return internalLines;
     }
 
     private String makeString() {
@@ -94,4 +124,9 @@ public class RqAuthorPrinter {
                 .replace("[/floatleft]\n", "[/floatleft]")
                 .replace("[/align]\n", "[/align]");
     }
+
+    private String formatAuthorName(String s) {
+        return WordUtils.capitalize(s.replace("_", " "));
+    }
+
 }

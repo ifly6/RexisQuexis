@@ -71,6 +71,10 @@ public class RexisQuexis {
             GAResolution gaResolution = GAResolution.parse(textArea.getText());
             LOGGER.info(String.format("Parsed for GA resolution %d", gaResolution.resolutionNum));
 
+            // parse the annoying af highlight thing out
+            // https://forum.nationstates.net/viewtopic.php?f=9&t=485969&p=37173138&hilit=desalination#p37173138
+            url = url.replace("&hilit=.+(?=#)", "");
+
             gaResolution.topicUrl = url;
             textArea.setText(gaResolution.format());
         });
