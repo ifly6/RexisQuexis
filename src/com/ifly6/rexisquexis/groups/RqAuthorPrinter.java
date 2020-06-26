@@ -73,7 +73,7 @@ public class RqAuthorPrinter {
 
     private String makeTable(Map<String, List<RqResolutionData>> authorGroups) {
         List<String> internalList = new ArrayList<>();
-        internalList.add("[tr][td][b]Author[/b][/td][td][b]Resolutions authored[/b][/td][/tr]");
+        internalList.add("[tr][td][b]Author[/b][/td][td][b]Resolution count[/b][/td][/tr]");
 
         authorGroups.entrySet().stream()
                 .sorted(Comparator
@@ -107,7 +107,7 @@ public class RqAuthorPrinter {
                         true));
 
                 for (RqResolutionData resolution : resList) {
-                    String resolutionLink = RQbb.post(String.format("%d GA '%s'", resolution.num(), resolution.name()),
+                    String resolutionLink = RQbb.post(String.format("GA %d '%s'", resolution.num(), resolution.name()),
                             resolution.postNum());
                     String line = RQbb.tab(10) + resolutionLink;
                     internalLines.add(resolution.isRepealed() ? RQbb.strike(line) : line); // Strike through if repealed

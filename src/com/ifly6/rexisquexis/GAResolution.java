@@ -29,7 +29,6 @@ import java.text.SimpleDateFormat;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -243,9 +242,7 @@ public class GAResolution {
      */
     public static GAResolution parse(String input) {
 
-        List<String> lines = new ArrayList<>();
-        Collections.addAll(lines, input.split("\n"));
-        // should be faster than a new ArrayList<>(Arrays.asList(String.split())) call
+        List<String> lines = new ArrayList<>(Arrays.asList(input.split("\\R"))); // not `\n`
 
         lines.removeIf(s -> s.trim().equalsIgnoreCase("Repeal this Resolution"));   // remove trailing link
         for (int x = lines.size() - 1; x > -1; x--) {    // remove trailing empty lines, counting from end to avoid
@@ -397,7 +394,7 @@ public class GAResolution {
 
     }
 
-    private static String capitalise(String s) {
+    public static String capitalise(String s) {
         /* s = " ".join(
         w.capitalize()
         if (len(w) > 2 and w not in ['for', 'and', 'nor', 'but', 'yet', 'the']) or (i == 0) else w
@@ -422,7 +419,7 @@ public class GAResolution {
 
         // java really does love loops doesn't it
         List<String> elements = new ArrayList<>();
-        String[] split = s.trim().split("\\w");
+        String[] split = s.trim().split("\\s"); // split on spaces
         for (int i = 0; i < split.length; i++) {
             String e = split[i];
             if (((e.length() > 2) && !exceptions.contains(e)) || (i == 0))
