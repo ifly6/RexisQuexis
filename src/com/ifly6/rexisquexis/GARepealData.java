@@ -13,10 +13,10 @@ class GARepealData {
 //		defaults.put("targetStrength", "$rstr");
 //		defaults.put("targetPost", "-1");
 
-	int targetId = -1;
-	String targetTitle = "$rtit";
-	String targetCategory = "$rcat";
-	String targetStrength = "$rstr";
-	int targetPost = -1;
+    int targetId = -1;
+    String targetTitle = "$rtit";
+    String targetCategory = "$rcat";
+    String targetStrength = "$rstr";
+    int targetPost = -1;
 
 }
