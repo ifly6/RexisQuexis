@@ -22,8 +22,6 @@ public class RQbb {
         // No instantiation!
     }
 
-    // ======== Generalised tag forms ========
-
     public static String bbTag(String input, String tag) {
         return String.format("[%s]%s[/%s]", tag, input, tag);
     }
@@ -31,8 +29,6 @@ public class RQbb {
     public static String bbTag(String input, String tag, String var) {
         return String.format("[%s=%s]%s[/%s]", tag, var, input, tag);
     }
-
-    // ======== Hardcoded tags ========
 
     /**
      * Bolds the input string. For example, <code>hello!</code> turns into <code>[b]hello![/b]</code>.
@@ -157,12 +153,17 @@ public class RQbb {
         return bbTag(input, "box");
     }
 
+    /**
+     * Creates an indent of <code>i</code> pixels
+     * @param i pixels to indent
+     * @return tab code
+     */
     public static String tab(int i) {
         return bbTag("", "tab", Integer.toString(i));
     }
 
     /**
-     * Creates an align tag. Ex: <code>[align=right]Text on the right.[/align]</code>
+     * Creates an align tag. Eg <code>[align=right]Text on the right.[/align]</code>
      * @param content   text
      * @param direction should be either <code>RQbb.LEFT</code>, <code>RQbb.RIGHT</code>, or <code>RQbb.CENTRE</code>
      * @return
