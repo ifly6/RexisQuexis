@@ -1,5 +1,6 @@
 /bin/
 /target/
+/classes/
 
 # Eclipse-specific files
 .settings
@@ -9,3 +10,6 @@
 # IntelliJ-specific files
 .idea/
 RexisQuexis.iml
+
+# cache files
+*.json

@@ -42,6 +42,8 @@ public class RqCategoryPrinter {
     private List<String> lines;
     private Map<RqResolutionData, String> categoryMap;
 
+    private List<RqResolutionData> resolutions;
+
     public RqCategoryPrinter() {
         lines = new ArrayList<>();
     }
