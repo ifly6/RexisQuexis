@@ -399,12 +399,12 @@ public class GAResolution {
         # people used to use WA missions; capitalise these, they are separate words
         s = re.sub(r'(?<=\s)(Wa|wa|wA)(?=\s)', 'WA', s) */
 
-        final List<String> exceptions = Arrays.asList("for", "and", "nor", "but", "yet", "the");
+        final List<String> exceptions = Arrays.asList("for", "and", "nor", "but", "yet", "the", "or", "to");
         final List<String> romanNumerals = Arrays.asList("ii", "iii", "iv", "v", "vi", "vii", "viii", "ix", "x");
 
         // java really does love loops doesn't it
         List<String> elements = new ArrayList<>();
-        String[] split = s.trim().split("\\s"); // split on spaces
+        String[] split = s.toLowerCase().trim().split("\\s"); // split on spaces
         for (int i = 0; i < split.length; i++) {
             String e = split[i];
             if (((e.length() > 2) && !exceptions.contains(e)) || (i == 0))
