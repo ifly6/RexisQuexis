@@ -39,7 +39,7 @@ public class RexisQuexis {
 
     private RexisQuexis() {
 
-        JFrame frame = new JFrame("WA Resolutions Formatter");
+        JFrame frame = new JFrame("WA resolutions formatter");
         frame.setSize(700, 800);
         JPanel panel = new JPanel();
         frame.setContentPane(panel);
