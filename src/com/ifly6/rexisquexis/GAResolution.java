@@ -1,6 +1,7 @@
 package com.ifly6.rexisquexis;
 
 import com.git.ifly6.nsapi.NSConnection;
+import com.ifly6.rexisquexis.cp1252escaper.EscapeCP1252;
 import com.jcabi.xml.XML;
 import com.jcabi.xml.XMLDocument;
 import org.apache.commons.text.StringEscapeUtils;
@@ -23,7 +24,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 // This class, with public vars, is totally valid. Look:
@@ -162,10 +162,7 @@ public class GAResolution {
         // Determine if repealed (and therefore, if further formatting is necessary)
         if (isRepealed && type != GAType.REPEAL)
             lines = strikeThrough(lines, this);
-        return lines.stream()
-                .map(s -> s.replace("”", ""))   // get rid of smart quotes
-                .map(s -> s.replace("“", ""))
-                .collect(Collectors.joining("\n"));
+        return String.join("\n", lines);
 
     }
 
@@ -252,8 +249,8 @@ public class GAResolution {
         List<String> lines = new ArrayList<>(Arrays.asList(input.split("\\R"))); // not `\n`
 
         lines.removeIf(s -> s.trim().equalsIgnoreCase("Repeal this Resolution"));   // remove trailing link
-        for (int x = lines.size() - 1; x > -1; x--) {    // remove trailing empty lines, counting from end to avoid
-            // a shifting index
+        for (int x = lines.size() - 1; x > -1; x--) {
+            // remove trailing empty lines, counting from end to avoid shifting index
             if (lines.get(x).trim().length() != 0) break;
             lines.remove(x);
         }
@@ -298,7 +295,7 @@ public class GAResolution {
         R_AGAINST = lines.size() - 3;
 
         resolution.title = lines.get(R_TITLE).replace("Repeal:", "Repeal");
-        if (resolution.title.contains("Repeal") || resolution.title.contains("repeal"))
+        if (resolution.title.toLowerCase().contains("repeal"))
             resolution.type = GAType.REPEAL;
 
         resolution.title = capitalise(resolution.title);
@@ -404,15 +401,13 @@ public class GAResolution {
      * @param s input
      * @return cleaned resolution text
      */
-    private static String cleanResolutionText(String s) {
+    public static String cleanResolutionText(String s) {
         String[] badTags = {"\\[b\\]", "\\[i\\]", "\\[u\\]", "\\[/b\\]", "\\[/i\\]", "\\[/u\\]"};
 
         for (String element : badTags)
             s = s.replaceAll(element, "");  // removes all bold, italics, or underline tags
 
-        for (Map.Entry<String, String> entry : CP1252_MAPPER.entrySet())
-            s = s.replaceAll(entry.getKey(), entry.getValue()); // do windows 1252 maps
-
+        s = EscapeCP1252.unescape(s);  // unescape text from CP-1252 numeric entity escapes
         return StringEscapeUtils.unescapeHtml4(s);  // unescape text from HTML escapes
     }
 
@@ -462,7 +457,7 @@ public class GAResolution {
         return hay.contains(n);
     }
 
-    private static XML queryApi(int rNum) throws IOException {
+    public static XML queryApi(int rNum) throws IOException {
         String url = String.format("https://www.nationstates.net/cgi-bin/api.cgi?wa=%d&id=%d&q=resolution", 1, rNum);
         NSConnection connection = new NSConnection(url);
         System.err.printf("Querying API for GA %d%n", rNum);
