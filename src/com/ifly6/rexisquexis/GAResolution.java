@@ -3,6 +3,7 @@ package com.ifly6.rexisquexis;
 import com.git.ifly6.nsapi.NSConnection;
 import com.jcabi.xml.XML;
 import com.jcabi.xml.XMLDocument;
+import org.apache.commons.text.StringEscapeUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.select.Elements;
 
@@ -14,9 +15,12 @@ import java.text.SimpleDateFormat;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -24,10 +28,27 @@ import java.util.stream.Stream;
 
 // This class, with public vars, is totally valid. Look:
 // http://www.oracle.com/technetwork/java/javase/documentation/codeconventions-137265.html#177
-@SuppressWarnings("WeakerAccess")
+@SuppressWarnings({"WeakerAccess", "MagicConstant"})
 public class GAResolution {
 
     transient private static final Logger LOGGER = Logger.getLogger(GAResolution.class.getName());
+
+    /**
+     * Mapping HTML numeric entities wrongly coded as CP-1252 to HTML entities. Not exhaustive. Apply using for-loop.
+     */
+    private static final Map<String, String> CP1252_MAPPER;
+
+    static {
+        HashMap<String, String> initialMap = new HashMap<>();
+        initialMap.put("&#145;", "&apos;");
+        initialMap.put("&#146;", "&apos;");
+        initialMap.put("&#147;", "&ldquo;");
+        initialMap.put("&#148;", "&rdquo;");
+        initialMap.put("&#133;", "&hellip;");
+        initialMap.put("&#150;", "&ndash;");
+        initialMap.put("&#151;", "&mdash;");
+        CP1252_MAPPER = initialMap;
+    }
 
     public enum GAType {
         NORMAL, REPEAL
@@ -58,7 +79,7 @@ public class GAResolution {
     public int votesFor = 11609;
     public int votesAgainst = 2259;
 
-    public Date implementation = new GregorianCalendar(2008, 4, 6).getTime();
+    public Date implementation = new GregorianCalendar(2008, Calendar.APRIL, 6).getTime();
     public String topicUrl = "$topicURL";
 
     public boolean isRepealed = false;
@@ -75,6 +96,7 @@ public class GAResolution {
      * </p>
      * @return a single <code>String</code> holding the RexisQuexis bbCode formatting
      */
+    @SuppressWarnings("ConstantConditions")
     public String format() {
 
         List<String> lines = new ArrayList<>();
@@ -114,7 +136,7 @@ public class GAResolution {
 
             lines.add(RQbb.bold("Argument:") + " " + text);
 
-        } else lines.add(RQbb.bold("Description:") + " " + text);
+        } else lines.add(RQbb.bold("Text:") + " " + text);
 
         lines.add("");
 
@@ -290,15 +312,20 @@ public class GAResolution {
         try {
             resolution.implementation = new SimpleDateFormat("EEE MMM d yyyy").parse(lines.get(R_IMPLEMENTATION));
         } catch (ParseException e) {
-            e.printStackTrace();
-            System.err.println("R_IMPLEMENTATION = " + R_IMPLEMENTATION);
-            System.err.println("lines.get(R_IMPLEMENTATION) = " + lines.get(R_IMPLEMENTATION));
+            try {
+                e.printStackTrace();
+                System.err.println("R_IMPLEMENTATION = " + R_IMPLEMENTATION);
+                System.err.println("lines.get(R_IMPLEMENTATION) = " + lines.get(R_IMPLEMENTATION));
 
-            String[] elements = lines.get(R_IMPLEMENTATION).split(" "); // assumes form: Thu May 14 2015
-            int month = Month.valueOf(elements[1].toUpperCase()).getValue();
-            int day = Integer.parseInt(elements[2]);
-            int year = Integer.parseInt(elements[3]);
-            resolution.implementation = new GregorianCalendar(year, month, day).getTime();
+                String[] elements = lines.get(R_IMPLEMENTATION).split(" "); // assumes form: Thu May 14 2015
+                int month = Month.valueOf(elements[1].toUpperCase()).getValue();
+                int day = Integer.parseInt(elements[2]);
+                int year = Integer.parseInt(elements[3]);
+                resolution.implementation = new GregorianCalendar(year, month, day).getTime();
+            } catch (IllegalArgumentException e1) {
+                throw new RuntimeException("Can't find implementation date or implementation date is invalid; " +
+                        "check the paste.");
+            }
         }
 
         resolution.votesFor = Integer.parseInt(lines.get(R_FOR).replaceAll(",", ""));
@@ -307,18 +334,10 @@ public class GAResolution {
         // get text, isRepealed, if repeal { get data }
         try {
             XML xml = queryApi(resolution.resolutionNum);
-            String[] apiTextLines = xml.xpath("/WA/RESOLUTION/DESC/text()").get(0).replaceFirst("<!\\[CDATA\\[", "")
-                    .replace("]]>", "").split("\n");
-
-            String[] obsceneTags = {"\\[b\\]", "\\[i\\]", "\\[u\\]", "\\[/b\\]", "\\[/i\\]", "\\[/u\\]"};
-            resolution.text = Stream.of(apiTextLines)
-                    .map(s -> {
-                        for (String element : obsceneTags)
-                            s = s.replaceAll(element, "");  // removes all bold, italics, or underline tags
-                        return s;
-                    })
-                    .map(s -> Jsoup.parse(s).text())    // unescape text from HTML escapes
-                    .collect(Collectors.joining("\n"));
+            resolution.text = cleanResolutionText(
+                    xml.xpath("/WA/RESOLUTION/DESC/text()").get(0).replaceFirst("<!\\[CDATA\\[", "")
+                            .replace("]]>", "")
+            );
 
             // for some reason, there is no XML tag for this. Check for existence of repealed_by tag to set isRepealed
             try {
@@ -348,8 +367,8 @@ public class GAResolution {
                 try {
                     String urlString = searchTopics(resolution.repealData.targetId).toString();
                     String postCode = "#p";
-                    resolution.repealData.targetPost = Integer.parseInt(urlString.substring(urlString.lastIndexOf(postCode)
-                            + postCode.length()));
+                    resolution.repealData.targetPost = Integer.parseInt(
+                            urlString.substring(urlString.lastIndexOf(postCode) + postCode.length()));
 
                 } catch (NumberFormatException e) {
                     // catch if it isn't there
@@ -379,53 +398,75 @@ public class GAResolution {
 
     }
 
+    /**
+     * Cleans resolution text. Replaces some of the code points based on the {@link #CP1252_MAPPER} and then applies
+     * normal HTML unescapes from Apache Commons Text.
+     * @param s input
+     * @return cleaned resolution text
+     */
+    private static String cleanResolutionText(String s) {
+        String[] badTags = {"\\[b\\]", "\\[i\\]", "\\[u\\]", "\\[/b\\]", "\\[/i\\]", "\\[/u\\]"};
+
+        for (String element : badTags)
+            s = s.replaceAll(element, "");  // removes all bold, italics, or underline tags
+
+        for (Map.Entry<String, String> entry : CP1252_MAPPER.entrySet())
+            s = s.replaceAll(entry.getKey(), entry.getValue()); // do windows 1252 maps
+
+        return StringEscapeUtils.unescapeHtml4(s);  // unescape text from HTML escapes
+    }
+
     public static String capitalise(String s) {
-        /* s = " ".join(
-        w.capitalize()
-        if (len(w) > 2 and w not in ['for', 'and', 'nor', 'but', 'yet', 'the']) or (i == 0) else w
-        for i, w in enumerate(s.split())
-        ).strip()  # avoid apostrophe capitalisations
 
-        # for split in ['-']:
-        #     # as first should always be capitalised, not checking doesn't matter
-        #     s = split.join(w[:1].upper() + w[1:] for i, w in enumerate(s.split(split)))  # capitalise first letter only
-        # "Christian DeMocrats"
-        # python str.capitalize forces all other chars to lower
-        # don't use str.capitalize above
+        final List<String> makeLower = Arrays.asList("for", "and", "nor", "but", "yet", "the", "or", "to", "on", "of");
+        final List<String> makeUpper =
+                Arrays.asList("ii", "iii", "iv", "v", "vi", "vii", "viii", "ix", "x", "wa", "gmo", "ga");
+//        final List<String> startingIgnores = Arrays.asList("\"", "'");
 
-        for numeral in ['ii', 'iii', 'iv', 'v', 'vi', 'vii', 'viii', 'ix', 'x']:
-            s = re.sub(r'(?<=\s){}$'.format(numeral), numeral.upper(), s)  # matches only trailing numerals
+        final String ACTIONABLE_DELIMITERS = " -/\""; // if following, capitalise
 
-        # people used to use WA missions; capitalise these, they are separate words
-        s = re.sub(r'(?<=\s)(Wa|wa|wA)(?=\s)', 'WA', s) */
-
-        final List<String> exceptions = Arrays.asList("for", "and", "nor", "but", "yet", "the", "or", "to");
-        final List<String> romanNumerals = Arrays.asList("ii", "iii", "iv", "v", "vi", "vii", "viii", "ix", "x");
-
-        // java really does love loops doesn't it
-        List<String> elements = new ArrayList<>();
-        String[] split = s.toLowerCase().trim().split("\\s"); // split on spaces
-        for (int i = 0; i < split.length; i++) {
-            String e = split[i];
-            if (((e.length() > 2) && !exceptions.contains(e)) || (i == 0))
-                e = e.substring(0, 1).toUpperCase() + e.substring(1);
-
-            // regardless, if last word...
-            if (i == split.length - 1)
-                if (romanNumerals.contains(e.toUpperCase()))
-                    e = e.toUpperCase();
-
-            elements.add(e);
+        StringBuilder sb = new StringBuilder();
+        boolean capNext = true;
+        for (char c : s.toCharArray()) {
+            c = (capNext)
+                    ? Character.toUpperCase(c)
+                    : Character.toLowerCase(c);
+            sb.append(c);
+            capNext = (ACTIONABLE_DELIMITERS.indexOf(c) >= 0); // explicit cast not needed
         }
-        return String.join(" ", elements);
 
+        String[] split = sb.toString().trim().split("\\s"); // split on spaces
+        List<String> elements = new ArrayList<>();
 
+        for (int i = 0; i < split.length; i++) {
+            String e = split[i].trim();
+            if (containsRequirements(makeLower, e) & i != 0) elements.add(e.toLowerCase());
+            else if (containsRequirements(makeUpper, e)) elements.add(e.toUpperCase());
+            else elements.add(e);
+        }
+
+        String out = String.join(" ", elements);
+        if (out.matches("((ga)|(GA)|(Ga))#\\d+")) out = out.toUpperCase(); // post hoc check
+
+        return out;
+    }
+
+    /**
+     * String contains, but ignore case. Also ignore all quotes.
+     * @param hay    to look in
+     * @param needle to find, with exceptions
+     * @return true if contains after applying checks
+     */
+    private static boolean containsRequirements(List<String> hay, String needle) {
+        String n = needle.replaceAll("[\"']", "").toLowerCase();
+        return hay.contains(n);
     }
 
     private static XML queryApi(int rNum) throws IOException {
-        NSConnection connection = new NSConnection(String.format("https://www.nationstates.net/cgi-bin/api" +
-                ".cgi?wa=%d&id=%d&q=resolution", 1, rNum));
-        System.err.printf("Querying API for %d GA%n", rNum);
+        String url = String.format("https://www.nationstates.net/cgi-bin/api.cgi?wa=%d&id=%d&q=resolution", 1, rNum);
+        NSConnection connection = new NSConnection(url);
+        System.err.printf("Querying API for GA %d%n", rNum);
+        System.err.printf("URL is %s%n", url);
         return new XMLDocument(connection.getResponse());
     }
 
@@ -439,7 +480,7 @@ public class GAResolution {
      */
     private static String translateEffect(String strength, String category) {
 
-        if (!strength.equals("0")) return strength; // if strength != 0, skip
+        if (!strength.equals("0")) return GAResolution.capitalise(strength); // if strength != 0, skip, but capitalise
 
         if (category.equalsIgnoreCase("Environmental")) return "Automotive";
         if (category.equalsIgnoreCase("Health")) return "Healthcare";
@@ -475,11 +516,6 @@ public class GAResolution {
 
     private static String fromColon(String input) {
         return input.substring(input.indexOf(':') + 1).trim();
-    }
-
-    // ** Helpful parsing and search methods **
-    public int postInt() {
-        return Integer.parseInt(topicUrl.substring(topicUrl.indexOf("#p") + "#p".length()));
     }
 
 }
