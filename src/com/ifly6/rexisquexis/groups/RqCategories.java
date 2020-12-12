@@ -158,7 +158,7 @@ public class RqCategories {
         int numOfResolutions = elements.size();
 
         //noinspection IntegerDivisionInFloatingPointContext
-        System.out.printf("For %d elements, this will take %s%n",
+        System.out.printf("For %d elements, this will take a max of %s%n",
                 numOfResolutions,
                 time(Math.round(NSConnection.WAIT_TIME * numOfResolutions / 1000)));
 
