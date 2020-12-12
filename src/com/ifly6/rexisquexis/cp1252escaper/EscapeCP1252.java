@@ -46,7 +46,7 @@ public class EscapeCP1252 {
     /**
      * Translates a character, provided as an HTML numeric character entity, in the form <code>&#111;</code> where the
      * digits are anything you'd like. The specified numeric character entity is taken as a code point: the code point
-     * is the mapped using a Windows-1252 character set. Code points are inclusive: that is, value <code>&#147</code>
+     * is the mapped using a Windows-1252 character set. Code points are inclusive: that is, value <code>&#147;</code>
      * will be parsed if <code>min = 147</code>.
      * @param html numeric character entity
      * @param min  code point to unescape
@@ -92,7 +92,7 @@ public class EscapeCP1252 {
      * Unescapes <b>numeric</b> HTML character entities that use Windows-1252 code points. This method applies only to
      * numeric HTML numeric character entities. Parameters <code>min</code> and <code>max</code> specify a range of code
      * points to parse; ones outside that range will be ignored. Code points are inclusive: that is, value
-     * <code>&#147</code> will be parsed if <code>min = 147</code>.
+     * <code>&#147;</code> will be parsed if <code>min = 147</code>.
      * @param text to unescape using Windows-1252 encoding
      * @param min  code point to unescape
      * @param max  code point to unescape
@@ -102,7 +102,6 @@ public class EscapeCP1252 {
         Matcher m = Pattern.compile("&#\\d+;").matcher(text);
         StringBuffer sb = new StringBuffer();
         while (m.find())
-
             try {
                 // for each thing you find, take the match, translate the character, and append the replacement
                 m.appendReplacement(sb, translateCharacter(m.group(), min, max));
