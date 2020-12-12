@@ -12,8 +12,9 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.5.1</version>
 				<configuration>
-					<source>9</source>
-					<target>9</target>
+					<!-- MUST USE JAVA 9+ BECAUSE OF ANNOYING OLD DATE API; NEED NEW VERSION FOR BETTER API -->
+					<source>10</source>
+					<target>10</target>
 					<debug>true</debug>
 					<verbose>true</verbose>
 					<optimize>true</optimize>
@@ -58,5 +59,11 @@
             <artifactId>gson</artifactId>
             <version>2.7</version>
         </dependency>
-    </dependencies>
+		<dependency>
+			<groupId>Communique</groupId>
+			<artifactId>Communique</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+			<scope>compile</scope>
+		</dependency>
+	</dependencies>
 </project>
