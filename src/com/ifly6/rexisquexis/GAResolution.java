@@ -10,6 +10,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -20,6 +21,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
@@ -165,16 +167,17 @@ public class GAResolution {
             e.printStackTrace();
         }
 
-        String urlRepeal;
-        urlRepeal = searchTopics(whichRepeal).toString();
-
-        int postInt;    // post-int isn't always going to be there, because urlRepeal can return the NS forum URL
+        int postInt;
         try {
+            String urlRepeal = searchTopics(whichRepeal).toString();
             postInt = RexisQuexis.postInt(urlRepeal);
-        } catch (NumberFormatException e) {
+
+        } catch (NoSuchElementException e) {
+            // if cannot find resolution 'whichRepeal', then substitute postInt -1
             LOGGER.log(Level.INFO, "Cannot find repeal substring", e);
             postInt = -1;
         }
+
         String newStartLine = RQbb.color(RQbb.strike(lines.get(0)), "gray") + " "
                 + RQbb.bold(String.format("[Struck out by %s]", RQbb.post(String.format("GA %d", whichRepeal), postInt)));
 
@@ -191,25 +194,36 @@ public class GAResolution {
      * Searches the RexisQuexis table of contents and returns the i-th element from that table of contents. This does
      * imply that if you query where <code>i = 1</code>, then you will get the link to the RexisQuexis copy of GA 1.
      * @param i-th GA resolution
-     * @return URL to that resolution's copy on RexisQuexis, if it fails,
-     * <code>https://forum.nationstates.net/</code>.
+     * @return URL to that resolution's copy on RexisQuexis; if fails, {@code NoSuchElementException}
+     * @throws NoSuchElementException if no corresponding resolution in forum table of contents
      */
-    private static URL searchTopics(int i) {
+    public static URL searchTopics(int i) {
+        // keep these separate : each handles different classes of errors
+        String html;
+        try {
+            html = new NSConnection("https://forum.nationstates.net/viewtopic.php?f=9&t=30").getResponse();
+
+        } catch (IOException e) {
+            throw new RuntimeException("Cannot connect to NationStates");
+        }
+
+        String urlRepeal;
+        try {
+            Elements elements = Jsoup.parse(html).select("div#p310 div.content a");
+            urlRepeal = elements.get(i - 1).attr("href");
+
+        } catch (IndexOutOfBoundsException e) {
+            throw new NoSuchElementException(String.format("No such resolution %d in forum database", i));
+        }
 
         try {
-
-            String html = new NSConnection("https://forum.nationstates.net/viewtopic.php?f=9&t=30").getResponse();
-            Elements elements = Jsoup.parse(html).select("div#p310 div.content a");
-            String urlRepeal = elements.get(i - 1).attr("href");
-
             if (urlRepeal.startsWith("http:")) urlRepeal = urlRepeal.replaceFirst("http:", "https:");
             if (!urlRepeal.startsWith("https:")) urlRepeal = "https:" + urlRepeal;
             return new URL(urlRepeal);
 
-        } catch (Exception e) {
-            throw new RuntimeException("Cannot connect to NationStates? See causal error.", e);
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(String.format("Cannot construct URL from input %s", urlRepeal));
         }
-
     }
 
     /**
