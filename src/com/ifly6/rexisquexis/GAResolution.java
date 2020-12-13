@@ -2,6 +2,7 @@ package com.ifly6.rexisquexis;
 
 import com.git.ifly6.nsapi.NSConnection;
 import com.ifly6.rexisquexis.cp1252escaper.EscapeNumericEntities;
+import com.ifly6.rexisquexis.io.RqForumUtilities;
 import com.jcabi.xml.XML;
 import com.jcabi.xml.XMLDocument;
 import org.apache.commons.text.StringEscapeUtils;
@@ -9,7 +10,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -19,9 +19,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
@@ -32,23 +30,6 @@ import java.util.stream.Stream;
 public class GAResolution {
 
     transient private static final Logger LOGGER = Logger.getLogger(GAResolution.class.getName());
-
-    /**
-     * Mapping HTML numeric entities wrongly coded as CP-1252 to HTML entities. Not exhaustive. Apply using for-loop.
-     */
-    private static final Map<String, String> CP1252_MAPPER;
-
-    static {
-        HashMap<String, String> initialMap = new HashMap<>();
-        initialMap.put("&#145;", "&apos;");
-        initialMap.put("&#146;", "&apos;");
-        initialMap.put("&#147;", "&ldquo;");
-        initialMap.put("&#148;", "&rdquo;");
-        initialMap.put("&#133;", "&hellip;");
-        initialMap.put("&#150;", "&ndash;");
-        initialMap.put("&#151;", "&mdash;");
-        CP1252_MAPPER = initialMap;
-    }
 
     public enum GAType {
         NORMAL, REPEAL
@@ -149,7 +130,7 @@ public class GAResolution {
 
         // Add implementation date
         lines.add(RQbb.color(String.format("Implemented %s",
-                new SimpleDateFormat("EEE MMM d yyyy").format(implementation)), "red"));
+                new SimpleDateFormat("EEE d MMM yyyy").format(implementation)), "red"));
         lines.add("");
 
         // Add bottom helper links
@@ -189,7 +170,7 @@ public class GAResolution {
 
         int postInt;    // post-int isn't always going to be there, because urlRepeal can return the NS forum URL
         try {
-            postInt = Integer.parseInt(urlRepeal.substring(urlRepeal.indexOf("#p") + 2));
+            postInt = RexisQuexis.postInt(urlRepeal);
         } catch (NumberFormatException e) {
             LOGGER.log(Level.INFO, "Cannot find repeal substring", e);
             postInt = -1;
@@ -221,19 +202,12 @@ public class GAResolution {
             Elements elements = Jsoup.parse(html).select("div#p310 div.content a");
             String urlRepeal = elements.get(i - 1).attr("href");
 
-            // LOGGER.info("elements = " + elements);
-            // LOGGER.info("urlRepeal = " + urlRepeal);
             if (urlRepeal.startsWith("http:")) urlRepeal = urlRepeal.replaceFirst("http:", "https:");
             if (!urlRepeal.startsWith("https:")) urlRepeal = "https:" + urlRepeal;
-            // LOGGER.info("urlRepeal = " + urlRepeal);
             return new URL(urlRepeal);
 
         } catch (Exception e) {
-            try {
-                return new URL("https://forum.nationstates.net/");
-            } catch (MalformedURLException e1) {
-                throw new RuntimeException("This should never happen. Check GAResolution#searchTopics.");
-            }
+            throw new RuntimeException("Cannot connect to NationStates? See causal error.", e);
         }
 
     }
@@ -298,7 +272,7 @@ public class GAResolution {
         if (resolution.title.toLowerCase().contains("repeal"))
             resolution.type = GAType.REPEAL;
 
-        resolution.title = capitalise(resolution.title);
+        resolution.title = RqForumUtilities.capitalise(RqForumUtilities.cleanQuotes(resolution.title));
 
         resolution.byLine = lines.get(R_BYLINE);
         resolution.category = fromColon(lines.get(R_CATEGORY));
@@ -307,7 +281,8 @@ public class GAResolution {
         resolution.proposer = fromColon(lines.get(R_AUTHOR));
 
         try {
-            resolution.implementation = new SimpleDateFormat("EEE MMM d yyyy").parse(lines.get(R_IMPLEMENTATION));
+            resolution.implementation = new SimpleDateFormat("EEE MMM d yyyy")
+                    .parse(lines.get(R_IMPLEMENTATION));
         } catch (ParseException e) {
             try {
                 e.printStackTrace();
@@ -315,13 +290,14 @@ public class GAResolution {
                 System.err.println("lines.get(R_IMPLEMENTATION) = " + lines.get(R_IMPLEMENTATION));
 
                 String[] elements = lines.get(R_IMPLEMENTATION).split(" "); // assumes form: Thu May 14 2015
-                int month = Month.valueOf(elements[1].toUpperCase()).getValue();
-                int day = Integer.parseInt(elements[2]);
-                int year = Integer.parseInt(elements[3]);
-                resolution.implementation = new GregorianCalendar(year, month, day).getTime();
+                resolution.implementation = new GregorianCalendar(
+                        Integer.parseInt(elements[3]),                       // day
+                        Month.valueOf(elements[1].toUpperCase()).getValue(), // month
+                        Integer.parseInt(elements[2])                        // year
+                ).getTime();
             } catch (IllegalArgumentException e1) {
-                throw new RuntimeException("Can't find implementation date or implementation date is invalid; " +
-                        "check the paste.");
+                throw new RuntimeException("Can't find implementation date or implementation date is invalid; "
+                        + "check the paste.");
             }
         }
 
@@ -330,7 +306,7 @@ public class GAResolution {
 
         // get text, isRepealed, if repeal { get data }
         try {
-            XML xml = queryApi(resolution.resolutionNum);
+            XML xml = RqForumUtilities.queryApi(resolution.resolutionNum);
             resolution.text = cleanResolutionText(
                     xml.xpath("/WA/RESOLUTION/DESC/text()").get(0).replaceFirst("<!\\[CDATA\\[", "")
                             .replace("]]>", "")
@@ -357,7 +333,7 @@ public class GAResolution {
                 name = name.substring(name.indexOf("\"") + 1, name.lastIndexOf("\""));
                 resolution.repealData.targetTitle = name;
 
-                XML rXml = queryApi(resolution.repealData.targetId);
+                XML rXml = RqForumUtilities.queryApi(resolution.repealData.targetId);
                 resolution.repealData.targetCategory = rXml.xpath("/WA/RESOLUTION/CATEGORY/text()").get(0);
                 resolution.repealData.targetStrength = rXml.xpath("/WA/RESOLUTION/OPTION/text()").get(0);
 
@@ -396,8 +372,8 @@ public class GAResolution {
     }
 
     /**
-     * Cleans resolution text. Replaces some of the code points based on the {@link #CP1252_MAPPER} and then applies
-     * normal HTML unescapes from Apache Commons Text.
+     * Cleans resolution text. Escapes numeric entities using {@link EscapeNumericEntities} and then applies normal HTML
+     * unescapes from Apache Commons Text.
      * @param s input
      * @return cleaned resolution text
      */
@@ -411,60 +387,6 @@ public class GAResolution {
         return StringEscapeUtils.unescapeHtml4(s);  // unescape text from HTML escapes
     }
 
-    public static String capitalise(String s) {
-
-        final List<String> makeLower = Arrays.asList("for", "and", "nor", "but", "yet", "the", "or", "to", "on", "of");
-        final List<String> makeUpper =
-                Arrays.asList("ii", "iii", "iv", "v", "vi", "vii", "viii", "ix", "x", "wa", "gmo", "ga");
-//        final List<String> startingIgnores = Arrays.asList("\"", "'");
-
-        final String ACTIONABLE_DELIMITERS = " -/\""; // if following, capitalise
-
-        StringBuilder sb = new StringBuilder();
-        boolean capNext = true;
-        for (char c : s.toCharArray()) {
-            c = (capNext)
-                    ? Character.toUpperCase(c)
-                    : Character.toLowerCase(c);
-            sb.append(c);
-            capNext = (ACTIONABLE_DELIMITERS.indexOf(c) >= 0); // explicit cast not needed
-        }
-
-        String[] split = sb.toString().trim().split("\\s"); // split on spaces
-        List<String> elements = new ArrayList<>();
-
-        for (int i = 0; i < split.length; i++) {
-            String e = split[i].trim();
-            if (containsRequirements(makeLower, e) & i != 0) elements.add(e.toLowerCase());
-            else if (containsRequirements(makeUpper, e)) elements.add(e.toUpperCase());
-            else elements.add(e);
-        }
-
-        String out = String.join(" ", elements);
-        if (out.matches("((ga)|(GA)|(Ga))#\\d+")) out = out.toUpperCase(); // post hoc check
-
-        return out;
-    }
-
-    /**
-     * String contains, but ignore case. Also ignore all quotes.
-     * @param hay    to look in
-     * @param needle to find, with exceptions
-     * @return true if contains after applying checks
-     */
-    private static boolean containsRequirements(List<String> hay, String needle) {
-        String n = needle.replaceAll("[\"']", "").toLowerCase();
-        return hay.contains(n);
-    }
-
-    public static XML queryApi(int rNum) throws IOException {
-        String url = String.format("https://www.nationstates.net/cgi-bin/api.cgi?wa=%d&id=%d&q=resolution", 1, rNum);
-        NSConnection connection = new NSConnection(url);
-        System.err.printf("Querying API for GA %d%n", rNum);
-        System.err.printf("URL is %s%n", url);
-        return new XMLDocument(connection.getResponse());
-    }
-
     /**
      * Translates the strength line into the applicable effect. There is a bug in the NationStates API where certain
      * effects are stored as '0' rather than the actual effects, which is specific by category. This translates them
@@ -474,8 +396,8 @@ public class GAResolution {
      * @return the real strength or effect of the resolution
      */
     private static String translateEffect(String strength, String category) {
-
-        if (!strength.equals("0")) return GAResolution.capitalise(strength); // if strength != 0, skip, but capitalise
+        if (!strength.equals("0"))
+            return RqForumUtilities.capitalise(strength); // if strength != 0, skip, but capitalise
 
         if (category.equalsIgnoreCase("Environmental")) return "Automotive";
         if (category.equalsIgnoreCase("Health")) return "Healthcare";
@@ -483,7 +405,6 @@ public class GAResolution {
         if (category.equalsIgnoreCase("Gun Control")) return "Tighten";
 
         return "Mild";  // apparently, 0 -> Mild
-
     }
 
     /**
@@ -509,8 +430,13 @@ public class GAResolution {
         return "Area of Effect";    // not mild, significant, strong, or other edge cases -> generic effect
     }
 
-    private static String fromColon(String input) {
-        return input.substring(input.indexOf(':') + 1).trim();
+    /**
+     * Takes text from right hand side of colon.
+     * @param input text, eg {@code Category: Bread and circuses}
+     * @return text from the right, eg {@code Bread and circuses}
+     */
+    public static String fromColon(String input) {
+        return input.substring(input.indexOf(':') + 1).strip();
     }
 
 }

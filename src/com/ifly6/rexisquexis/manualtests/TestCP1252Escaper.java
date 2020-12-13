@@ -24,6 +24,7 @@ package com.ifly6.rexisquexis.manualtests;
 
 import com.ifly6.rexisquexis.GAResolution;
 import com.ifly6.rexisquexis.cp1252escaper.EscapeNumericEntities;
+import com.ifly6.rexisquexis.io.RqForumUtilities;
 import com.jcabi.xml.XML;
 import org.apache.commons.text.StringEscapeUtils;
 
@@ -48,7 +49,7 @@ public class TestCP1252Escaper {
         System.out.println("Getting text from NS API");
         System.out.println("------------------------\n");
         try {
-            XML xml = GAResolution.queryApi(528);
+            XML xml = RqForumUtilities.queryApi(528);
             String text = GAResolution.cleanResolutionText(
                     xml.xpath("/WA/RESOLUTION/DESC/text()").get(0)
                             .replaceFirst("<!\\[CDATA\\[", "")

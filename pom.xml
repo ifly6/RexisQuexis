@@ -13,8 +13,8 @@
 				<version>3.5.1</version>
 				<configuration>
 					<!-- MUST USE JAVA 9+ BECAUSE OF ANNOYING OLD DATE API; NEED NEW VERSION FOR BETTER API -->
-					<source>10</source>
-					<target>10</target>
+					<source>11</source>
+					<target>11</target>
 					<debug>true</debug>
 					<verbose>true</verbose>
 					<optimize>true</optimize>
