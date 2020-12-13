@@ -1,8 +1,8 @@
 package com.ifly6.rexisquexis.groups;
 
 import com.git.ifly6.nsapi.NSConnection;
-import com.ifly6.rexisquexis.GAResolution;
 import com.ifly6.rexisquexis.io.RqCacher;
+import com.ifly6.rexisquexis.io.RqForumUtilities;
 import com.jcabi.xml.XML;
 import com.jcabi.xml.XMLDocument;
 import org.jsoup.Jsoup;
@@ -153,7 +153,7 @@ public class RqCategories {
     private List<RqResolutionData> parseSource() throws IOException {
 
         List<RqResolutionData> resList = new ArrayList<>();
-        Elements elements = Jsoup.parse(new URL("http://forum.nationstates.net/viewtopic.php?f=9&t=30"), 2000)
+        Elements elements = Jsoup.parse(new URL("https://forum.nationstates.net/viewtopic.php?f=9&t=30"), 2000)
                 .select("div#p310 div.content a");
         int numOfResolutions = elements.size();
 
@@ -165,7 +165,7 @@ public class RqCategories {
         AtomicInteger counter = new AtomicInteger(1);
         for (Element element : elements) {
 
-            String title = GAResolution.capitalise(element.text());
+            String title = RqForumUtilities.capitalise(element.text());
 
             // Get some basic information
             String postLink = element.attr("href");

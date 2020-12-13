@@ -22,25 +22,22 @@
 
 package com.ifly6.rexisquexis.manualtests;
 
-import com.ifly6.rexisquexis.io.RqForumUtilities;
+import static com.ifly6.rexisquexis.io.RqForumUtilities.cleanForumURL;
 
-public class TestCapitalisation {
+public class TestURLParser {
+
     public static void main(String[] args) {
-        testHelper("Repeal 'Ban on Secret Treaties'");
-        testHelper("Repeal \"Ban on Secret Treaties\"");
-        testHelper("GMO Health Act");
-        testHelper("Christian DemoCrats");
-        testHelper("strong");
-        testHelper("tort reform");
-        testHelper("Repeal \"On Universal Jurisdiction\"");
-        testHelper("Repeal \"GMO Int'l Trade Accord\"");
-        testHelper("GA#10");
-        testHelper("Protection OF ReligiouS shit");
-        testHelper("Repeal \"Supporting Protection OF ReligiouS shit\"");
-        testHelper("Repeal \"protection OF ReligiouS shit\"");
+        testURL("https://forum.nationstates.net/viewtopic.php?p=35629514#p35629514");
+        testURL("https://forum.nationstates.net/viewtopic.php?f=9&t=495081");
+        testURL("https://forum.nationstates.net/viewtopic.php?f=9&t=495070&sid=1387589fewlhiu");
+        testURL("https://forum.nationstates.net/viewtopic.php?f=9&t=494438&p=37945397&hilit=passed#p37945397");
+        testURL("https://forum.nationstates.net/viewtopic.php?f=9&t=484456&p=37051357&hilit=passed#p37051357");
+        testURL("https://forum.nationstates.net/viewtopic.php?p=36298615#p36298615");
+        testURL("https://forum.nationstates.net/viewtopic.php?f=9&p=38086143#p38086143");
     }
 
-    private static void testHelper(String s) {
-        System.out.println(String.format("input '%s' -> output '%s'", s, RqForumUtilities.capitalise(s)));
+    private static void testURL(String s) {
+        String output = cleanForumURL(s);
+        System.out.println(String.format("input <%s>\t returned <%s>", s, output));
     }
 }

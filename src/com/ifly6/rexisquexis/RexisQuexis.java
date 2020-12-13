@@ -1,6 +1,7 @@
 package com.ifly6.rexisquexis;
 
 import com.git.ifly6.nsapi.NSConnection;
+import com.ifly6.rexisquexis.io.RqForumUtilities;
 import com.jcabi.xml.XMLDocument;
 import org.jsoup.Jsoup;
 import org.jsoup.select.Elements;
@@ -29,9 +30,9 @@ import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Scanner;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class RexisQuexis {
 
@@ -61,20 +62,14 @@ public class RexisQuexis {
 
         JButton parseButton = new JButton("Parse");
         parseButton.addActionListener(e -> {
-            String url = JOptionPane.showInputDialog(frame, "Enter the URL for the debate topic.",
-                    "Parameter Input", JOptionPane.PLAIN_MESSAGE)
-                    .replace("&hilit=[^#]+", "")
-                    .replace("&sid=[^#]", "");
-
             LOGGER.info("Attempting to parse resolution");
+            String url = JOptionPane.showInputDialog(frame, "Enter the URL for the debate topic. Auto-cleans.",
+                    "Parameter Input", JOptionPane.PLAIN_MESSAGE);
+
             GAResolution gaResolution = GAResolution.parse(textArea.getText());
+            gaResolution.topicUrl = RqForumUtilities.cleanForumURL(url);
             LOGGER.info(String.format("Parsed for GA resolution %d", gaResolution.resolutionNum));
 
-            // parse the annoying af highlight thing out
-            // https://forum.nationstates.net/viewtopic.php?f=9&t=485969&p=37173138&hilit=desalination#p37173138
-            url = url.replace("&hilit=.+(?=#)", "");
-
-            gaResolution.topicUrl = url;
             textArea.setText(gaResolution.format());
         });
         buttonPanel.add(parseButton);
@@ -91,15 +86,16 @@ public class RexisQuexis {
             private String repealFormat(List<String> textLines) {
                 int whichRepeal;
                 try {
-                    // extract resolution number, use API to get repealed resolution number
-                    Scanner scanner = new Scanner(textLines.get(textLines.size() - 1));
-                    int resNum = scanner.nextInt();
-                    scanner.close();
+                    // extract resolution number from the pasted information, use API to get repealed resolution number
+                    Matcher m = Pattern.compile("(?<=GA )\\d+").matcher(textLines.get(textLines.size() - 1));
+                    if (m.find()) {
+                        int resNum = Integer.parseInt(m.group());
+                        String xmlRaw = new NSConnection("https://www.nationstates.net/cgi-bin/api.cgi?wa=1&id="
+                                + resNum + "&q=resolution").getResponse();
+                        whichRepeal = Integer.parseInt(
+                                new XMLDocument(xmlRaw).xpath("/WA/RESOLUTION/REPEALED_BY/text()").get(0));
 
-                    String xmlRaw = new NSConnection("https://www.nationstates.net/cgi-bin/api.cgi?wa=1&id="
-                            + resNum + "&q=resolution").getResponse();
-                    whichRepeal = Integer.parseInt(new XMLDocument(xmlRaw).xpath("/WA/RESOLUTION/REPEALED_BY/text()")
-                            .get(0));
+                    } else throw new RuntimeException("Couldn't find repealing resolution in database");
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -111,10 +107,16 @@ public class RexisQuexis {
 
                 String urlRepeal;
                 try {
-                    String html = new NSConnection("http://forum.nationstates.net/viewtopic.php?f=9&t=30")
-                            .getResponse();
+                    // must be HTTPS!
+                    String html =
+                            new NSConnection("https://forum.nationstates.net/viewtopic.php?f=9&t=30")
+                                    .getResponse();
                     Elements elements = Jsoup.parse(html).select("div#p310 div.content a");
-                    urlRepeal = elements.get(whichRepeal + 1).attr("abs:href"); // adjust for 0 -> 1 index
+                    urlRepeal = elements.get(whichRepeal + 1).attr("href"); // adjust for 0 -> 1 index
+                    if (urlRepeal.isEmpty())
+                        throw new RuntimeException("URL repeal must must be non-null");
+
+                    urlRepeal = urlRepeal.startsWith("https:") ? urlRepeal : "https:" + urlRepeal;
 
                 } catch (IOException | RuntimeException e) {
                     e.printStackTrace();
@@ -135,7 +137,7 @@ public class RexisQuexis {
                 int lastStrikeLine = indexStartsWith("[b]Votes Against", textLines);
                 textLines.set(lastStrikeLine, textLines.get(lastStrikeLine) + "[/strike][/color]");
 
-                return textLines.stream().collect(Collectors.joining("\n"));
+                return String.join("\n", textLines);
 
             }
         });
@@ -179,7 +181,7 @@ public class RexisQuexis {
     }
 
     // ** Helpful parsing and search methods **
-    private int postInt(String postUrl) {
+    static int postInt(String postUrl) {
         return Integer.parseInt(postUrl.substring(postUrl.indexOf("#p") + "#p".length()));
     }
 
