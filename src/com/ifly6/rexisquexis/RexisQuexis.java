@@ -3,8 +3,6 @@ package com.ifly6.rexisquexis;
 import com.git.ifly6.nsapi.NSConnection;
 import com.ifly6.rexisquexis.io.RqForumUtilities;
 import com.jcabi.xml.XMLDocument;
-import org.jsoup.Jsoup;
-import org.jsoup.select.Elements;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
@@ -27,9 +25,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -71,16 +69,17 @@ public class RexisQuexis {
             LOGGER.info(String.format("Parsed for GA resolution %d", gaResolution.resolutionNum));
 
             textArea.setText(gaResolution.format());
+            LOGGER.info("Resolution parse done");
         });
         buttonPanel.add(parseButton);
 
         JButton repealButton = new JButton("Repeal Format (use bbCode form)");
         repealButton.addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent e) {
                 List<String> textLines = Arrays.asList(textArea.getText().split("\n"));
                 textArea.setText(repealFormat(textLines));
+                LOGGER.info("Repeal format done");
             }
 
             private String repealFormat(List<String> textLines) {
@@ -95,34 +94,30 @@ public class RexisQuexis {
                         whichRepeal = Integer.parseInt(
                                 new XMLDocument(xmlRaw).xpath("/WA/RESOLUTION/REPEALED_BY/text()").get(0));
 
-                    } else throw new RuntimeException("Couldn't find repealing resolution in database");
+                    } else throw new RuntimeException("Couldn't find repealing resolution in API");
 
                 } catch (Exception e) {
                     e.printStackTrace();
                     whichRepeal = Integer.parseInt(JOptionPane.showInputDialog(frame,
-                            "Cannot find repealed resolution from API, enter the number of the resolution that " +
-                                    "repealed this resolution (e.g. 326)",
+                            "Repealing resolution not in API. Enter repealing resolution number (eg 326).",
                             "Parameter input", JOptionPane.PLAIN_MESSAGE));
                 }
 
                 String urlRepeal;
                 try {
-                    // must be HTTPS!
-                    String html =
-                            new NSConnection("https://forum.nationstates.net/viewtopic.php?f=9&t=30")
-                                    .getResponse();
-                    Elements elements = Jsoup.parse(html).select("div#p310 div.content a");
-                    urlRepeal = elements.get(whichRepeal + 1).attr("href"); // adjust for 0 -> 1 index
-                    if (urlRepeal.isEmpty())
-                        throw new RuntimeException("URL repeal must must be non-null");
+                    urlRepeal = GAResolution.searchTopics(whichRepeal).toString();
 
-                    urlRepeal = urlRepeal.startsWith("https:") ? urlRepeal : "https:" + urlRepeal;
-
-                } catch (IOException | RuntimeException e) {
+                } catch (NoSuchElementException e) {
                     e.printStackTrace();
                     urlRepeal = JOptionPane.showInputDialog(frame,
-                            "Cannot find repealing resolution in database, manually provide the RexisQuexis url of the " +
-                                    "repealed resolution",
+                            "Cannot find repealing resolution in forum database, "
+                                    + "manually provide the RexisQuexis url of the repealed resolution",
+                            "Parameter input", JOptionPane.PLAIN_MESSAGE);
+
+                } catch (RuntimeException e) {
+                    e.printStackTrace();
+                    urlRepeal = JOptionPane.showInputDialog(frame,
+                            "Repealing resolution forum search suffered unclear fatal error. See errors.",
                             "Parameter input", JOptionPane.PLAIN_MESSAGE);
                 }
 
@@ -138,7 +133,6 @@ public class RexisQuexis {
                 textLines.set(lastStrikeLine, textLines.get(lastStrikeLine) + "[/strike][/color]");
 
                 return String.join("\n", textLines);
-
             }
         });
         buttonPanel.add(repealButton);
