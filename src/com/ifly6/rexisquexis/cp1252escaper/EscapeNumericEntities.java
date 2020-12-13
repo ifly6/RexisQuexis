@@ -24,12 +24,23 @@ package com.ifly6.rexisquexis.cp1252escaper;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
+import java.nio.charset.IllegalCharsetNameException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class EscapeCP1252 {
+/**
+ * Escapes numeric HTML entities.
+ */
+public class EscapeNumericEntities {
 
-    public EscapeCP1252() {
+    public static EscapeNumericEntities WINDOWS_1252 = new EscapeNumericEntities("Windows-1252");
+    private String CHARSET_NAME;
+
+    public EscapeNumericEntities(String charsetName) {
+        if (!Charset.isSupported(charsetName))
+            throw new IllegalCharsetNameException(String.format("Unsupported charset '%s'", charsetName));
+
+        CHARSET_NAME = charsetName;
     }
 
     /**
@@ -44,7 +55,7 @@ public class EscapeCP1252 {
      * @throws InvalidEntityException    if input does not match pattern for a valid HTML numeric character entity
      * @throws InvalidCodepointException if corresponding code point is outside defined range
      */
-    private static String translateCharacter(String html, int min, int max) {
+    private String translateCharacter(String html, int min, int max) {
         // eg &#147;
         if (!html.endsWith(";") || !html.startsWith("&#") || !html.matches("&#\\d+;"))
             throw new InvalidEntityException(String.format("Input '%s' is invalid HTML numeric entity", html));
@@ -58,7 +69,7 @@ public class EscapeCP1252 {
                 throw new InvalidCodepointException(String.format("input '%s' code point outside valid range [%d, %d]",
                         html, min, max));
 
-            return Charset.forName("Windows-1252")
+            return Charset.forName(CHARSET_NAME)
                     .decode(ByteBuffer.wrap(new byte[]{(byte) codePoint}))  // decode
                     .toString();
         } catch (NumberFormatException e) {
@@ -76,7 +87,7 @@ public class EscapeCP1252 {
      * @param text to unescape to characters
      * @return unescaped text
      */
-    public static String unescape(String text) {
+    public String unescape(String text) {
         return unescape(text, 0, Integer.MAX_VALUE);
     }
 
@@ -92,7 +103,7 @@ public class EscapeCP1252 {
      * @param max  code point to unescape
      * @return unescaped text
      */
-    public static String unescape(String text, int min, int max) {
+    public String unescape(String text, int min, int max) {
         Matcher m = Pattern.compile("&#\\d+;").matcher(text);
         StringBuffer sb = new StringBuffer();  // must use string buffer; matcher api requires
         while (m.find())
