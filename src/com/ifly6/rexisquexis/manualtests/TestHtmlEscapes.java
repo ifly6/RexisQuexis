@@ -20,26 +20,29 @@
  * SOFTWARE.
  */
 
-package com.ifly6.rexisquexis.tests;
+package com.ifly6.rexisquexis.manualtests;
 
-import com.ifly6.rexisquexis.GAResolution;
+import org.apache.commons.text.StringEscapeUtils;
+import org.jsoup.parser.Parser;
 
-public class TestCapitalisation {
-    public static void main(String[] args) {
-        testHelper("Repeal 'Ban on Secret Treaties'");
-        testHelper("Repeal \"Ban on Secret Treaties\"");
-        testHelper("GMO Health Act");
-        testHelper("Christian DemoCrats");
-        testHelper("strong");
-        testHelper("tort reform");
-        testHelper("Repeal \"On Universal Jurisdiction\"");
-        testHelper("Repeal \"GMO Int'l Trade Accord\"");
-        testHelper("GA#10");
-        testHelper("Protection OF ReligiouS shit");
-        testHelper("Repeal \"Supporting Protection OF ReligiouS shit\"");
-    }
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.stream.Collectors;
 
-    private static void testHelper(String s) {
-        System.out.println(String.format("input '%s' -> output '%s'", s, GAResolution.capitalise(s)));
+public class TestHtmlEscapes {
+    public static void main(String[] args) throws IOException {
+        String w1252 = "&#126;&#151;&#161;";
+        String output = StringEscapeUtils.unescapeHtml4(w1252);
+        System.out.println(output);
+        System.out.println(output.chars().mapToLong(Long::valueOf)
+                .boxed().collect(Collectors.toList()));
+
+        byte[] bytes = output.getBytes(StandardCharsets.UTF_8);
+        String reenc = new String(bytes, "Windows-1252");
+        System.out.println("re-encoded: " + reenc);
+        System.out.println("code points: " + reenc.chars().mapToLong(Long::valueOf)
+                .boxed().collect(Collectors.toList()));
+
+        Parser.unescapeEntities(w1252, true);
     }
 }
