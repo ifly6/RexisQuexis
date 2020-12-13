@@ -57,7 +57,7 @@ public class EscapeCP1252 {
      */
     public static String translateCharacter(String html, int min, int max) {
         // eg &#147;
-        if (!html.endsWith(";") || !html.startsWith("&#"))
+        if (!html.endsWith(";") || !html.startsWith("&#") || !html.matches("&#\\d+;"))
             throw new InvalidEntityException(String.format("Input '%s' is invalid HTML numeric entity", html));
 
         try {
