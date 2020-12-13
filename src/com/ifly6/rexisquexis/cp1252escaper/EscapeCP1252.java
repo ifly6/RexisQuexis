@@ -33,17 +33,6 @@ public class EscapeCP1252 {
     }
 
     /**
-     * Unescapes <b>numeric</b> HTML character entity using Windows-1252 code points. This method applies only to
-     * numeric HTML character entities. It also assumes that <b>all</b> numeric characters are encoded in Windows-1252.
-     * See {@link #translateCharacter(String, int, int)} for implementation details
-     * @param html numeric character entity
-     * @return unescaped text
-     */
-    public static String translateCharacter(String html) {
-        return translateCharacter(html, 0, Integer.MAX_VALUE);
-    }
-
-    /**
      * Translates a character, provided as an HTML numeric character entity, in the form <code>&#111;</code> where the
      * digits are anything you'd like. The specified numeric character entity is taken as a code point: the code point
      * is the mapped using a Windows-1252 character set. Code points are inclusive: that is, value <code>&#147;</code>
@@ -55,7 +44,7 @@ public class EscapeCP1252 {
      * @throws InvalidEntityException    if input does not match pattern for a valid HTML numeric character entity
      * @throws InvalidCodepointException if corresponding code point is outside defined range
      */
-    public static String translateCharacter(String html, int min, int max) {
+    private static String translateCharacter(String html, int min, int max) {
         // eg &#147;
         if (!html.endsWith(";") || !html.startsWith("&#") || !html.matches("&#\\d+;"))
             throw new InvalidEntityException(String.format("Input '%s' is invalid HTML numeric entity", html));
@@ -79,8 +68,11 @@ public class EscapeCP1252 {
     }
 
     /**
-     * Unescapes <b>numeric</b> HTML character entities that use Windows-1252 code points. This method applies only to
-     * numeric HTML character entities. It also assumes that <b>all</b> numeric characters are encoded in Windows-1252.
+     * Unescapes <b>numeric</b> HTML numeric character entities that use Windows-1252 code points. This method applies
+     * only to numeric HTML character entities and assumes that <b>all</b> numeric characters are so encoded. Use {@link
+     * #unescape(String, int, int)} if you want to specify valid code point ranges. It ignores HTML named entities etc.
+     * To unescape such entities, you may want to invoke {@link org.apache.commons.text.StringEscapeUtils#escapeHtml4(String)}
+     * on what is returned from this method.
      * @param text to unescape to characters
      * @return unescaped text
      */
@@ -91,8 +83,10 @@ public class EscapeCP1252 {
     /**
      * Unescapes <b>numeric</b> HTML character entities that use Windows-1252 code points. This method applies only to
      * numeric HTML numeric character entities. Parameters <code>min</code> and <code>max</code> specify a range of code
-     * points to parse; ones outside that range will be ignored. Code points are inclusive: that is, value
-     * <code>&#147;</code> will be parsed if <code>min = 147</code>.
+     * points to parse; ones outside that range will be ignored. Code points are inclusive: that is, value 147 (ie
+     * <code>&#147;</code>) will be parsed if <code>min = 147</code>.
+     * <p>It ignores HTML named entities etc. To unescape such entities, you may want to invoke {@link
+     * org.apache.commons.text.StringEscapeUtils#escapeHtml4(String)} on what is returned from this method.</p>
      * @param text to unescape using Windows-1252 encoding
      * @param min  code point to unescape
      * @param max  code point to unescape
@@ -100,7 +94,7 @@ public class EscapeCP1252 {
      */
     public static String unescape(String text, int min, int max) {
         Matcher m = Pattern.compile("&#\\d+;").matcher(text);
-        StringBuffer sb = new StringBuffer();
+        StringBuffer sb = new StringBuffer();  // must use string buffer; matcher api requires
         while (m.find())
             try {
                 // for each thing you find, take the match, translate the character, and append the replacement
@@ -111,7 +105,6 @@ public class EscapeCP1252 {
             }
 
         m.appendTail(sb);  // append everything left
-
         return sb.toString();  // return string
     }
 }

@@ -20,38 +20,26 @@
  * SOFTWARE.
  */
 
-package com.ifly6.rexisquexis.tests;
+package com.ifly6.rexisquexis.manualtests;
 
 import com.ifly6.rexisquexis.GAResolution;
-import com.ifly6.rexisquexis.cp1252escaper.EscapeCP1252;
-import com.jcabi.xml.XML;
 
-import java.io.IOException;
-
-public class TestCP1252Escaper {
-
+public class TestCapitalisation {
     public static void main(String[] args) {
+        testHelper("Repeal 'Ban on Secret Treaties'");
+        testHelper("Repeal \"Ban on Secret Treaties\"");
+        testHelper("GMO Health Act");
+        testHelper("Christian DemoCrats");
+        testHelper("strong");
+        testHelper("tort reform");
+        testHelper("Repeal \"On Universal Jurisdiction\"");
+        testHelper("Repeal \"GMO Int'l Trade Accord\"");
+        testHelper("GA#10");
+        testHelper("Protection OF ReligiouS shit");
+        testHelper("Repeal \"Supporting Protection OF ReligiouS shit\"");
+    }
 
-        System.out.println(EscapeCP1252.unescape("arma virumque cano&#133;"));
-        System.out.println(EscapeCP1252.unescape("&#147;bread and circuses&#148;"));
-        System.out.println(EscapeCP1252.unescape("the romans say it costs 10&#128;"));
-        System.out.println(EscapeCP1252.unescape("caligula&#153;"));
-
-        System.out.println("\n------------------------");
-        System.out.println("Getting text from NS API");
-        System.out.println("------------------------\n");
-        try {
-            XML xml = GAResolution.queryApi(528);
-
-            String text = GAResolution.cleanResolutionText(
-                    xml.xpath("/WA/RESOLUTION/DESC/text()").get(0)
-                            .replaceFirst("<!\\[CDATA\\[", "")
-                            .replace("]]>", ""));
-            System.out.println(text);
-
-        } catch (IOException e) {
-            System.err.println("Can't get text from NS. Shucks, bud.");
-            e.printStackTrace();
-        }
+    private static void testHelper(String s) {
+        System.out.println(String.format("input '%s' -> output '%s'", s, GAResolution.capitalise(s)));
     }
 }
