@@ -25,6 +25,8 @@ package com.ifly6.rexisquexis.cp1252escaper;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.IllegalCharsetNameException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -33,21 +35,37 @@ import java.util.regex.Pattern;
  */
 public class EscapeNumericEntities {
 
-    public static EscapeNumericEntities WINDOWS_1252 = new EscapeNumericEntities("Windows-1252");
+    public static Map<String, EscapeNumericEntities> cache = new HashMap<>();
+    public static EscapeNumericEntities WINDOWS_1252 = EscapeNumericEntities.get("Windows-1252");
+
     private String CHARSET_NAME;
 
-    public EscapeNumericEntities(String charsetName) {
+    private EscapeNumericEntities(String charsetName) {
+        // prevent instantiation outside of get
+        CHARSET_NAME = charsetName;
+    }
+
+    /**
+     * Gets an escaper for the provided character set name.
+     * @param charsetName to get numeric escaper for
+     * @return escaper for provided character set
+     * @throws IllegalCharsetNameException if charset is unsupported
+     */
+    public static EscapeNumericEntities get(String charsetName) {
         if (!Charset.isSupported(charsetName))
             throw new IllegalCharsetNameException(String.format("Unsupported charset '%s'", charsetName));
 
-        CHARSET_NAME = charsetName;
+        if (!cache.containsKey(charsetName))
+            cache.put(charsetName, new EscapeNumericEntities(charsetName));
+
+        return cache.get(charsetName);
     }
 
     /**
      * Translates a character, provided as an HTML numeric character entity, in the form <code>&#111;</code> where the
      * digits are anything you'd like. The specified numeric character entity is taken as a code point: the code point
-     * is the mapped using a Windows-1252 character set. Code points are inclusive: that is, value <code>&#147;</code>
-     * will be parsed if <code>min = 147</code>.
+     * is the mapped with the specified set. Code points are inclusive: that is, value <code>&#147;</code> will be
+     * parsed if <code>min = 147</code>.
      * @param html numeric character entity
      * @param min  code point to unescape
      * @param max  code point to unescape
@@ -79,7 +97,7 @@ public class EscapeNumericEntities {
     }
 
     /**
-     * Unescapes <b>numeric</b> HTML numeric character entities that use Windows-1252 code points. This method applies
+     * Unescapes <b>numeric</b> HTML numeric character entities to their corresponding code points. This method applies
      * only to numeric HTML character entities and assumes that <b>all</b> numeric characters are so encoded. Use {@link
      * #unescape(String, int, int)} if you want to specify valid code point ranges. It ignores HTML named entities etc.
      * To unescape such entities, you may want to invoke {@link org.apache.commons.text.StringEscapeUtils#escapeHtml4(String)}
@@ -92,13 +110,13 @@ public class EscapeNumericEntities {
     }
 
     /**
-     * Unescapes <b>numeric</b> HTML character entities that use Windows-1252 code points. This method applies only to
+     * Unescapes <b>numeric</b> HTML character entities to corresponding code points. This method applies only to
      * numeric HTML numeric character entities. Parameters <code>min</code> and <code>max</code> specify a range of code
      * points to parse; ones outside that range will be ignored. Code points are inclusive: that is, value 147 (ie
-     * <code>&#147;</code>) will be parsed if <code>min = 147</code>.
+     * <code>&#147;</code> in Windows-1252) will be parsed if <code>min = 147</code>.
      * <p>It ignores HTML named entities etc. To unescape such entities, you may want to invoke {@link
      * org.apache.commons.text.StringEscapeUtils#escapeHtml4(String)} on what is returned from this method.</p>
-     * @param text to unescape using Windows-1252 encoding
+     * @param text to unescape
      * @param min  code point to unescape
      * @param max  code point to unescape
      * @return unescaped text
