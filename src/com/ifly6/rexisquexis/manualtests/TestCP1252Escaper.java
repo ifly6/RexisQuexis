@@ -23,7 +23,7 @@
 package com.ifly6.rexisquexis.manualtests;
 
 import com.ifly6.rexisquexis.GAResolution;
-import com.ifly6.rexisquexis.cp1252escaper.EscapeCP1252;
+import com.ifly6.rexisquexis.cp1252escaper.EscapeNumericEntities;
 import com.jcabi.xml.XML;
 import org.apache.commons.text.StringEscapeUtils;
 
@@ -33,15 +33,16 @@ public class TestCP1252Escaper {
 
     public static void main(String[] args) {
 
-        System.out.println(EscapeCP1252.unescape("virgil1:\t" + "arma virumque cano&#133;"));
+        EscapeNumericEntities escaper = EscapeNumericEntities.WINDOWS_1252;
+        System.out.println(escaper.unescape("virgil1:\t" + "arma virumque cano&#133;"));
 
         String virgil2 = "&quot;arma virumque cano&#133;&quot;";
-        System.out.println("virgil2:\t" + EscapeCP1252.unescape(virgil2));
-        System.out.println("virgil2:\t" + StringEscapeUtils.unescapeHtml4(EscapeCP1252.unescape(virgil2)));
+        System.out.println("virgil2:\t" + escaper.unescape(virgil2));
+        System.out.println("virgil2:\t" + StringEscapeUtils.unescapeHtml4(escaper.unescape(virgil2)));
 
-        System.out.println(EscapeCP1252.unescape("panem:\t" + "&#147;bread and circuses&#148;"));
-        System.out.println(EscapeCP1252.unescape("cave:\t" + "the romans say it costs 10&#128;"));
-        System.out.println(EscapeCP1252.unescape("gaius:\t" + "caligula&#153;"));
+        System.out.println(escaper.unescape("panem:\t" + "&#147;bread and circuses&#148;"));
+        System.out.println(escaper.unescape("cave:\t" + "the romans say it costs 10&#128;"));
+        System.out.println(escaper.unescape("gaius:\t" + "caligula&#153;"));
 
         System.out.println("\n------------------------");
         System.out.println("Getting text from NS API");

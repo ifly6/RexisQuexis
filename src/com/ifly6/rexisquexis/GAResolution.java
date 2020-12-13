@@ -1,7 +1,7 @@
 package com.ifly6.rexisquexis;
 
 import com.git.ifly6.nsapi.NSConnection;
-import com.ifly6.rexisquexis.cp1252escaper.EscapeCP1252;
+import com.ifly6.rexisquexis.cp1252escaper.EscapeNumericEntities;
 import com.jcabi.xml.XML;
 import com.jcabi.xml.XMLDocument;
 import org.apache.commons.text.StringEscapeUtils;
@@ -407,7 +407,7 @@ public class GAResolution {
         for (String element : badTags)
             s = s.replaceAll(element, "");  // removes all bold, italics, or underline tags
 
-        s = EscapeCP1252.unescape(s);  // unescape text from CP-1252 numeric entity escapes
+        s = EscapeNumericEntities.WINDOWS_1252.unescape(s);  // unescape text from CP-1252 numeric entity escapes
         return StringEscapeUtils.unescapeHtml4(s);  // unescape text from HTML escapes
     }
 
