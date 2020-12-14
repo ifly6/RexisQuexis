@@ -7,79 +7,91 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.TreeSet;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
- * RqCategoryPrinter is a utility to print an input <code>HashMap&lt;RqResolutionData, String&gt;</code> into the valid
- * phpBB bbCode for posting. This is here to produce the code necessary for RexisQuexis categories.
+ * {@code RqCategoryPrinter} is a utility to print an input {@code HashMap<RqResolutionData, String>} into the valid
+ * phpBB bbCode for posting.
  */
 @SuppressWarnings("WeakerAccess")
 public class RqCategoryPrinter {
 
     private List<String> lines;
+
+    /**
+     * Map with keys of {@link RqResolutionData} and key {@code String} with category.
+     */
     private Map<RqResolutionData, String> categoryMap;
 
-    private List<RqResolutionData> resolutions;
-
-    public RqCategoryPrinter() {
-        lines = new ArrayList<>();
+    /**
+     * Prevent instantiation unless appropriate variables are provided.
+     */
+    private RqCategoryPrinter() {
     }
 
     /**
-     * @param categoryMap containing each resolution along with its assigned corresponding category
+     * @param resolutions containing all resolutions
      */
-    public RqCategoryPrinter(Map<RqResolutionData, String> categoryMap) {
-        this();
-        this.categoryMap = categoryMap;
+    public RqCategoryPrinter(List<RqResolutionData> resolutions) {
+        lines = new ArrayList<>();
+        this.categoryMap = resolutions.stream()
+                .collect(Collectors.toMap(Function.identity(), RqResolutionData::category));
     }
 
+    /**
+     * After instantiation with appropriate variables, this is basically a kingdom of the nouns {@code execute()}.
+     * @return the sought-after phpBB bbCode to copy-paste to the forum.
+     */
     public String print() {
-
+        // invert mapping to get a 1:m with sub-lists for category to resolutions
         Map<String, List<RqResolutionData>> byCategory = categoryMap.keySet().stream()
-                .filter(r -> !r.isRepealed())
+                .filter(r -> !r.isRepealed()) // ignore repealed resolutions
+                .filter(r -> r.category().equalsIgnoreCase("repeal")) // ignore all repeals
                 .collect(Collectors.groupingBy(RqResolutionData::category));
+
+        // create comparator to operate within category, strength first; numbers tie-break
         Comparator<RqResolutionData> comparator = Comparator.comparing(RqResolutionData::strength)
                 .thenComparing(RqResolutionData::num);
 
         lines.add("&nbsp;");   // add a new line at the top
 
-        // Write each section
-        Set<String> keys = new TreeSet<>(byCategory.keySet());
-        for (String categoryName : keys) {
-            // Get the category resolution list
+        // write sections one by one
+        // use tree-set to sort category names
+        for (String categoryName : new TreeSet<>(byCategory.keySet())) {
+            // get resolutions in category
             List<RqResolutionData> categoryResolutions = byCategory.get(categoryName);
-
             if (!categoryName.equalsIgnoreCase("repeal") || categoryResolutions.isEmpty()) {
                 categoryResolutions.sort(comparator);
 
-                String pluralForm = categoryResolutions.size() > 1 ? "resolutions" : "resolution";
-                lines.add(RQbb.header(categoryName, categoryResolutions.size() + " " + pluralForm));
+                // add header, change pluralisation as needed
+                lines.add(RQbb.header(categoryName, categoryResolutions.size() + " "
+                        + (categoryResolutions.size() != 1 ? "resolutions" : "resolution")));
 
+                // add category data
                 lines.add("[floatleft][align=right]");
                 for (RqResolutionData resolution : categoryResolutions)
                     lines.add(WordUtils.capitalize(resolution.strength()) + ": ");
-
                 lines.add("[/align][/floatleft]");
 
-                for (RqResolutionData resolution : categoryResolutions) {
-                    if (resolution.isRepealed())
-                        lines.add(RQbb.strike(RQbb.tab(10) + RQbb.post(RQbb.color(resolution
-                                        .num() + " GA '" + resolution.name() + "'", "gray"),
-                                resolution.postNum())));
-                    else
-                        lines.add(RQbb.post(String.format("%sGA %d '%s'", RQbb.tab(10), resolution.num(), resolution.name()),
-                                resolution.postNum()));
-                }
+                // add resolutions
+                // nb repealed-resolution handling code removed; repealed resolutions no longer displayed
+                for (RqResolutionData resolution : categoryResolutions)
+                    lines.add(RQbb.post(String.format("%sGA %d '%s'", RQbb.tab(10), resolution.num(), resolution.name()),
+                            resolution.postNum()));
+
                 lines.add("\n");
             }
-
         }
 
         return makeString();
     }
 
+    /**
+     * Joins {@code List<String>} and cleans.
+     * @return joined cleaned {@code String}
+     */
     private String makeString() {
         // it gets rid of new lines here because floatleft and align are divs in bbCode, which have their own padding
         return String.join("\n", lines)

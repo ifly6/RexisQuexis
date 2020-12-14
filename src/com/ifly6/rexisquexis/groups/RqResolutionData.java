@@ -10,6 +10,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
+ * Light-weight holder for resolution metadata. Also processes that data.
  * @author ifly6
  */
 public class RqResolutionData {

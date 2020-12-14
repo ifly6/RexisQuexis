@@ -52,12 +52,6 @@
               <text value="Parse Categories"/>
             </properties>
           </component>
-          <component id="e1b3" class="javax.swing.JButton" binding="parseAuthors">
-            <constraints/>
-            <properties>
-              <text value="Parse Authors"/>
-            </properties>
-          </component>
           <component id="fc340" class="javax.swing.JButton" binding="cacheClear">
             <constraints/>
             <properties>
