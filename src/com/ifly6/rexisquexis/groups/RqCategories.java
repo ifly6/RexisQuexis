@@ -105,24 +105,6 @@ public class RqCategories {
         return this;
     }
 
-    public static void main(String[] args) {
-        System.setProperty("java.util.logging.SimpleFormatter.format", "%1$tF %1$tT %4$s %2$s %5$s%6$s%n");
-        SwingUtilities.invokeLater(() -> {
-            // must wrap in JFrame for IntelliJ to work it out
-            JFrame frame = new JFrame("RexisQuexis Categories");
-            frame.setContentPane(RqCategories.getInstance().panel);
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-            Dimension defaultDimension = new Dimension(500, 500); // sizing
-            frame.setPreferredSize(defaultDimension);
-            frame.setSize(defaultDimension);
-            frame.setLocationRelativeTo(null); // centre
-
-            frame.pack();
-            frame.setVisible(true);
-        });
-    }
-
     /**
      * Scrapes and parses the data from the RexisQuexis table of contents.
      * @return {@code List<RqResolutionData>} containing all relevant resolutions.
@@ -212,5 +194,23 @@ public class RqCategories {
         Duration d = Duration.of(seconds, ChronoUnit.SECONDS);
         return String.format("%dd:%dh:%dm:%ds", d.toDaysPart(), d.toHoursPart(), d.toMinutesPart(),
                 d.toSecondsPart());
+    }
+
+    public static void main(String[] args) {
+        System.setProperty("java.util.logging.SimpleFormatter.format", "%1$tF %1$tT %4$s %2$s %5$s%6$s%n");
+        SwingUtilities.invokeLater(() -> {
+            // must wrap in JFrame for IntelliJ to work it out
+            JFrame frame = new JFrame("RexisQuexis Categories");
+            frame.setContentPane(RqCategories.getInstance().panel);
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+            Dimension defaultDimension = new Dimension(500, 500); // sizing
+            frame.setPreferredSize(defaultDimension);
+            frame.setSize(defaultDimension);
+            frame.setLocationRelativeTo(null); // centre
+
+            frame.pack();
+            frame.setVisible(true);
+        });
     }
 }
