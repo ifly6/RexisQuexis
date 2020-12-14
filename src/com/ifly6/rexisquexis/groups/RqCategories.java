@@ -26,24 +26,25 @@ import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
+/**
+ * Creates GUI {@code JTextArea} and buttons. Button to parse active resolutions by category group. Invokes {@link
+ * RqCategoryPrinter} to format as phpBB bbCode and then display for copy-paste to forum.
+ * @author ifly6
+ */
 public class RqCategories {
 
     private static final Logger LOGGER = Logger.getLogger(RqCategories.class.getName());
     private static RqCategories instance = null;
 
-    private JButton parseButton;
+    private JPanel panel;
     private JTextArea textArea;
     private JProgressBar progressBar;
-    private JPanel panel;
-    private JButton parseAuthors;
+    private JButton parseButton;
     private JButton cacheClear;
 
     private List<RqResolutionData> resolutions;
@@ -59,32 +60,11 @@ public class RqCategories {
             Thread queryThread = new Thread(() -> {
                 try {
                     if (Objects.isNull(resolutions))
-                        resolutions = parseSource();
+                        resolutions = parseResolutions();
 
-                    Map<RqResolutionData, String> categoryMap = new HashMap<>();
-                    for (RqResolutionData it : resolutions)
-                        categoryMap.put(it, it.category());
-
-                    RqCategoryPrinter printer = new RqCategoryPrinter(categoryMap);
+                    RqCategoryPrinter printer = new RqCategoryPrinter(resolutions);
                     textArea.setText(Parser.unescapeEntities(printer.print(), true));
                     // parser unescapes html chars for printing
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    textArea.setText(e.toString());
-                }
-            });
-            queryThread.start();
-        });
-        parseAuthors.addActionListener(event -> {
-            Thread queryThread = new Thread(() -> {
-                try {
-                    if (Objects.isNull(resolutions))
-                        resolutions = parseSource();
-
-                    RqAuthorPrinter printer = new RqAuthorPrinter(resolutions.stream()
-                            .collect(Collectors.toMap(r -> r, RqResolutionData::category)));
-                    textArea.setText(Parser.unescapeEntities(printer.print(), true));
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -122,7 +102,6 @@ public class RqCategories {
      */
     private RqCategories completeInitialisation() {
         progressBar.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
-//        textArea.setFont(Font.getFont(Font.MONOSPACED));
         return this;
     }
 
@@ -149,7 +128,7 @@ public class RqCategories {
      * @return {@code List<RqResolutionData>} containing all relevant resolutions.
      * @throws IOException if error in getting data from Internet
      */
-    private List<RqResolutionData> parseSource() throws IOException {
+    private List<RqResolutionData> parseResolutions() throws IOException {
 
         List<RqResolutionData> resList = new ArrayList<>();
         Elements elements = Jsoup.parse(new URL("https://forum.nationstates.net/viewtopic.php?f=9&t=30"), 2000)
