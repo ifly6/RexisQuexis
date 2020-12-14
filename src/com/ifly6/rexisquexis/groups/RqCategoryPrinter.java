@@ -41,7 +41,8 @@ public class RqCategoryPrinter {
     }
 
     /**
-     * After instantiation with appropriate variables, this is basically a kingdom of the nouns {@code execute()}.
+     * Prints the {@code RqCategories} data to phpBB bbCode. After instantiation with appropriate variables, this is
+     * basically a kingdom of the nouns {@code execute()}.
      * @return the sought-after phpBB bbCode to copy-paste to the forum.
      */
     public String print() {

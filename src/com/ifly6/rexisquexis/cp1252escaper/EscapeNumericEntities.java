@@ -88,7 +88,7 @@ public class EscapeNumericEntities {
                         html, min, max));
 
             return Charset.forName(CHARSET_NAME)
-                    .decode(ByteBuffer.wrap(new byte[]{(byte) codePoint}))  // decode
+                    .decode(ByteBuffer.wrap(new byte[] {(byte) codePoint}))  // decode
                     .toString();
         } catch (NumberFormatException e) {
             throw new NumberFormatException(String.format("Input string '%s' does not contain a number", html));

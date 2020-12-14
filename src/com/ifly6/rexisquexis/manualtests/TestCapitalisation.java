@@ -24,24 +24,77 @@ package com.ifly6.rexisquexis.manualtests;
 
 import com.ifly6.rexisquexis.io.RqForumUtilities;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class TestCapitalisation {
+
     public static void main(String[] args) {
-        testHelper("Repeal 'Ban on Secret Treaties'");
-        testHelper("Repeal \"Ban on Secret Treaties\"");
-        testHelper("GMO Health Act");
-        testHelper("Christian DemoCrats");
-        testHelper("strong");
-        testHelper("tort reform");
-        testHelper("Repeal \"On Universal Jurisdiction\"");
-        testHelper("Repeal \"GMO Int'l Trade Accord\"");
-        testHelper("GA#10");
-        testHelper("Protection OF ReligiouS shit");
-        testHelper("Repeal \"Supporting Protection OF ReligiouS shit\"");
-        testHelper("Repeal \"protection OF ReligiouS shit\"");
-        testHelper("Repeal \"the protection OF ReligiouS shit\"");
+        List<String> testList = List.of(
+                "Repeal \"The Protection of Religious Shit\"",
+                "Repeal 'Ban on Secret Treaties'",
+                "Repeal \"Ban on Secret Treaties\"",
+                "GMO Health Act",
+                "Christian Democrats",
+                "Strong",
+                "Tort Reform",
+                "GMO Int'l Trade Accord",
+                "WA Trade Rights",
+                "Repeal \"GMO Int'l Trade Accord\"",
+                "GA#10",
+                "Repeal \"Promulgation of Law Int'l\"",
+                "Repeal 'Promulgation of Law Int'l'",
+                "\"GA#14k\"",
+                "'GA 15'",
+                "Imperium Anglorum",
+                "\"Galaxy\"",
+                "\"Whom'st\"",
+                "Queen Anne's Revenge \"Law Violators\"",
+                "\"Law Violators\" Queen Anne's Revenge",
+                "Queen Anne's Revenge \"Int'l Law Violators\""
+//                "CIA \"Operatives\" Save Children from Wildfire"
+        );
+
+        Map<String, Boolean> results = new HashMap<>();
+        for (String s : testList)
+            results.put(s, testHelper(s));
+
+        long passed = results.values().stream().filter(b -> b).count();
+        long failed = results.values().stream().filter(b -> !b).count();
+        System.out.printf("Ran %d tests; %d passed, %d failed; %d pc pass rate%n",
+                results.size(), passed, failed, Math.round((double) (100 * passed / (passed + failed)))
+        );
     }
 
-    private static void testHelper(String s) {
-        System.out.printf("input '%s' -> output '%s'%n", s, RqForumUtilities.capitalise(s));
+    /**
+     * Administer test for input string. Randomises case. See {@link #randomiseCase(String)}.
+     * @param expected from which to derive data to test
+     * @return {@code true} if test passed
+     */
+    private static boolean testHelper(String expected) {
+        String randomisedCase = randomiseCase(expected);
+        String output = RqForumUtilities.capitalise(randomisedCase);
+        boolean passed = output.equals(expected);
+        System.out.printf("[%s] input <%s> -> output <%s>%n",
+                passed ? "PASSED" : "FAILED",
+                randomisedCase,
+                output);
+        return passed;
+    }
+
+    /**
+     * Take input and randomise the case of every character; 50-50 for lower or upper.
+     * @param s to randomise case
+     * @return string with randomised case
+     */
+    private static String randomiseCase(String s) {
+        StringBuilder sb = new StringBuilder();
+        for (char c : s.toCharArray())
+            sb.append(Math.random() > 0.5
+                    ? Character.toLowerCase(c)
+                    : Character.toUpperCase(c)
+            );
+        return sb.toString();
     }
 }

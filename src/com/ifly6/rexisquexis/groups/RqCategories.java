@@ -2,11 +2,12 @@ package com.ifly6.rexisquexis.groups;
 
 import com.git.ifly6.nsapi.NSConnection;
 import com.ifly6.rexisquexis.io.RqCacher;
+import com.ifly6.rexisquexis.io.RqForumUtilities;
 import com.jcabi.xml.XML;
 import com.jcabi.xml.XMLDocument;
+import org.apache.commons.text.StringEscapeUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
-import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
 
 import javax.swing.BorderFactory;
@@ -63,7 +64,7 @@ public class RqCategories {
                         resolutions = parseResolutions();
 
                     RqCategoryPrinter printer = new RqCategoryPrinter(resolutions);
-                    textArea.setText(Parser.unescapeEntities(printer.print(), true));
+                    textArea.setText(StringEscapeUtils.unescapeHtml4(printer.print()));
                     // parser unescapes html chars for printing
 
                 } catch (IOException e) {
@@ -154,7 +155,7 @@ public class RqCategories {
 
             // Parse the API response
             XML xml = new XMLDocument(cacher.get(resolutionURL));
-            final String name = xml.xpath("/WA/RESOLUTION/NAME/text()").get(0);
+            final String name = RqForumUtilities.capitalise(xml.xpath("/WA/RESOLUTION/NAME/text()").get(0));
             final String category = xml.xpath("/WA/RESOLUTION/CATEGORY/text()").get(0);
 
             // determine strength
