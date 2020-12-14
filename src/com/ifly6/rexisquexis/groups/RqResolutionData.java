@@ -93,7 +93,7 @@ public class RqResolutionData {
             boolean isRepealingResolution = d.resolutionName.toLowerCase().startsWith("repeal");
             if (isRepealingResolution) {
                 // if so, find out what it is repealing
-                Matcher m = Pattern.compile("(?<=\")[\\w\\s-]+(?=\")").matcher(d.resolutionName.toLowerCase());
+                Matcher m = Pattern.compile("(?<=\")(.*?)(?=\")").matcher(d.resolutionName.toLowerCase());
                 if (m.find()) {
                     String repealedTitle = m.group().strip(); // get match, strip to eliminate trailing spaces
                     if (fastLookup.containsKey(repealedTitle)) { // make sure that name is present
