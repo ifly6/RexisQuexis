@@ -2,7 +2,6 @@ package com.ifly6.rexisquexis.groups;
 
 import com.git.ifly6.nsapi.NSConnection;
 import com.ifly6.rexisquexis.io.RqCacher;
-import com.ifly6.rexisquexis.io.RqForumUtilities;
 import com.jcabi.xml.XML;
 import com.jcabi.xml.XMLDocument;
 import org.jsoup.Jsoup;
@@ -147,7 +146,7 @@ public class RqCategories {
 
     /**
      * Scrapes and parses the data from the RexisQuexis table of contents.
-     * @return <code>List&lt;RqResolutionData&gt;</code> containing all relevant resolutions.
+     * @return {@code List<RqResolutionData>} containing all relevant resolutions.
      * @throws IOException if error in getting data from Internet
      */
     private List<RqResolutionData> parseSource() throws IOException {
@@ -164,9 +163,6 @@ public class RqCategories {
 
         AtomicInteger counter = new AtomicInteger(1);
         for (Element element : elements) {
-
-            String title = RqForumUtilities.capitalise(element.text());
-
             // Get some basic information
             String postLink = element.attr("href");
             int postNum;
@@ -177,15 +173,15 @@ public class RqCategories {
             }
 
             RqCacher cacher = new RqCacher(rqcCacheLocation);
-            String url = String.format(
+            String resolutionURL = String.format(
                     "https://www.nationstates.net/cgi-bin/api.cgi?wa=1&id=%d&q=resolution",
                     counter.get()
             );
-            if (!cacher.contains(url)) {
+            if (!cacher.contains(resolutionURL)) {
                 // Query the API
-                NSConnection connection = new NSConnection(url);
+                NSConnection connection = new NSConnection(resolutionURL);
                 LOGGER.info("Queried for resolution " + counter.get() + " of " + numOfResolutions);
-                cacher.update(url, connection.getResponse());
+                cacher.update(resolutionURL, connection.getResponse());
                 cacher.save();
             }
 
@@ -196,14 +192,20 @@ public class RqCategories {
             });
 
             // Parse the API response
-            XML xml = new XMLDocument(cacher.get(url));
-            String category = xml.xpath("/WA/RESOLUTION/CATEGORY/text()").get(0);
-            String strength = xml.xpath("/WA/RESOLUTION/OPTION/text()").get(0);
-            if (strength.equals("0")) if (category.equalsIgnoreCase("Environmental")) strength = "Automotive";
-            else if (category.equalsIgnoreCase("Health")) strength = "Healthcare";
-            else if (category.equalsIgnoreCase("Education and Creativity")) strength = "Artistic";
-            else if (category.equalsIgnoreCase("Gun Control")) strength = "Tighten";
-            else strength = "Mild";
+            XML xml = new XMLDocument(cacher.get(resolutionURL));
+            final String name = xml.xpath("/WA/RESOLUTION/NAME/text()").get(0);
+            final String category = xml.xpath("/WA/RESOLUTION/CATEGORY/text()").get(0);
+
+            // determine strength
+            final String strength;
+            String rawStrength = xml.xpath("/WA/RESOLUTION/OPTION/text()").get(0);
+            if (rawStrength.equals("0")) {
+                if (category.equalsIgnoreCase("Environmental")) strength = "Automotive";
+                else if (category.equalsIgnoreCase("Health")) strength = "Healthcare";
+                else if (category.equalsIgnoreCase("Education and Creativity")) strength = "Artistic";
+                else if (category.equalsIgnoreCase("Gun Control")) strength = "Tighten";
+                else strength = "Mild";
+            } else strength = rawStrength;
 
             boolean repealed = true;
             try {
@@ -214,14 +216,16 @@ public class RqCategories {
             }
 
             // PROPOSED_BY
-            String proposedBy = xml.xpath("/WA/RESOLUTION/PROPOSED_BY/text()").get(0);
+            final String proposedBy = xml.xpath("/WA/RESOLUTION/PROPOSED_BY/text()").get(0);
 
-            // Make the resolution, add, and increment
-            resList.add(new RqResolutionData(title, counter.get(), category, strength, postNum, repealed, proposedBy));
-            counter.getAndIncrement();
+            // Make the resolution, tell us
+            resList.add(new RqResolutionData(name, counter.get(), category, strength, postNum, repealed, proposedBy));
+            System.out.printf("Parsed resolution GA %d <%s>%n", counter.get(), name);
 
+            counter.getAndIncrement(); // increment for next
         }
 
+        RqResolutionData.makeRepealsConsistent(resList);
         return resList;
     }
 
