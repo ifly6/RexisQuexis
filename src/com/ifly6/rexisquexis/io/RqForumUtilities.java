@@ -28,25 +28,38 @@ import com.jcabi.xml.XMLDocument;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+
+import static org.apache.commons.lang3.StringUtils.endsWithIgnoreCase;
+import static org.apache.commons.lang3.StringUtils.startsWithIgnoreCase;
 
 public class RqForumUtilities {
 
     private RqForumUtilities() {
     }
 
-
+    /**
+     * Capitalises strings into proper title case
+     * @param s to capitalise
+     * @return capitalised string
+     */
     public static String capitalise(String s) {
 
-        final List<String> makeLower = Arrays.asList("for", "and", "nor", "but", "yet", "the", "or", "to", "on", "of");
-        final List<String> makeUpper =
-                Arrays.asList("ii", "iii", "iv", "v", "vi", "vii", "viii", "ix", "x", "wa", "gmo", "ga");
+        final List<String> makeLowerWords =
+                List.of("for", "and", "nor", "but", "yet", "the", "or", "to", "on", "of");
+        final List<String> makeUpperWords =
+                List.of("ii", "iii", "iv", "v", "vi", "vii", "viii", "ix", "x", "wa", "gmo", "ga");
+        final List<String> suffixes =
+                List.of("'l", "'s", "'t", "'st"); // nat'l, harry's, don't, whom'st
+        final List<String> prefixes =
+                List.of("GA#");
 
-        final String ACTIONABLE_DELIMITERS = " -/\""; // if following, capitalise
+        final String ACTIONABLE_DELIMITERS = " -/\"'"; // if following, capitalise
 
+        s = cleanQuotes(s); // clean smart quotes
         StringBuilder sb = new StringBuilder();
         boolean capNext = true;
         for (char c : s.toCharArray()) {
@@ -58,19 +71,47 @@ public class RqForumUtilities {
         }
 
         String[] split = sb.toString().trim().split("\\s"); // split on spaces
-        List<String> elements = new ArrayList<>();
 
+        // deal with whole words that should be made upper or lower
+        List<String> elements = new ArrayList<>();
         for (int i = 0; i < split.length; i++) {
             String e = split[i].trim();
-            if (containsRequirements(makeLower, e) & i != 0) elements.add(e.toLowerCase());
-            else if (containsRequirements(makeUpper, e)) elements.add(e.toUpperCase());
-            else elements.add(e);
+            if (ignoreCaseContains(makeLowerWords, e) && i != 0) e = e.toLowerCase();
+            else if (ignoreCaseContains(makeUpperWords, e)) e = e.toUpperCase();
+
+            // while here also deal with suffixes
+            for (String suffix : suffixes)
+                if (endsWithIgnoreCase(e, suffix))
+                    e = replaceLast(e, "(?i)" + suffix, suffix);
+
+            // while here also also deal with prefixes
+            for (String prefix : prefixes)
+                if (startsWithIgnoreCase(e, prefix))
+                    e = e.replaceFirst("(?i)" + prefix, prefix);
+
+            elements.add(e);
         }
 
-        String out = String.join(" ", elements);
-        if (out.matches("((ga)|(GA)|(Ga))#\\d+")) out = out.toUpperCase(); // post hoc check
+        /* This regex is complex. It first looks for a starting quote; those quotes are either single or double quotes.
+         * The it looks at the end for the same thing matched in the first matching group, in the positive lookbehind.
+         * It also then checks whether the lookahead ending portion itself is next to whitespace or to the end of line.
+         * This tries to minimise the number of false matches to inter-word apostrophes. No guarantees on perfection.
+         *
+         * It is not possible to add something like «(\\s|^)» to the start, as the lookbehind needs to be fixed-width.
+         * If that were possible, then it might be perfect, absent cases where apostrophes start and end words, which
+         * is something that I don't think happens regularly in English.
+         */
+        Matcher m = Pattern.compile("(?<=([\"']))(.*)(?=\\1(\\s|$))")
+                .matcher(String.join(" ", elements));
+        StringBuffer buffer = new StringBuffer();  // must use string buffer; matcher api requires
+        while (m.find()) {
+            // recursively capitalise anything in quotes
+            String quoteContents = m.group();
+            m.appendReplacement(buffer, capitalise(quoteContents));
+        }
 
-        return out;
+        m.appendTail(buffer);  // append everything left
+        return buffer.toString();
     }
 
     /**
@@ -119,13 +160,26 @@ public class RqForumUtilities {
 
     /**
      * String contains, but ignore case. Also ignore all quotes (including smart quotes).
-     * @param hay    to look in
-     * @param needle to find, with exceptions
+     * @param haystack to look in
+     * @param needle   to find, with exceptions
      * @return true if contains after applying checks
      */
-    private static boolean containsRequirements(List<String> hay, String needle) {
-        String n = needle.replaceAll("[\"'\\u2018\\u2019\\u201C\\u201D]", "").toLowerCase();
+    public static boolean ignoreCaseContains(final List<String> haystack, final String needle) {
+        List<String> hay = haystack.stream().map(String::toLowerCase).collect(Collectors.toList());
+        String n = needle.toLowerCase();
         return hay.contains(n);
+    }
+
+    /**
+     * Replaces last occurrence of provided regex with replace. See <a href="https://stackoverflow.com/a/2282998/2741091">post</a>
+     * for source.
+     * @param text        to search
+     * @param regex       to find
+     * @param replacement to put
+     * @return text, with area found replaced
+     */
+    public static String replaceLast(String text, String regex, String replacement) {
+        return text.replaceFirst("(?s)(.*)" + regex, "$1" + replacement);
     }
 
     /**
