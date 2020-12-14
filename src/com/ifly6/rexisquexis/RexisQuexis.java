@@ -86,7 +86,7 @@ public class RexisQuexis {
                 int whichRepeal;
                 try {
                     // extract resolution number from the pasted information, use API to get repealed resolution number
-                    Matcher m = Pattern.compile("(?<=GA )\\d+").matcher(textLines.get(textLines.size() - 1));
+                    Matcher m = Pattern.compile("(?<=GA\\s)\\d+").matcher(textLines.get(textLines.size() - 1));
                     if (m.find()) {
                         int resNum = Integer.parseInt(m.group());
                         String xmlRaw = new NSConnection("https://www.nationstates.net/cgi-bin/api.cgi?wa=1&id="
@@ -117,7 +117,7 @@ public class RexisQuexis {
                 } catch (RuntimeException e) {
                     e.printStackTrace();
                     urlRepeal = JOptionPane.showInputDialog(frame,
-                            "Repealing resolution forum search suffered unclear fatal error. See errors.",
+                            "Repealing resolution forum search suffered unclear fatal error. Check log.",
                             "Parameter input", JOptionPane.PLAIN_MESSAGE);
                 }
 

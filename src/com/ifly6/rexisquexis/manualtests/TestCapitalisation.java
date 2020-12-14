@@ -38,9 +38,10 @@ public class TestCapitalisation {
         testHelper("Protection OF ReligiouS shit");
         testHelper("Repeal \"Supporting Protection OF ReligiouS shit\"");
         testHelper("Repeal \"protection OF ReligiouS shit\"");
+        testHelper("Repeal \"the protection OF ReligiouS shit\"");
     }
 
     private static void testHelper(String s) {
-        System.out.println(String.format("input '%s' -> output '%s'", s, RqForumUtilities.capitalise(s)));
+        System.out.printf("input '%s' -> output '%s'%n", s, RqForumUtilities.capitalise(s));
     }
 }
