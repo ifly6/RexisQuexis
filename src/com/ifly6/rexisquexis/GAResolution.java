@@ -417,8 +417,9 @@ public class GAResolution {
         if (category.equalsIgnoreCase("Health")) return "Healthcare";
         if (category.equalsIgnoreCase("Education and Creativity")) return "Artistic";
         if (category.equalsIgnoreCase("Gun Control")) return "Tighten";
+        if (category.equalsIgnoreCase("Regulation")) return "Consumer Protection";
 
-        return "Mild";  // apparently, 0 -> Mild
+        return "Mild";  // apparently, 0 -> Mild otherwise
     }
 
     /**
