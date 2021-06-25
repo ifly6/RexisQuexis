@@ -49,7 +49,7 @@ public class RqCategoryPrinter {
         // invert mapping to get a 1:m with sub-lists for category to resolutions
         Map<String, List<RqResolutionData>> byCategory = categoryMap.keySet().stream()
                 .filter(r -> !r.isRepealed()) // ignore repealed resolutions
-                .filter(r -> r.category().equalsIgnoreCase("repeal")) // ignore all repeals
+                .filter(r -> !r.category().equalsIgnoreCase("repeal")) // ignore all repeals
                 .collect(Collectors.groupingBy(RqResolutionData::category));
 
         // create comparator to operate within category, strength first; numbers tie-break
