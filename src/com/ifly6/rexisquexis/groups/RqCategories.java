@@ -58,13 +58,14 @@ public class RqCategories {
 
     private RqCategories() {
         parseButton.addActionListener(event -> {
-            Thread queryThread = new Thread(() -> {
+            Thread queryThread = new Thread(() -> { // has a runnable inside already
                 try {
                     if (Objects.isNull(resolutions))
                         resolutions = parseResolutions();
 
                     RqCategoryPrinter printer = new RqCategoryPrinter(resolutions);
-                    textArea.setText(StringEscapeUtils.unescapeHtml4(printer.print()));
+                    String newText = StringEscapeUtils.unescapeHtml4(printer.print());
+                    textArea.setText(newText);
                     // parser unescapes html chars for printing
 
                 } catch (IOException e) {
