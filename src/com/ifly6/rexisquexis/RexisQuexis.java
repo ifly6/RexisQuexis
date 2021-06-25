@@ -94,7 +94,7 @@ public class RexisQuexis {
                         whichRepeal = Integer.parseInt(
                                 new XMLDocument(xmlRaw).xpath("/WA/RESOLUTION/REPEALED_BY/text()").get(0));
 
-                    } else throw new RuntimeException("Couldn't find repealing resolution in API");
+                    } else throw new RuntimeException("Couldn't find repealing resolution in input text");
 
                 } catch (Exception e) {
                     e.printStackTrace();
