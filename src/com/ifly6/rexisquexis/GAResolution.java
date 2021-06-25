@@ -357,12 +357,11 @@ public class GAResolution {
                     resolution.repealData.targetPost = Integer.parseInt(
                             urlString.substring(urlString.lastIndexOf(postCode) + postCode.length()));
 
-                } catch (NumberFormatException e) {
+                } catch (NumberFormatException | NoSuchElementException e) {
                     // catch if it isn't there
                     e.printStackTrace();
                     resolution.repealData.targetPost = -1;
                 }
-
             }
 
         } catch (IOException e) {
