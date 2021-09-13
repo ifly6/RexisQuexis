@@ -83,7 +83,7 @@ public class RexisQuexis {
             }
 
             private String repealFormat(List<String> textLines) {
-                int whichRepeal;
+                int whichRepeal = -1;
                 try {
                     // extract resolution number from the pasted information, use API to get repealed resolution number
                     Matcher m = Pattern.compile("(?<=GA\\s)\\d+").matcher(textLines.get(textLines.size() - 1));
@@ -98,9 +98,17 @@ public class RexisQuexis {
 
                 } catch (Exception e) {
                     e.printStackTrace();
-                    whichRepeal = Integer.parseInt(JOptionPane.showInputDialog(frame,
-                            "Repealing resolution not in API. Enter repealing resolution number (eg 326).",
-                            "Parameter input", JOptionPane.PLAIN_MESSAGE));
+                    do {
+                        try {
+                            whichRepeal = Integer.parseInt(JOptionPane.showInputDialog(frame,
+                                    "Repealing resolution not in API. Enter repealing resolution number (eg 326).",
+                                    "Parameter input", JOptionPane.PLAIN_MESSAGE));
+
+                        } catch (NumberFormatException nfe) {
+                            JOptionPane.showMessageDialog(frame,
+                                    String.format("Number format error: \n\n%s", nfe.getMessage()));
+                        }
+                    } while (whichRepeal == -1);
                 }
 
                 String urlRepeal;
