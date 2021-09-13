@@ -1,7 +1,12 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Mon Sep 12 ... 2021
+@author: ifly6
+"""
 import re
 import time
 from collections import namedtuple
-import pyperclip
 
 import requests
 import pandas as pd
@@ -86,3 +91,4 @@ for g, df in resolutions.groupby('page'):
                          (' [b][REPEALED][/b]' if r['repealed'] else ''))
 
 contents = '\n'.join(lines) + '[/list]'
+print(contents)
