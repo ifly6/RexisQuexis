@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 // This class, with public vars, is totally valid. Look:
@@ -325,6 +326,19 @@ public class GAResolution {
                     xml.xpath("/WA/RESOLUTION/DESC/text()").get(0).replaceFirst("<!\\[CDATA\\[", "")
                             .replace("]]>", "")
             );
+
+            System.out.println("hi");
+
+            // if co-authors are present, append them to the end after normalising end and correcting plural
+            List<XML> coauthNodes = xml.nodes("/WA/RESOLUTION/COAUTHOR/N");
+            if (coauthNodes.size() > 0)
+                resolution.text = resolution.text.strip() + "\n\n" +
+                        (coauthNodes.size() > 2 ? "Co-authors: " : "Co-author: ") +
+                        coauthNodes.stream()
+                                .map(n -> n.xpath("text()").get(0))
+                                .map(s -> s.replace("_", " "))
+                                .map(RqForumUtilities::capitalise)
+                                .collect(Collectors.joining(", "));
 
             // for some reason, there is no XML tag for this. Check for existence of repealed_by tag to set isRepealed
             try {
