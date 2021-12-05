@@ -20,8 +20,8 @@ seen_list = []
 titles_and_posts = []
 
 
-def is_repealed(i):
-    post_text = str(i.parent.parent)
+def is_repealed(post_title):
+    post_text = str(post_title.parent.parent)
 
     # this isn't always marked properly... but it should be dispositive if marked
     if '[REPEALED]' in post_title.text:
@@ -65,6 +65,10 @@ for i in range(0, 40):
 
     soup = BeautifulSoup(requests.get(adj_url).text, 'lxml')
     for post_title in soup.select('div.postbody h3 a'):
+        if post_title['href'] in ['#p309', '#p310']:
+            # don't attempt to parse the intro and table!
+            continue
+
         if post_title['href'] in seen_list:
             no_more = True
             break
@@ -86,7 +90,7 @@ for i in range(0, 40):
 # create data frame for tabular repr
 posts = pd.DataFrame(titles_and_posts)
 
-resolutions = posts.loc[2:].copy()  # manual exclude rexis intro and contents posts
+resolutions = posts.copy()  # manual exclude rexis intro and contents posts
 resolutions['code'] = resolutions.apply(
     lambda r: '[post={}]{}[/post]'.format(r['post'], r['title']), axis=1)  # make post bbcode
 
