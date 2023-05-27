@@ -33,8 +33,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
 
 /**
- * Creates GUI {@code JTextArea} and buttons. Button to parse active resolutions by category group. Invokes {@link
- * RqCategoryPrinter} to format as phpBB bbCode and then display for copy-paste to forum.
+ * Creates GUI {@code JTextArea} and buttons. Button to parse active resolutions by category group. Invokes
+ * {@link RqCategoryPrinter} to format as phpBB bbCode and then display for copy-paste to forum.
  * @author ifly6
  */
 public class RqCategories {
@@ -119,10 +119,12 @@ public class RqCategories {
                 .select("div#p310 div.content a");
         int numOfResolutions = elements.size();
 
-        //noinspection IntegerDivisionInFloatingPointContext
         System.out.printf("For %d elements, this will take a max of %s%n",
                 numOfResolutions,
-                time(Math.round(NSConnection.WAIT_TIME * numOfResolutions / 1000)));
+                time((int) Math.round(
+                        (double) NSConnection.WAIT_TIME * numOfResolutions / 1000)
+                )
+        );
 
         AtomicInteger counter = new AtomicInteger(1);
         for (Element element : elements) {
@@ -167,6 +169,7 @@ public class RqCategories {
                 else if (category.equalsIgnoreCase("Health")) strength = "Healthcare";
                 else if (category.equalsIgnoreCase("Education and Creativity")) strength = "Artistic";
                 else if (category.equalsIgnoreCase("Gun Control")) strength = "Tighten";
+                else if (category.equalsIgnoreCase("Regulation")) strength = "Consumer Protection";
                 else strength = "Mild";
             } else strength = rawStrength;
 
