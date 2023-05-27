@@ -32,7 +32,7 @@ import java.util.stream.Stream;
 @SuppressWarnings({"WeakerAccess", "MagicConstant"})
 public class GAResolution {
 
-    transient private static final Logger LOGGER = Logger.getLogger(GAResolution.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(GAResolution.class.getName());
 
     public enum GAType {
         NORMAL, REPEAL
@@ -137,9 +137,11 @@ public class GAResolution {
         lines.add("");
 
         // Add bottom helper links
+        String resolutionNS = String.format(
+                "https://www.nationstates.net/page=WA_past_resolution/id=%d/council=1",
+                resolutionNum);
         String linkSet = RQbb.bold(String.format("[%s] [%s]",
-                RQbb.url(String.format("GA %d on NS", resolutionNum), "http://www.nationstates.net/page=WA_past_resolutions/" +
-                        "council=1/start=" + (resolutionNum - 1)),
+                RQbb.url(String.format("GA %d on NS", resolutionNum), resolutionNS),
                 RQbb.url("Official Debate Topic", topicUrl)));
         lines.add(RQbb.size(linkSet, RQbb.SMALL));
 
@@ -327,13 +329,11 @@ public class GAResolution {
                             .replace("]]>", "")
             );
 
-            System.out.println("hi");
-
             // if co-authors are present, append them to the end after normalising end and correcting plural
             List<XML> coauthNodes = xml.nodes("/WA/RESOLUTION/COAUTHOR/N");
             if (coauthNodes.size() > 0)
                 resolution.text = resolution.text.strip() + "\n\n" +
-                        (coauthNodes.size() > 2 ? "Co-authors: " : "Co-author: ") +
+                        (coauthNodes.size() >= 2 ? "Co-authors: " : "Co-author: ") +
                         coauthNodes.stream()
                                 .map(n -> n.xpath("text()").get(0))
                                 .map(s -> s.replace("_", " "))

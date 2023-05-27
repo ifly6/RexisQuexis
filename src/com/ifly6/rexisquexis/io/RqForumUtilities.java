@@ -51,7 +51,8 @@ public class RqForumUtilities {
         final List<String> makeLowerWords =
                 List.of("for", "and", "nor", "but", "yet", "the", "or", "to", "on", "of");
         final List<String> makeUpperWords =
-                List.of("ii", "iii", "iv", "v", "vi", "vii", "viii", "ix", "x", "wa", "gmo", "ga");
+                List.of("ii", "iii", "iv", "v", "vi", "vii", "viii", "ix", "x", "wa", "gmo", "ga", "leo",
+                        "lgbtqia", "lgbtiqa");
         final List<String> suffixes =
                 List.of("'l", "'s", "'t", "'st"); // nat'l, harry's, don't, whom'st
         final List<String> prefixes =
@@ -103,7 +104,7 @@ public class RqForumUtilities {
          */
         Matcher m = Pattern.compile("(?<=([\"']))(.*)(?=\\1(\\s|$))")
                 .matcher(String.join(" ", elements));
-        StringBuffer buffer = new StringBuffer();  // must use string buffer; matcher api requires
+        StringBuilder buffer = new StringBuilder();  // must use string buffer; matcher api requires
         while (m.find()) {
             // recursively capitalise anything in quotes
             String quoteContents = m.group();
@@ -171,8 +172,8 @@ public class RqForumUtilities {
     }
 
     /**
-     * Replaces last occurrence of provided regex with replace. See <a href="https://stackoverflow.com/a/2282998/2741091">post</a>
-     * for source.
+     * Replaces last occurrence of provided regex with replace. See <a
+     * href="https://stackoverflow.com/a/2282998/2741091">post</a> for source.
      * @param text        to search
      * @param regex       to find
      * @param replacement to put

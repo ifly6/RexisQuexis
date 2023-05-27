@@ -4,27 +4,15 @@ import com.git.ifly6.nsapi.NSConnection;
 import com.ifly6.rexisquexis.io.RqForumUtilities;
 import com.jcabi.xml.XMLDocument;
 
-import javax.swing.JButton;
-import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.KeyStroke;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import javax.swing.undo.UndoManager;
-import java.awt.BorderLayout;
-import java.awt.Font;
-import java.awt.GridLayout;
-import java.awt.Toolkit;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -86,7 +74,7 @@ public class RexisQuexis {
                 int whichRepeal = -1;
                 try {
                     // extract resolution number from the pasted information, use API to get repealed resolution number
-                    Matcher m = Pattern.compile("(?<=GA\\s)\\d+").matcher(textLines.get(textLines.size() - 1));
+                    Matcher m = Pattern.compile("(?<=(GA\\s|WAR|GAR|GA#))\\d+").matcher(textLines.get(textLines.size() - 1));
                     if (m.find()) {
                         int resNum = Integer.parseInt(m.group());
                         String xmlRaw = new NSConnection("https://www.nationstates.net/cgi-bin/api.cgi?wa=1&id="
@@ -101,7 +89,8 @@ public class RexisQuexis {
                     do {
                         try {
                             whichRepeal = Integer.parseInt(JOptionPane.showInputDialog(frame,
-                                    "Repealing resolution not in API. Enter repealing resolution number (eg 326).",
+                                    "Repealing resolution not parsed from text or not in API.\n" +
+                                            "Enter repealing resolution number (eg 326).",
                                     "Parameter input", JOptionPane.PLAIN_MESSAGE));
 
                         } catch (NumberFormatException nfe) {
@@ -117,10 +106,18 @@ public class RexisQuexis {
 
                 } catch (NoSuchElementException e) {
                     e.printStackTrace();
-                    urlRepeal = JOptionPane.showInputDialog(frame,
+                    String toValidate = JOptionPane.showInputDialog(frame,
                             "Cannot find repealing resolution in forum database, "
                                     + "manually provide the RexisQuexis url of the repealed resolution",
                             "Parameter input", JOptionPane.PLAIN_MESSAGE);
+                    try {
+                        new URL(toValidate);
+                    } catch (MalformedURLException malformedURLException) {
+                        String message = String.format("Input string \"%s\" is an invalid URL", toValidate);
+                        JOptionPane.showMessageDialog(frame, message);
+                        throw new RuntimeException(message);
+                    }
+                    urlRepeal = toValidate;
 
                 } catch (RuntimeException e) {
                     e.printStackTrace();
