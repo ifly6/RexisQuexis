@@ -107,8 +107,8 @@ public class RexisQuexis {
                 } catch (NoSuchElementException e) {
                     e.printStackTrace();
                     String toValidate = JOptionPane.showInputDialog(frame,
-                            "Cannot find repealing resolution in forum database, "
-                                    + "manually provide the RexisQuexis url of the repealed resolution",
+                            "Cannot find repealing resolution in forum database.\n"
+                                    + "Provide the RexisQuexis URL of the repealing resolution.",
                             "Parameter input", JOptionPane.PLAIN_MESSAGE);
                     try {
                         new URL(toValidate);
