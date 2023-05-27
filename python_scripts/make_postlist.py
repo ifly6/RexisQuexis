@@ -20,11 +20,11 @@ seen_list = []
 titles_and_posts = []
 
 
-def is_repealed(post_title):
-    post_text = str(post_title.parent.parent)
+def is_repealed(the_posttitle):
+    post_text = str(the_posttitle.parent.parent)
 
     # this isn't always marked properly... but it should be dispositive if marked
-    if '[REPEALED]' in post_title.text:
+    if '[REPEALED]' in the_posttitle.text:
         if '<del>' in post_text:
             return True
         else:
@@ -45,7 +45,7 @@ def is_repealed(post_title):
     return False
 
 
-def is_empty(i):
+def is_empty(unused):
     post_text = post_title.parent.parent.select('div.content')[0].text.strip()
 
     # normal posts should never start with a full stop
@@ -63,7 +63,7 @@ for i in range(0, 40):
 
     adj_value = i * 25
     adj_url = url.format(adj_value)
-    print(f'getting posts {i}')
+    print(f'getting posts {i}', end=' ')
 
     soup = BeautifulSoup(requests.get(
         adj_url, headers={
@@ -94,6 +94,7 @@ for i in range(0, 40):
             is_empty(post_title)))
         seen_list.append(post_title['href'])
 
+    print('...', end='\n')
     time.sleep(5)
 
 # create data frame for tabular repr
@@ -163,6 +164,7 @@ def title_capitalise(title: str) -> str:
     # force upper case for literals and regex matches
     _FORCE_UPPER = {
         'AI', 'WA', 'GA', 'NSIA', 'GMO', 'LEO', 'STI', 'US', 'USA',  # acronyms
+        'LGBT', 'LGBTQIA', 'LGBTIQA',  # other acronyms
         'TNP', 'TSP', 'TEP', 'TWP', 'TRR',  # regional names
         'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII', 'XIII', 'XIV', 'XV', 'XVI',  # numerals
     }
@@ -192,14 +194,14 @@ resolutions['num'] = range(1, len(resolutions) + 1)
 
 # ensure numbering is correct
 for k, v in {
-        'access to abortion': 499,
-        'nuclear arms possession act': 10,
-        'deposit insurance fund': 625,
-        'ban on secret treaties': 408,
-        'reproductive freedoms': 286,
-        'the charter of civil rights': 35,  # need THE
-        'on abortion': 128,
-        'reducing statelessness': 386
+    'access to abortion': 499,
+    'nuclear arms possession act': 10,
+    'deposit insurance fund': 625,
+    'ban on secret treaties': 408,
+    'reproductive freedoms': 286,
+    'the charter of civil rights': 35,  # need THE
+    'on abortion': 128,
+    'reducing statelessness': 386
 }.items():
     row = resolutions[resolutions['title'].str.lower().eq(k.lower())].iloc[0]
     assert row['num'] == v
@@ -219,12 +221,12 @@ for g, df in resolutions.groupby('page'):
         # lines.append('')
 
     for i, r in df.iterrows():
-        if r['is_empty'] == False:
+        if not r['is_empty']:
             lines.append('' + r['code'] +  # used to be '[*]'
                          (' [b][REPEALED][/b]' if r['repealed'] else ''))
 
 # save to var and print
-contents = '\n'.join(lines) # + '[/list]'
+contents = '\n'.join(lines)  # + '[/list]'
 print(contents)
 
 # print to file
