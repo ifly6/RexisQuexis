@@ -127,7 +127,8 @@ public class RqForumUtilities {
         // https://forum.nationstates.net/viewtopic.php?f=9&t=484456&p=37051357&hilit=passed#p37051357
         // https://forum.nationstates.net/viewtopic.php?p=36298615#p36298615
         // https://forum.nationstates.net/viewtopic.php?f=9&p=38086143#p38086143
-        if (!forumURL.startsWith("https://forum.nationstates.net"))
+        if (!forumURL.startsWith("https://forum.nationstates.net")
+                && !forumURL.startsWith("http://forum.nationstates.net"))
             throw new UnsupportedOperationException("Cannot parse URL that is not a NS forum URL");
 
         Matcher threadMatcher = Pattern.compile("(?<=t=)\\d+").matcher(forumURL);

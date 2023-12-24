@@ -13,3 +13,7 @@ RexisQuexis.iml
 
 # cache files
 *.json
+
+# python files
+python_scripts/*.txt
+python_scripts/*.csv

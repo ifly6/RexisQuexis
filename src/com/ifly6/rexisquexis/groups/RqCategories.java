@@ -115,7 +115,8 @@ public class RqCategories {
     private List<RqResolutionData> parseResolutions() throws IOException {
 
         List<RqResolutionData> resList = new ArrayList<>();
-        Elements elements = Jsoup.parse(new URL("https://forum.nationstates.net/viewtopic.php?f=9&t=30"), 2000)
+        Elements elements = Jsoup.parse(new URL("https://forum.nationstates.net/viewtopic.php?f=9&t=30"),
+                        10 * 1000)
                 .select("div#p310 div.content a");
         int numOfResolutions = elements.size();
 

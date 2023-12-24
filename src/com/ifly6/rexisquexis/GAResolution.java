@@ -299,7 +299,7 @@ public class GAResolution {
 
         try {
             resolution.implementation = new SimpleDateFormat("EEE MMM d yyyy")
-                    .parse(lines.get(R_IMPLEMENTATION));
+                    .parse(lines.get(R_IMPLEMENTATION).replace("Sep", "Sept"));
         } catch (ParseException e) {
             try {
                 e.printStackTrace();
